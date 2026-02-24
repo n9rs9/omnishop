@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react" 
+import { useRouter } from "next/navigation" // 1. On importe le routeur pour la redirection
 import { supabase } from "@/lib/supabase" 
 import { Button } from "@/components/ui/button"
-import { Plus, Bell, Search, Menu, Loader2 } from "lucide-react" 
+// 2. On ajoute l'icône LogOut
+import { Plus, Bell, Search, Menu, Loader2, LogOut } from "lucide-react" 
 import {
   Sheet,
   SheetContent,
@@ -13,27 +15,40 @@ import {
 } from "@/components/ui/sheet"
 import { SidebarNav } from "./sidebar-nav"
 
-// 1. ON DÉFINIT L'INTERFACE (Ce que le composant a le droit de recevoir)
 interface TopBarProps {
   userName?: string;
 }
 
-// 2. ON RÉCUPÈRE "userName" DANS LES PARAMÈTRES DE LA FONCTION
 export function TopBar({ userName }: TopBarProps) {
+  const router = useRouter() // Initialisation du routeur
   const [isInserting, setIsInserting] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false) // Pour le chargement de la déconnexion
 
-  // LA FONCTION MAGIQUE
+  // LA FONCTION DE DÉCONNEXION
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    const { error } = await supabase.auth.signOut()
+    
+    if (error) {
+      console.error("Erreur lors de la déconnexion:", error.message)
+      alert("Erreur : " + error.message)
+      setIsLoggingOut(false)
+    } else {
+      // Si tout va bien, on renvoie à la page de connexion
+      router.push('/login')
+    }
+  }
+
+  // LA FONCTION POUR CRÉER UNE COMMANDE TEST
   const handleCreateOrder = async () => {
     setIsInserting(true)
     
-    // On insère une commande test dans ta table SQL
     const { data, error } = await supabase
       .from('orders')
       .insert([
         { 
           status: 'En attente', 
-          total_price: 99.99, // On met un prix fixe pour le test
-          // On ne met pas de product_id pour le test car on n'a pas encore créé de produits
+          total_price: 99.99,
         }
       ])
 
@@ -42,7 +57,6 @@ export function TopBar({ userName }: TopBarProps) {
       alert("Erreur : " + error.message)
     } else {
       alert("Vente enregistrée dans le Cloud ! 🚀")
-      // On rafraîchit la page pour voir la nouvelle commande dans RecentOrders
       window.location.reload()
     }
     setIsInserting(false)
@@ -67,7 +81,6 @@ export function TopBar({ userName }: TopBarProps) {
 
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-foreground">Dashboard</h1>
-          {/* 3. ON AFFICHE LE NOM DU MEC S'IL EXISTE ! */}
           <p className="text-xs text-muted-foreground">
             {userName ? `Welcome back, ${userName}` : "Welcome back, Omnishop is ready."}
           </p>
@@ -83,7 +96,24 @@ export function TopBar({ userName }: TopBarProps) {
           <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
         </Button>
 
-        {/* LE BOUTON CONNECTÉ */}
+        {/* NOUVEAU BOUTON : DÉCONNEXION */}
+        <Button 
+          variant="outline" 
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="text-foreground hover:bg-accent"
+        >
+          {isLoggingOut ? (
+            <Loader2 className="mr-2 size-4 animate-spin" />
+          ) : (
+            <LogOut className="mr-2 size-4" />
+          )}
+          <span className="hidden sm:inline">
+            {isLoggingOut ? "Déconnexion..." : "Déconnexion"}
+          </span>
+        </Button>
+
+        {/* LE BOUTON CRÉER (Lui reste en Primary / Bleu/Couleur principale) */}
         <Button 
           onClick={handleCreateOrder} 
           disabled={isInserting}
