@@ -96,7 +96,7 @@ export function InventoryOverview() {
           <div className="flex justify-center py-[32px]">
             <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95">
               <Boxes className="size-3.5" />
-              View Stock
+              View All Stock
             </button>
           </div>
         )}

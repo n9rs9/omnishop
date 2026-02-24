@@ -98,7 +98,7 @@ export function RecentOrders() {
         {/* BOUTON VIEW ALL STYLE BLANC APPLE */}
         <button className="flex items-center gap-2 bg-white text-black px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-white/90 transition-all shadow-sm active:scale-95">
           <Eye className="size-3.5" />
-          View all
+          View All Orders
         </button>
       </div>
       <Table>
