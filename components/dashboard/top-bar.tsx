@@ -92,24 +92,22 @@ export function TopBar({ userName }: TopBarProps) {
           <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
         </Button>
 
-        {/* --- BOUTON DÉCONNEXION (Hauteur fixée à h-10) --- */}
+        {/* --- BOUTON DÉCONNEXION (Noir/Contour, Hauteur 10) --- */}
         <Button 
           variant="outline" 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="h-10 text-foreground hover:bg-accent"
+          className="h-10 border-border bg-transparent text-foreground hover:bg-accent"
         >
           {isLoggingOut ? (
             <Loader2 className="mr-2 size-4 animate-spin" />
           ) : (
             <LogOut className="mr-2 size-4" />
           )}
-          <span className="hidden sm:inline">
-            {isLoggingOut ? "Déconnexion" : "Déconnexion"}
-          </span>
+          <span className="hidden sm:inline">Déconnexion</span>
         </Button>
 
-        {/* --- BOUTON CRÉER UNE COMMANDE (Hauteur fixée à h-10) --- */}
+        {/* --- BOUTON CRÉER UNE COMMANDE (Couleur primaire, Hauteur 10) --- */}
         <Button 
           onClick={handleCreateOrder} 
           disabled={isInserting}
@@ -120,9 +118,7 @@ export function TopBar({ userName }: TopBarProps) {
           ) : (
             <Plus className="mr-2 size-4" />
           )}
-          <span className="hidden sm:inline">
-            {isInserting ? "Saving..." : "Create New Order"}
-          </span>
+          <span className="hidden sm:inline">Create New Order</span>
         </Button>
       </div>
     </header>
