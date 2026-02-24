@@ -51,7 +51,7 @@ export function SidebarNav() {
       <div className="flex-1" />
 
       {/* ZONE PRO PLAN + LIGNE : On monte de 30px avec mb-[30px] */}
-      <div className="mb-[30px] shrink-0">
+      <div className="mb-[27px] shrink-0">
         
         {/* Infos Pro Plan (avec padding pour l'alignement texte) */}
         <div className="px-6 pb-6">
@@ -68,7 +68,7 @@ export function SidebarNav() {
         </div>
 
         {/* LIGNE DE SÉPARATION : Plus épaisse (h-[2px]) et pleine largeur (pas de px-6 ici) */}
-        <div className="h-[2px] w-full bg-border" />
+        <div className="h-[1.5px] w-full bg-border" />
       </div>
     </aside>
   )
