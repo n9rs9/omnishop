@@ -74,14 +74,20 @@ export default function DashboardPage() {
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8 shadow-2xl">
-            <h2 className="mb-2 text-2xl font-bold text-card-foreground">Bienvenue {userName} !</h2>
-            <p className="mb-12 text-sm text-muted-foreground">
-              Configure ton espace Omnishop en quelques clics.
-            </p>
+            {/* EN-TÊTE ALIGNÉ AU CENTRE */}
+            <div className="text-center mb-12">
+              <h2 className="text-2xl font-bold text-card-foreground">Bienvenue {userName} !</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Configure ton espace Omnishop en quelques clics.
+              </p>
+            </div>
 
             <form onSubmit={handleCompleteOnboarding} className="space-y-12">
-              <div className="space-y-6">
-                <label className="text-sm font-medium tracking-wide text-card-foreground">Sur quel canal vendez-vous principalement ?</label>
+              {/* SECTION CANAL - Titre gris, italique et espacé */}
+              <div className="space-y-8">
+                <label className="block text-sm italic text-muted-foreground">
+                  Sur quel canal vendez-vous principalement ?
+                </label>
                 <div className="flex flex-wrap gap-3">
                   {[
                     { id: 'whatsapp', name: 'WhatsApp', color: 'bg-[#25D366]' },
@@ -109,8 +115,11 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <label className="text-sm font-medium tracking-wide text-card-foreground">Dans quel but allez-vous utiliser Omnishop ?</label>
+              {/* SECTION BUT - Titre gris, italique et espacé */}
+              <div className="space-y-8">
+                <label className="block text-sm italic text-muted-foreground">
+                  Dans quel but allez-vous utiliser Omnishop ?
+                </label>
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { id: 'stock', name: 'Gestion des Stocks', desc: 'Suivre les quantités et éviter les ruptures' },
