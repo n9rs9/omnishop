@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [userName, setUserName] = useState("")
   
+  // 1. ON INITIALISE À VIDE (Aucun choix par défaut)
   const [platform, setPlatform] = useState("")
   const [focus, setFocus] = useState("")
   const [savingOnboarding, setSavingOnboarding] = useState(false)
@@ -65,10 +66,12 @@ export default function DashboardPage() {
     )
   }
 
+  // 2. ON VÉRIFIE SI LE FORMULAIRE EST COMPLET
   const isFormComplete = platform !== "" && focus !== ""
 
   return (
     <>
+      {/* LA MODAL D'ONBOARDING */}
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8 shadow-2xl">
@@ -77,7 +80,9 @@ export default function DashboardPage() {
               Configure ton espace Omnishop en quelques clics.
             </p>
 
-            <form onSubmit={handleCompleteOnboarding} className="space-y-4">
+            <form onSubmit={handleCompleteOnboarding} className="space-y-8">
+              
+              {/* SECTION CANAL */}
               <div className="space-y-4">
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Canal principal</label>
                 <div className="flex flex-wrap gap-3">
@@ -106,6 +111,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
+              {/* SECTION BESOIN */}
               <div className="space-y-4">
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
                 <div className="grid grid-cols-2 gap-4">
@@ -134,6 +140,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
+              {/* 3. BOUTON DE VALIDATION (Grisé ou Bleu) */}
               <button
                 type="submit"
                 disabled={savingOnboarding || !isFormComplete}
@@ -150,29 +157,27 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* DASHBOARD SANS SCROLL ET ALIGNÉ */}
+      {/* LE DASHBOARD CLASSIQUE - J'AI AJOUTÉ LE STYLE ZOOM ICI */}
       <div 
         style={{ zoom: "1.25" }} 
-        className={`flex h-screen w-screen overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
+        className={`flex h-dvh overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
       >
-        <div className="hidden w-[260px] shrink-0 lg:block border-r border-border/50">
+        <div className="hidden w-[260px] shrink-0 lg:block">
           <SidebarNav />
-          {/* Note: Pour supprimer la card Pro Plan, il faudra aussi la masquer dans SidebarNav si elle y est codée */}
         </div>
 
-        <div className="flex flex-1 flex-col h-full overflow-hidden">
+        <div className="flex flex-1 flex-col overflow-hidden">
           <TopBar userName={userName} />
 
-          <main className="flex-1 px-4 py-6 lg:px-6 overflow-hidden">
-            <div className="mx-auto max-w-6xl h-full flex flex-col">
+          <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-6">
+            <div className="mx-auto max-w-6xl">
               <StatsCards />
 
-              {/* Conteneur des grilles avec hauteur fixe pour éviter le scroll */}
-              <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5 flex-1 min-h-0">
-                <div className="xl:col-span-3 h-full overflow-hidden">
+              <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5">
+                <div className="xl:col-span-3">
                   <RecentOrders />
                 </div>
-                <div className="xl:col-span-2 h-full overflow-hidden">
+                <div className="xl:col-span-2">
                   <InventoryOverview />
                 </div>
               </div>
@@ -180,13 +185,6 @@ export default function DashboardPage() {
           </main>
         </div>
       </div>
-
-      {/* Style CSS pour cacher la card Pro Plan si elle est injectée via SidebarNav */}
-      <style jsx global>{`
-        [class*="pro-plan"], .pro-plan-card, [data-card="pro-plan"] {
-          display: none !important;
-        }
-      `}</style>
     </>
   )
 }
