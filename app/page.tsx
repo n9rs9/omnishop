@@ -66,21 +66,22 @@ export default function DashboardPage() {
 
   return (
     <>
-      {/* LA MODAL D'ONBOARDING (Ultra compacte, sans SVG) */}
+      {/* LA MODAL D'ONBOARDING PLUS GRANDE ET RECTANGULAIRE */}
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-[400px] rounded-lg border border-border bg-card p-5 shadow-2xl">
-            <h2 className="mb-1 text-lg font-bold text-card-foreground">Bienvenue {userName} !</h2>
-            <p className="mb-5 text-xs text-muted-foreground">
-              Configure ton espace Omnishop.
+          {/* max-w-2xl force la modal à être bien plus large (format paysage) */}
+          <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8 shadow-2xl">
+            <h2 className="mb-2 text-2xl font-bold text-card-foreground">Bienvenue {userName} !</h2>
+            <p className="mb-8 text-sm text-muted-foreground">
+              Configure ton espace Omnishop en quelques clics.
             </p>
 
-            <form onSubmit={handleCompleteOnboarding} className="space-y-5">
+            <form onSubmit={handleCompleteOnboarding} className="space-y-8">
               
               {/* SECTION CANAL */}
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Canal principal</label>
-                <div className="flex flex-wrap gap-1.5">
+              <div className="space-y-3">
+                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Canal principal</label>
+                <div className="flex flex-wrap gap-3">
                   {[
                     { id: 'whatsapp', name: 'WhatsApp', color: 'bg-[#25D366]' },
                     { id: 'snapchat', name: 'Snapchat', color: 'bg-[#FFFC00]' },
@@ -92,14 +93,14 @@ export default function DashboardPage() {
                       key={p.id}
                       type="button"
                       onClick={() => setPlatform(p.id)}
-                      className={`flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-colors ${
+                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2 text-sm transition-colors ${
                         platform === p.id 
-                          ? 'border-primary bg-primary/10 font-bold text-primary ring-1 ring-primary ring-offset-0' 
+                          ? 'border-primary bg-primary/10 font-bold text-primary ring-2 ring-primary ring-offset-0' 
                           : 'border-border bg-background text-foreground hover:bg-muted'
                       }`}
                     >
-                      {/* Pastille de couleur au lieu des SVG */}
-                      <span className={`block h-2.5 w-2.5 rounded-full ${p.color} ${p.id === 'snapchat' ? 'border border-black/20' : ''}`} />
+                      {/* Pastille de couleur plus grosse */}
+                      <span className={`block h-3.5 w-3.5 rounded-full ${p.color} ${p.id === 'snapchat' ? 'border border-black/20' : ''}`} />
                       {p.name}
                     </button>
                   ))}
@@ -107,29 +108,29 @@ export default function DashboardPage() {
               </div>
 
               {/* SECTION BESOIN */}
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
-                <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-3">
+                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
+                <div className="grid grid-cols-2 gap-4">
                   {[
-                    { id: 'stock', name: 'Stocks', desc: 'Gérer quantités' },
-                    { id: 'clients', name: 'Clients', desc: 'Fiches CRM' },
-                    { id: 'colis', name: 'Colis', desc: 'Suivi trackings' },
-                    { id: 'tout', name: 'Complet 🚀', desc: 'Tout-en-un' },
+                    { id: 'stock', name: 'Stocks', desc: 'Gérer les quantités et éviter les ruptures' },
+                    { id: 'clients', name: 'Clients', desc: 'Fiches clients, CRM et relances' },
+                    { id: 'colis', name: 'Colis', desc: 'Suivi centralisé des trackings' },
+                    { id: 'tout', name: 'Complet 🚀', desc: 'L\'outil tout-en-un pour tout casser' },
                   ].map((f) => (
                     <button
                       key={f.id}
                       type="button"
                       onClick={() => setFocus(f.id)}
-                      className={`flex flex-col items-start rounded-md border px-3 py-2 text-left transition-colors ${
+                      className={`flex flex-col items-start rounded-lg border p-4 text-left transition-colors ${
                         focus === f.id 
-                          ? 'border-primary bg-primary/10 ring-1 ring-primary ring-offset-0' 
+                          ? 'border-primary bg-primary/10 ring-2 ring-primary ring-offset-0' 
                           : 'border-border bg-background hover:bg-muted'
                       }`}
                     >
-                      <span className={`text-xs font-bold ${focus === f.id ? 'text-primary' : 'text-foreground'}`}>
+                      <span className={`text-base font-bold ${focus === f.id ? 'text-primary' : 'text-foreground'}`}>
                         {f.name}
                       </span>
-                      <span className="text-[10px] text-muted-foreground leading-tight">{f.desc}</span>
+                      <span className="mt-1 text-sm text-muted-foreground leading-snug">{f.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -139,9 +140,9 @@ export default function DashboardPage() {
               <button
                 type="submit"
                 disabled={savingOnboarding}
-                className="mt-4 w-full rounded-md bg-primary py-2.5 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+                className="mt-6 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-base font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
-                {savingOnboarding ? 'Configuration...' : 'Démarrer'}
+                {savingOnboarding ? 'Configuration en cours...' : 'Démarrer mon espace Omnishop'}
               </button>
             </form>
           </div>
