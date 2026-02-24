@@ -20,17 +20,17 @@ const navItems = [
 
 export function SidebarNav() {
   return (
-    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6">
-      {/* LOGO */}
-      <div className="mb-6 flex items-center gap-2.5 px-3">
+    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar py-6">
+      {/* LOGO - Padding horizontal conservé ici */}
+      <div className="mb-6 flex items-center gap-2.5 px-6">
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
           Omnishop
         </span>
       </div>
 
-      {/* MENU PRINCIPAL */}
-      <nav className="flex flex-col gap-1" role="navigation">
+      {/* MENU PRINCIPAL - Padding horizontal conservé ici */}
+      <nav className="flex flex-col gap-1 px-3" role="navigation">
         {navItems.map((item) => (
           <button
             key={item.label}
@@ -47,25 +47,29 @@ export function SidebarNav() {
         ))}
       </nav>
 
-      {/* LE VIDE QUI POUSSE TOUT VERS LE BAS */}
+      {/* SPACER */}
       <div className="flex-1" />
 
-      {/* ZONE PRO PLAN SANS CARD */}
-      <div className="px-3 pb-4 shrink-0">
-        <p className="text-xs font-bold text-foreground">Pro Plan</p>
-        <p className="mt-0.5 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-          3 of 5 stores used
-        </p>
-        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-primary"
-            style={{ width: "60%" }}
-          />
+      {/* ZONE PRO PLAN + LIGNE : On monte de 30px avec mb-[30px] */}
+      <div className="mb-[30px] shrink-0">
+        
+        {/* Infos Pro Plan (avec padding pour l'alignement texte) */}
+        <div className="px-6 pb-6">
+          <p className="text-xs font-bold text-foreground">Pro Plan</p>
+          <p className="mt-0.5 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+            3 of 5 stores used
+          </p>
+          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: "60%" }}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* LIGNE DE SÉPARATEUR FINALE */}
-      <div className="mx-3 h-[1px] bg-border/50" />
+        {/* LIGNE DE SÉPARATION : Plus épaisse (h-[2px]) et pleine largeur (pas de px-6 ici) */}
+        <div className="h-[2px] w-full bg-border" />
+      </div>
     </aside>
   )
 }
