@@ -75,13 +75,13 @@ export default function DashboardPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
           <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8 shadow-2xl">
             <h2 className="mb-2 text-2xl font-bold text-card-foreground">Bienvenue {userName} !</h2>
-            <p className="mb-8 text-sm text-muted-foreground">
+            <p className="mb-12 text-sm text-muted-foreground">
               Configure ton espace Omnishop en quelques clics.
             </p>
 
-            <form onSubmit={handleCompleteOnboarding} className="space-y-8">
-              <div className="space-y-4">
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Canal principal</label>
+            <form onSubmit={handleCompleteOnboarding} className="space-y-12">
+              <div className="space-y-6">
+                <label className="text-sm font-medium tracking-wide text-card-foreground">Sur quel canal vendez-vous principalement ?</label>
                 <div className="flex flex-wrap gap-3">
                   {[
                     { id: 'whatsapp', name: 'WhatsApp', color: 'bg-[#25D366]' },
@@ -96,42 +96,44 @@ export default function DashboardPage() {
                       key={p.id}
                       type="button"
                       onClick={() => setPlatform(p.id)}
-                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2 text-sm transition-colors cursor-pointer ${
+                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2.5 text-sm transition-all duration-200 cursor-pointer ${
                         platform === p.id 
-                          ? 'border-primary bg-primary/10 font-bold text-primary ring-2 ring-primary ring-offset-0' 
+                          ? 'border-primary bg-primary font-bold text-primary-foreground shadow-lg' 
                           : 'border-border bg-background text-foreground hover:bg-muted'
                       }`}
                     >
-                      <span className={`block h-3.5 w-3.5 rounded-full ${p.color} ${p.id === 'snapchat' ? 'border border-black/20' : ''}`} />
+                      <span className={`block h-3 w-3 rounded-full ${p.color} ${p.id === 'snapchat' ? 'border border-black/20' : ''} ${platform === p.id ? 'ring-2 ring-white/50' : ''}`} />
                       {p.name}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
+              <div className="space-y-6">
+                <label className="text-sm font-medium tracking-wide text-card-foreground">Dans quel but allez-vous utiliser Omnishop ?</label>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { id: 'stock', name: 'Stocks', desc: 'Gérer les quantités et éviter les ruptures' },
-                    { id: 'clients', name: 'Clients', desc: 'Fiches clients, CRM et relances' },
-                    { id: 'colis', name: 'Colis', desc: 'Suivi centralisé des trackings' },
+                    { id: 'stock', name: 'Gestion des Stocks', desc: 'Suivre les quantités et éviter les ruptures' },
+                    { id: 'clients', name: 'Fiches Clients', desc: 'Base de données CRM et relances' },
+                    { id: 'colis', name: 'Suivi de Colis', desc: 'Gestion centralisée des trackings' },
                     { id: 'tout', name: 'Complet 🚀', desc: 'L\'outil tout-en-un pour un oeil sur tout' },
                   ].map((f) => (
                     <button
                       key={f.id}
                       type="button"
                       onClick={() => setFocus(f.id)}
-                      className={`flex flex-col items-start rounded-lg border p-4 text-left transition-colors cursor-pointer ${
+                      className={`flex flex-col items-start rounded-lg border p-5 text-left transition-all duration-200 cursor-pointer ${
                         focus === f.id 
-                          ? 'border-primary bg-primary/10 ring-2 ring-primary ring-offset-0' 
+                          ? 'border-primary bg-primary text-primary-foreground shadow-lg' 
                           : 'border-border bg-background hover:bg-muted'
                       }`}
                     >
-                      <span className={`text-base font-bold ${focus === f.id ? 'text-primary' : 'text-foreground'}`}>
+                      <span className={`text-base font-bold ${focus === f.id ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {f.name}
                       </span>
-                      <span className="mt-1 text-sm text-muted-foreground leading-snug">{f.desc}</span>
+                      <span className={`mt-1.5 text-sm leading-snug ${focus === f.id ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                        {f.desc}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -140,10 +142,10 @@ export default function DashboardPage() {
               <button
                 type="submit"
                 disabled={savingOnboarding || !isFormComplete}
-                className={`mt-6 flex h-12 w-full items-center justify-center rounded-lg text-base font-bold shadow-sm transition-all duration-200 cursor-pointer ${
+                className={`mt-10 flex h-14 w-full items-center justify-center rounded-lg text-base font-bold shadow-md transition-all duration-200 cursor-pointer ${
                   isFormComplete 
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
+                    ? 'bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.98]' 
+                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
                 }`}
               >
                 {savingOnboarding ? 'Configuration en cours...' : 'Démarrer mon espace Omnishop'}
