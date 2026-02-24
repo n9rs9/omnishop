@@ -11,6 +11,7 @@ import { RecentOrders } from "@/components/dashboard/recent-orders"
 import { InventoryOverview } from "@/components/dashboard/inventory-overview"
 
 export default function DashboardPage() {
+  <div className="flex h-dvh overflow-hidden bg-background" style={{ zoom: "1.25" }}></div>
   const router = useRouter()
   const [isAuthorized, setIsAuthorized] = useState(false)
   
