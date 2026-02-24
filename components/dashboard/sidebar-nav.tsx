@@ -8,12 +8,14 @@ import {
   BarChart3,
   Settings,
   Hexagon,
+  Sparkles,
 } from "lucide-react"
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
   { label: "Inventory", icon: Package, active: false },
   { label: "Customers", icon: Users, active: false },
+  { label: "Omni IA", icon: Sparkles, active: false },
   { label: "Analytics", icon: BarChart3, active: false },
   { label: "Settings", icon: Settings, active: false },
 ]

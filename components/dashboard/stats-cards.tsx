@@ -1,9 +1,33 @@
-import { DollarSign, Truck, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react"
+import { DollarSign, Truck, Sparkles, TrendingUp, Zap } from "lucide-react"
 
 const stats = [
-  { title: "Daily Sales", value: "$12,426", change: "+14.2%", trend: "up" as const, icon: DollarSign, iconBg: "bg-primary/15", iconColor: "text-primary" },
-  { title: "Active Shipments", value: "284", change: "+6.8%", trend: "up" as const, icon: Truck, iconBg: "bg-chart-2/15", iconColor: "text-chart-2" },
-  { title: "Low Stock Alert", value: "18", change: "-3.1%", trend: "down" as const, icon: AlertTriangle, iconBg: "bg-warning/15", iconColor: "text-warning" },
+  { 
+    title: "Daily Sales", 
+    value: "$12,426", 
+    change: "+14.2%", 
+    trend: "up" as const, 
+    icon: DollarSign, 
+    iconBg: "bg-primary/15", 
+    iconColor: "text-primary" 
+  },
+  { 
+    title: "Active Shipments", 
+    value: "284", 
+    change: "+6.8%", 
+    trend: "up" as const, 
+    icon: Truck, 
+    iconBg: "bg-blue-500/15", 
+    iconColor: "text-blue-500" 
+  },
+  { 
+    title: "Omni IA", 
+    value: "Assistant", 
+    change: "Gratuit & Illimité", 
+    trend: "ia" as const, 
+    icon: Sparkles, 
+    iconBg: "bg-purple-500/15", 
+    iconColor: "text-purple-500" 
+  },
 ]
 
 export function StatsCards() {
@@ -20,10 +44,21 @@ export function StatsCards() {
               <stat.icon className={`size-5 ${stat.iconColor}`} />
             </div>
           </div>
+          
           <div className="mt-3 flex items-center gap-1.5">
-            {stat.trend === "up" ? <TrendingUp className="size-3.5 text-success" /> : <TrendingDown className="size-3.5 text-destructive" />}
-            <span className={`text-xs font-medium ${stat.trend === "up" ? "text-success" : "text-destructive"}`}>{stat.change}</span>
-            <span className="text-xs text-muted-foreground">vs last week</span>
+            {stat.trend === "ia" ? (
+              <>
+                <Zap className="size-3.5 text-purple-500" />
+                <span className="text-xs font-medium text-purple-500">{stat.change}</span>
+                <span className="text-xs text-muted-foreground ml-auto opacity-70 italic">Propulsé par Omni IA</span>
+              </>
+            ) : (
+              <>
+                <TrendingUp className="size-3.5 text-success" />
+                <span className="text-xs font-medium text-success">{stat.change}</span>
+                <span className="text-xs text-muted-foreground">vs last week</span>
+              </>
+            )}
           </div>
         </div>
       ))}
