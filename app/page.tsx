@@ -18,7 +18,6 @@ export default function DashboardPage() {
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [userName, setUserName] = useState("")
   
-  // 1. ON INITIALISE À VIDE (Aucun choix par défaut)
   const [platform, setPlatform] = useState("")
   const [focus, setFocus] = useState("")
   const [savingOnboarding, setSavingOnboarding] = useState(false)
@@ -61,13 +60,12 @@ export default function DashboardPage() {
 
   if (!isAuthorized) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-background text-foreground">
+      <div className="flex h-screen items-center justify-center bg-background text-foreground">
         Chargement du cerveau Omnishop...
       </div>
     )
   }
 
-  // 2. ON VÉRIFIE SI LE FORMULAIRE EST COMPLET
   const isFormComplete = platform !== "" && focus !== ""
 
   return (
@@ -82,8 +80,6 @@ export default function DashboardPage() {
             </p>
 
             <form onSubmit={handleCompleteOnboarding} className="space-y-8">
-              
-              {/* SECTION CANAL */}
               <div className="space-y-4">
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Canal principal</label>
                 <div className="flex flex-wrap gap-3">
@@ -112,7 +108,6 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* SECTION BESOIN */}
               <div className="space-y-4">
                 <label className="text-xs uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
                 <div className="grid grid-cols-2 gap-4">
@@ -141,7 +136,6 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* 3. BOUTON DE VALIDATION (Grisé ou Bleu) */}
               <button
                 type="submit"
                 disabled={savingOnboarding || !isFormComplete}
@@ -158,23 +152,25 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* LE DASHBOARD CLASSIQUE - J'AI AJOUTÉ LE STYLE ZOOM ICI */}
+      {/* DASHBOARD BLOQUÉ SANS SCROLL - ZOOM APPLIQUÉ SUR LE CONTENEUR FIXE */}
       <div 
         style={{ zoom: "1.25" }} 
-        className={`flex h-dvh overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
+        className={`fixed inset-0 flex overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
       >
-        <div className="hidden w-[260px] shrink-0 lg:block">
+        <div className="hidden w-[260px] shrink-0 lg:block h-full">
           <SidebarNav />
         </div>
 
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col h-full overflow-hidden">
           <TopBar userName={userName} />
 
-          <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-6">
-            <div className="mx-auto max-w-6xl">
+          {/* On remplace flex-1 par une hauteur calculée ou fixe sans overflow-y-auto global */}
+          <main className="h-full overflow-hidden px-4 py-6 lg:px-6">
+            <div className="mx-auto max-w-6xl h-full flex flex-col">
               <StatsCards />
 
-              <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5">
+              {/* Conteneur des grilles avec alignement strict en haut */}
+              <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5 items-start">
                 <div className="xl:col-span-3">
                   <RecentOrders />
                 </div>
