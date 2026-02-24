@@ -44,12 +44,8 @@ export function SidebarNav() {
           </button>
         ))}
       </nav>
-
-      {/* LE SPACER MAGIQUE : Il prend toute la place pour pousser le Pro Plan */}
-      <div className="flex-1" />
-
       {/* CARTE PRO PLAN : p-4 et shrink-0 pour rester fixe */}
-      <div style={{ marginTop: '28px' }} className="rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
+      <div style={{ marginTop: '315px' }} className="rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
         <p className="text-xs font-medium text-foreground">Pro Plan</p>
         <p className="mt-0.5 text-xs text-muted-foreground">
           3 of 5 stores used

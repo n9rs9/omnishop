@@ -35,6 +35,10 @@ function getStockLabelColor(percent: number) {
 }
 
 export function InventoryOverview() {
+  // On ne garde que les 4 premiers pour l'alignement
+  const displayItems = inventoryItems.slice(0, 4)
+  const hasMore = inventoryItems.length > 4
+
   return (
     <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm">
       <div className="flex items-center justify-between border-b border-border/50 px-5 py-4">
@@ -48,7 +52,7 @@ export function InventoryOverview() {
         </div>
       </div>
       <div className="divide-y divide-border/50">
-        {inventoryItems.map((item) => {
+        {displayItems.map((item) => {
           const percent = Math.round((item.stock / item.maxStock) * 100)
           return (
             <div key={item.name} className="px-5 py-3.5">
@@ -89,6 +93,15 @@ export function InventoryOverview() {
             </div>
           )
         })}
+        
+        {/* Ligne finale avec les 3 points si plus de 4 items */}
+        {hasMore && (
+          <div className="flex justify-center py-2">
+            <span className="text-muted-foreground/50 font-bold tracking-[0.5em] text-sm">
+              ...
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )
