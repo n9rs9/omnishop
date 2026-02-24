@@ -35,7 +35,7 @@ function getStockLabelColor(percent: number) {
 }
 
 export function InventoryOverview() {
-  // On affiche 4 éléments pour laisser de l'espace à l'alignement
+  // On conserve l'affichage des 4 premiers éléments
   const displayItems = inventoryItems.slice(0, 4)
   const hasMore = inventoryItems.length > 4
 
@@ -93,9 +93,9 @@ export function InventoryOverview() {
           )
         })}
         
-        {/* Ajustement du padding (py-6.5) pour tomber pile en face du bas de Recent Orders */}
+        {/* Utilisation du paramètre exact validé par ton test : py-[39px] */}
         {hasMore && (
-          <div className="flex justify-center py-[26px]">
+          <div className="flex justify-center py-[39px]">
             <span className="text-muted-foreground/50 font-bold tracking-[0.5em] text-sm">
               ...
             </span>
