@@ -85,10 +85,11 @@ export default function DashboardPage() {
                 <div className="flex flex-wrap gap-3">
                   {[
                     { id: 'whatsapp', name: 'WhatsApp', color: 'bg-[#25D366]' },
-                    { id: 'snapchat', name: 'Snapchat', color: 'bg-[#FFFC00]' },
                     { id: 'instagram', name: 'Instagram', color: 'bg-[#8E27F5]' },
+                    { id: 'snapchat', name: 'Snapchat', color: 'bg-[#FFFC00]' },
                     { id: 'tiktok', name: 'TikTok', color: 'bg-[#E1306C]' },
                     { id: 'telegram', name: 'Telegram', color: 'bg-[#27B7F5]' },
+                    { id: 'signal', name: 'Signal', color: 'bg-[#0020CF]' },
                     { id: 'autre', name: 'Autre', color: 'bg-gray-500' },
                   ].map((p) => (
                     <button
