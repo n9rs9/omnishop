@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react" 
-import { useRouter } from "next/navigation" // 1. On importe le routeur pour la redirection
+import { useRouter } from "next/navigation" 
 import { supabase } from "@/lib/supabase" 
 import { Button } from "@/components/ui/button"
-// 2. On ajoute l'icône LogOut
 import { Plus, Bell, Search, Menu, Loader2, LogOut } from "lucide-react" 
 import {
   Sheet,
@@ -20,26 +19,23 @@ interface TopBarProps {
 }
 
 export function TopBar({ userName }: TopBarProps) {
-  const router = useRouter() // Initialisation du routeur
+  const router = useRouter()
   const [isInserting, setIsInserting] = useState(false)
-  const [isLoggingOut, setIsLoggingOut] = useState(false) // Pour le chargement de la déconnexion
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  // LA FONCTION DE DÉCONNEXION
   const handleLogout = async () => {
     setIsLoggingOut(true)
     const { error } = await supabase.auth.signOut()
     
     if (error) {
-      console.error("Erreur lors de la déconnexion:", error.message)
+      console.error("Erreur déconnexion:", error.message)
       alert("Erreur : " + error.message)
       setIsLoggingOut(false)
     } else {
-      // Si tout va bien, on renvoie à la page de connexion
       router.push('/login')
     }
   }
 
-  // LA FONCTION POUR CRÉER UNE COMMANDE TEST
   const handleCreateOrder = async () => {
     setIsInserting(true)
     
@@ -96,12 +92,12 @@ export function TopBar({ userName }: TopBarProps) {
           <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
         </Button>
 
-        {/* NOUVEAU BOUTON : DÉCONNEXION */}
+        {/* --- BOUTON DÉCONNEXION (Hauteur fixée à h-10) --- */}
         <Button 
           variant="outline" 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="text-foreground hover:bg-accent"
+          className="h-10 text-foreground hover:bg-accent"
         >
           {isLoggingOut ? (
             <Loader2 className="mr-2 size-4 animate-spin" />
@@ -109,15 +105,15 @@ export function TopBar({ userName }: TopBarProps) {
             <LogOut className="mr-2 size-4" />
           )}
           <span className="hidden sm:inline">
-            {isLoggingOut ? "Déconnexion..." : "Déconnexion"}
+            {isLoggingOut ? "Déconnexion" : "Déconnexion"}
           </span>
         </Button>
 
-        {/* LE BOUTON CRÉER (Lui reste en Primary / Bleu/Couleur principale) */}
+        {/* --- BOUTON CRÉER UNE COMMANDE (Hauteur fixée à h-10) --- */}
         <Button 
           onClick={handleCreateOrder} 
           disabled={isInserting}
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
+          className="h-10 bg-primary text-primary-foreground hover:bg-primary/90"
         >
           {isInserting ? (
             <Loader2 className="mr-2 size-4 animate-spin" />
