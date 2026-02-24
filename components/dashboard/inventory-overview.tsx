@@ -45,12 +45,8 @@ export function InventoryOverview() {
     <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-sm">
       <div className="flex items-center justify-between border-b border-border/50 px-5 py-4">
         <div>
-          <h2 className="text-sm font-semibold text-card-foreground">
-            Inventory Overview
-          </h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            Stock levels across all categories
-          </p>
+          <h2 className="text-sm font-semibold text-card-foreground">Inventory Overview</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">Stock levels across all categories</p>
         </div>
       </div>
       <div className="divide-y divide-border/50">
@@ -61,40 +57,24 @@ export function InventoryOverview() {
               <div className="flex items-center justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate text-sm font-medium text-card-foreground">
-                      {item.name}
-                    </p>
-                    <span className="shrink-0 rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                      {item.category}
-                    </span>
+                    <p className="truncate text-sm font-medium text-card-foreground">{item.name}</p>
+                    <span className="shrink-0 rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">{item.category}</span>
                   </div>
                 </div>
                 <div className="ml-4 flex items-center gap-3">
-                  <span className={cn("text-xs font-medium", getStockLabelColor(percent))}>
-                    {getStockLabel(percent)}
-                  </span>
-                  <span className="text-xs tabular-nums text-muted-foreground">
-                    {item.stock}/{item.maxStock}
-                  </span>
+                  <span className={cn("text-xs font-medium", getStockLabelColor(percent))}>{getStockLabel(percent)}</span>
+                  <span className="text-xs tabular-nums text-muted-foreground">{item.stock}/{item.maxStock}</span>
                 </div>
               </div>
               <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                <div
-                  className={cn(
-                    "h-full rounded-full transition-all",
-                    getStockColor(percent)
-                  )}
-                  style={{ width: `${percent}%` }}
-                />
+                <div className={cn("h-full rounded-full transition-all", getStockColor(percent))} style={{ width: `${percent}%` }} />
               </div>
             </div>
           )
         })}
-        
-        {/* LE BOUTON AVEC LE PADDING DE 32PX VALIDÉ */}
         {hasMore && (
           <div className="flex justify-center py-[32px]">
-            <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95">
+            <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95 cursor-pointer border-none">
               <Boxes className="size-3.5" />
               View All Stock
             </button>

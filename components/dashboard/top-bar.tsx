@@ -23,16 +23,12 @@ export function TopBar({ userName }: TopBarProps) {
   const router = useRouter()
   const [isInserting, setIsInserting] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
-  
-  // État pour l'animation de la barre de recherche
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
     const { error } = await supabase.auth.signOut()
-    
     if (error) {
-      console.error("Erreur déconnexion:", error.message)
       alert("Erreur : " + error.message)
       setIsLoggingOut(false)
     } else {
@@ -42,21 +38,13 @@ export function TopBar({ userName }: TopBarProps) {
 
   const handleCreateOrder = async () => {
     setIsInserting(true)
-    
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('orders')
-      .insert([
-        { 
-          status: 'En attente', 
-          total_price: 99.99,
-        }
-      ])
+      .insert([{ status: 'En attente', total_price: 99.99 }])
 
     if (error) {
-      console.error("Erreur Supabase:", error.message)
       alert("Erreur : " + error.message)
     } else {
-      alert("Vente enregistrée dans le Cloud ! 🚀")
       window.location.reload()
     }
     setIsInserting(false)
@@ -67,7 +55,7 @@ export function TopBar({ userName }: TopBarProps) {
       <div className="flex items-center gap-3">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="lg:hidden text-muted-foreground">
+            <Button variant="ghost" size="icon" className="lg:hidden text-muted-foreground cursor-pointer">
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
@@ -88,17 +76,16 @@ export function TopBar({ userName }: TopBarProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        {/* LOUPE + BARRE DE RECHERCHE ANIMÉE */}
+        {/* RECHERCHE ANIMÉE */}
         <div className="relative flex items-center">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="z-10 text-muted-foreground hover:bg-transparent"
+            className="z-10 text-muted-foreground hover:bg-transparent cursor-pointer"
           >
             <Search className="size-[18px]" />
           </Button>
-          
           <input
             type="text"
             placeholder="Search anything..."
@@ -111,8 +98,8 @@ export function TopBar({ userName }: TopBarProps) {
           />
         </div>
 
-        {/* CLOCHE : La bulle devient noire au survol (group-hover) */}
-        <Button variant="ghost" size="icon" className="group relative text-muted-foreground">
+        {/* CLOCHE */}
+        <Button variant="ghost" size="icon" className="group relative text-muted-foreground cursor-pointer">
           <Bell className="size-[18px]" />
           <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary transition-colors group-hover:bg-black" />
         </Button>
@@ -122,27 +109,19 @@ export function TopBar({ userName }: TopBarProps) {
           variant="outline" 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="h-10 border-border bg-transparent text-foreground hover:bg-accent"
+          className="h-10 border-border bg-transparent text-foreground hover:bg-accent cursor-pointer"
         >
-          {isLoggingOut ? (
-            <Loader2 className="mr-2 size-4 animate-spin" />
-          ) : (
-            <LogOut className="mr-2 size-4" />
-          )}
+          {isLoggingOut ? <Loader2 className="mr-2 size-4 animate-spin" /> : <LogOut className="mr-2 size-4" />}
           <span className="hidden sm:inline">Déconnexion</span>
         </Button>
 
-        {/* CRÉER UNE COMMANDE */}
+        {/* CREATE ORDER */}
         <Button 
           onClick={handleCreateOrder} 
           disabled={isInserting}
-          className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
+          className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg cursor-pointer"
         >
-          {isInserting ? (
-            <Loader2 className="mr-2 size-4 animate-spin" />
-          ) : (
-            <Plus className="mr-2 size-4" />
-          )}
+          {isInserting ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Plus className="mr-2 size-4" />}
           <span className="hidden sm:inline">Create New Order</span>
         </Button>
       </div>

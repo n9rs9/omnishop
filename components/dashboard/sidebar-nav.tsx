@@ -19,17 +19,16 @@ const navItems = [
 ]
 
 export function SidebarNav() {
-  // Fonction pour rafraîchir la page
   const handleLogoClick = () => {
     window.location.reload()
   }
 
   return (
     <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar py-6">
-      {/* LOGO - Maintenant cliquable pour rafraîchir */}
+      {/* LOGO */}
       <button 
         onClick={handleLogoClick}
-        className="mb-6 flex items-center gap-2.5 px-6 transition-opacity hover:opacity-80 active:scale-95"
+        className="mb-6 flex items-center gap-2.5 px-6 transition-opacity hover:opacity-80 active:scale-95 cursor-pointer border-none bg-transparent"
       >
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
@@ -43,7 +42,7 @@ export function SidebarNav() {
           <button
             key={item.label}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer border-none",
               item.active
                 ? "bg-primary/15 text-primary"
                 : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
@@ -60,8 +59,6 @@ export function SidebarNav() {
 
       {/* ZONE FREE PLAN + LIGNE */}
       <div className="mb-[27px] shrink-0">
-        
-        {/* Infos Free Plan */}
         <div className="px-6 pb-6">
           <div className="flex items-center gap-2">
             <p className="text-xs font-bold text-foreground">Free Plan</p>
@@ -79,8 +76,6 @@ export function SidebarNav() {
             />
           </div>
         </div>
-
-        {/* LIGNE DE SÉPARATION : Pleine largeur */}
         <div className="h-[1.5px] w-full bg-border" />
       </div>
     </aside>
