@@ -1,4 +1,7 @@
+"use client"
+
 import { cn } from "@/lib/utils"
+import { Boxes } from "lucide-react" // Import de l'icône de stockage
 
 interface InventoryItem {
   name: string
@@ -35,12 +38,11 @@ function getStockLabelColor(percent: number) {
 }
 
 export function InventoryOverview() {
-  // On conserve l'affichage des 4 premiers éléments
   const displayItems = inventoryItems.slice(0, 4)
   const hasMore = inventoryItems.length > 4
 
   return (
-    <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm">
+    <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-sm">
       <div className="flex items-center justify-between border-b border-border/50 px-5 py-4">
         <div>
           <h2 className="text-sm font-semibold text-card-foreground">
@@ -83,22 +85,19 @@ export function InventoryOverview() {
                     getStockColor(percent)
                   )}
                   style={{ width: `${percent}%` }}
-                  role="progressbar"
-                  aria-valuenow={item.stock}
-                  aria-valuemin={0}
-                  aria-valuemax={item.maxStock}
                 />
               </div>
             </div>
           )
         })}
         
-        {/* Utilisation du paramètre exact validé par ton test : py-[39px] */}
+        {/* BOUTON VIEW STOCK : Remplace les "..." tout en gardant l'alignement py-[39px] */}
         {hasMore && (
-          <div className="flex justify-center py-[39px]">
-            <span className="text-muted-foreground/50 font-bold tracking-[0.5em] text-sm">
-              ...
-            </span>
+          <div className="flex justify-center py-[28px]"> {/* Ajusté légèrement pour le bouton */}
+            <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95">
+              <Boxes className="size-3.5" />
+              View Stock
+            </button>
           </div>
         )}
       </div>
