@@ -11,7 +11,6 @@ import { RecentOrders } from "@/components/dashboard/recent-orders"
 import { InventoryOverview } from "@/components/dashboard/inventory-overview"
 
 export default function DashboardPage() {
-  <div className="flex h-dvh overflow-hidden bg-background" style={{ zoom: "1.25" }}></div>
   const router = useRouter()
   const [isAuthorized, setIsAuthorized] = useState(false)
   
@@ -158,8 +157,11 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* LE DASHBOARD CLASSIQUE */}
-      <div className={`flex h-dvh overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}>
+      {/* LE DASHBOARD CLASSIQUE - J'AI AJOUTÉ LE STYLE ZOOM ICI */}
+      <div 
+        style={{ zoom: "1.25" }} 
+        className={`flex h-dvh overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
+      >
         <div className="hidden w-[260px] shrink-0 lg:block">
           <SidebarNav />
         </div>
