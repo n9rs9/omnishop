@@ -95,7 +95,7 @@ export function RecentOrders() {
                 key={order.id} 
                 className={cn(
                   "border-border/50 transition-all",
-                  isLastSlot ? "blur-[1.5px] opacity-40 pointer-events-none select-none" : "hover:bg-secondary/5"
+                  isLastSlot ? "blur-[2px] opacity-40 pointer-events-none select-none" : "hover:bg-secondary/5"
                 )}
               >
                 <TableCell className="px-5 py-3.5">

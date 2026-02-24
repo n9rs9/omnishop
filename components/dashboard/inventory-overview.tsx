@@ -70,7 +70,7 @@ export function InventoryOverview() {
               key={item.name} 
               className={cn(
                 "px-5 py-3.5 transition-all",
-                isLastSlot && "blur-[1.5px] opacity-40 pointer-events-none select-none"
+                isLastSlot && "blur-[2px] opacity-40 pointer-events-none select-none"
               )}
             >
               <div className="flex items-center justify-between">

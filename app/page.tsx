@@ -96,7 +96,7 @@ export default function DashboardPage() {
                       key={p.id}
                       type="button"
                       onClick={() => setPlatform(p.id)}
-                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2 text-sm transition-colors ${
+                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2 text-sm transition-colors cursor-pointer ${
                         platform === p.id 
                           ? 'border-primary bg-primary/10 font-bold text-primary ring-2 ring-primary ring-offset-0' 
                           : 'border-border bg-background text-foreground hover:bg-muted'
@@ -122,7 +122,7 @@ export default function DashboardPage() {
                       key={f.id}
                       type="button"
                       onClick={() => setFocus(f.id)}
-                      className={`flex flex-col items-start rounded-lg border p-4 text-left transition-colors ${
+                      className={`flex flex-col items-start rounded-lg border p-4 text-left transition-colors cursor-pointer ${
                         focus === f.id 
                           ? 'border-primary bg-primary/10 ring-2 ring-primary ring-offset-0' 
                           : 'border-border bg-background hover:bg-muted'
@@ -140,7 +140,7 @@ export default function DashboardPage() {
               <button
                 type="submit"
                 disabled={savingOnboarding || !isFormComplete}
-                className={`mt-6 flex h-12 w-full items-center justify-center rounded-lg text-base font-bold shadow-sm transition-all duration-200 ${
+                className={`mt-6 flex h-12 w-full items-center justify-center rounded-lg text-base font-bold shadow-sm transition-all duration-200 cursor-pointer ${
                   isFormComplete 
                     ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
                     : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
@@ -165,7 +165,6 @@ export default function DashboardPage() {
         <div className="flex flex-1 flex-col h-full overflow-hidden">
           <TopBar userName={userName} />
 
-          {/* Suppression de mx-auto et max-w-6xl pour coller aux paddings et égaliser les marges */}
           <main className="h-full overflow-hidden px-6 py-6">
             <div className="h-full flex flex-col">
               <StatsCards />

@@ -77,7 +77,7 @@ export default function LoginPage() {
           {/* LE CHAMP NOM (Affiché uniquement à l'inscription) */}
           {!isLogin && (
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground" htmlFor="name">
+              <label className="text-sm font-medium text-foreground cursor-pointer" htmlFor="name">
                 Nom ou Pseudo
               </label>
               <input
@@ -88,14 +88,14 @@ export default function LoginPage() {
                 onChange={(e) => setName(e.target.value)}
                 required={!isLogin}
                 minLength={1}
-                maxLength={15} // Limite de 15 caractères incluse !
+                maxLength={15}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
           )}
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground" htmlFor="email">
+            <label className="text-sm font-medium text-foreground cursor-pointer" htmlFor="email">
               Email
             </label>
             <input
@@ -110,7 +110,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground" htmlFor="password">
+            <label className="text-sm font-medium text-foreground cursor-pointer" htmlFor="password">
               Mot de passe
             </label>
             <input
@@ -128,7 +128,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Chargement...' : (isLogin ? 'Se connecter' : 'Créer mon compte')}
           </button>
@@ -149,7 +149,7 @@ export default function LoginPage() {
               setIsLogin(!isLogin)
               setMessage({ text: '', type: '' })
             }}
-            className="font-medium text-primary hover:underline focus:outline-none"
+            className="font-medium text-primary hover:underline focus:outline-none cursor-pointer"
           >
             {isLogin ? 'Créer un compte' : 'Se connecter'}
           </button>
