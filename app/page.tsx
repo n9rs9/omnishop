@@ -13,8 +13,11 @@ import { InventoryOverview } from "@/components/dashboard/inventory-overview"
 export default function DashboardPage() {
   const router = useRouter()
   const [isAuthorized, setIsAuthorized] = useState(false)
+  
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [userName, setUserName] = useState("")
+  
+  // 1. ON INITIALISE À VIDE (Aucun choix par défaut)
   const [platform, setPlatform] = useState("")
   const [focus, setFocus] = useState("")
   const [savingOnboarding, setSavingOnboarding] = useState(false)
@@ -22,113 +25,166 @@ export default function DashboardPage() {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession()
+
       if (!session) {
         router.push("/login")
       } else {
         const metadata = session.user.user_metadata
         setUserName(metadata?.full_name || "Vendeur")
+
         if (metadata?.onboarding_completed !== true) {
           setShowOnboarding(true)
         }
         setIsAuthorized(true)
       }
     }
+
     checkAuth()
   }, [router])
 
   const handleCompleteOnboarding = async (e: React.FormEvent) => {
     e.preventDefault()
     setSavingOnboarding(true)
+
     await supabase.auth.updateUser({
-      data: { onboarding_completed: true, sales_platform: platform, main_focus: focus }
+      data: {
+        onboarding_completed: true,
+        sales_platform: platform,
+        main_focus: focus
+      }
     })
+
     setShowOnboarding(false)
     setSavingOnboarding(false)
   }
 
   if (!isAuthorized) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background text-foreground text-2xl font-bold">
-        Chargement...
+      <div className="flex h-dvh items-center justify-center bg-background text-foreground">
+        Chargement du cerveau Omnishop...
       </div>
     )
   }
 
+  // 2. ON VÉRIFIE SI LE FORMULAIRE EST COMPLET
   const isFormComplete = platform !== "" && focus !== ""
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-background">
-      
+    <>
+      {/* LA MODAL D'ONBOARDING */}
       {showOnboarding && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-10 shadow-2xl">
-            <h2 className="mb-2 text-3xl font-bold">Bienvenue {userName} !</h2>
-            <p className="mb-8 text-base text-muted-foreground font-medium">Configure ton espace Omnishop en quelques clics.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8 shadow-2xl">
+            <h2 className="mb-2 text-2xl font-bold text-card-foreground">Bienvenue {userName} !</h2>
+            <p className="mb-8 text-sm text-muted-foreground">
+              Configure ton espace Omnishop en quelques clics.
+            </p>
+
             <form onSubmit={handleCompleteOnboarding} className="space-y-8">
+              
+              {/* SECTION CANAL */}
               <div className="space-y-4">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Canal principal</label>
+                <label className="text-xs uppercase tracking-wider text-muted-foreground">Canal principal</label>
                 <div className="flex flex-wrap gap-3">
-                  {['whatsapp', 'snapchat', 'instagram', 'tiktok', 'telegram', 'autre'].map((id) => (
+                  {[
+                    { id: 'whatsapp', name: 'WhatsApp', color: 'bg-[#25D366]' },
+                    { id: 'snapchat', name: 'Snapchat', color: 'bg-[#FFFC00]' },
+                    { id: 'instagram', name: 'Instagram', color: 'bg-[#8E27F5]' },
+                    { id: 'tiktok', name: 'TikTok', color: 'bg-[#E1306C]' },
+                    { id: 'telegram', name: 'Telegram', color: 'bg-[#27B7F5]' },
+                    { id: 'autre', name: 'Autre', color: 'bg-gray-500' },
+                  ].map((p) => (
                     <button
-                      key={id}
+                      key={p.id}
                       type="button"
-                      onClick={() => setPlatform(id)}
-                      className={`flex items-center gap-2.5 rounded-lg border-2 px-4 py-2 text-sm transition-all ${platform === id ? 'border-primary bg-primary/10 font-bold text-primary' : 'border-border bg-background'}`}
+                      onClick={() => setPlatform(p.id)}
+                      className={`flex items-center gap-2.5 rounded-lg border px-4 py-2 text-sm transition-colors ${
+                        platform === p.id 
+                          ? 'border-primary bg-primary/10 font-bold text-primary ring-2 ring-primary ring-offset-0' 
+                          : 'border-border bg-background text-foreground hover:bg-muted'
+                      }`}
                     >
-                      <span className={`h-3 w-3 rounded-full ${id === 'whatsapp' ? 'bg-[#25D366]' : id === 'snapchat' ? 'bg-[#FFFC00]' : 'bg-primary'}`} />
-                      {id.charAt(0).toUpperCase() + id.slice(1)}
+                      <span className={`block h-3.5 w-3.5 rounded-full ${p.color} ${p.id === 'snapchat' ? 'border border-black/20' : ''}`} />
+                      {p.name}
                     </button>
                   ))}
                 </div>
               </div>
+
+              {/* SECTION BESOIN */}
               <div className="space-y-4">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Besoin prioritaire</label>
+                <label className="text-xs uppercase tracking-wider text-muted-foreground">Besoin prioritaire</label>
                 <div className="grid grid-cols-2 gap-4">
-                  {[{ id: 'stock', name: 'Stocks', desc: 'Gérer les quantités' }, { id: 'clients', name: 'Clients', desc: 'CRM & Relances' }, { id: 'colis', name: 'Colis', desc: 'Suivi trackings' }, { id: 'tout', name: 'Complet 🚀', desc: 'Tout-en-un' }].map((f) => (
+                  {[
+                    { id: 'stock', name: 'Stocks', desc: 'Gérer les quantités et éviter les ruptures' },
+                    { id: 'clients', name: 'Clients', desc: 'Fiches clients, CRM et relances' },
+                    { id: 'colis', name: 'Colis', desc: 'Suivi centralisé des trackings' },
+                    { id: 'tout', name: 'Complet 🚀', desc: 'L\'outil tout-en-un pour un oeil sur tout' },
+                  ].map((f) => (
                     <button
                       key={f.id}
                       type="button"
                       onClick={() => setFocus(f.id)}
-                      className={`flex flex-col items-start rounded-lg border-2 p-4 text-left transition-all ${focus === f.id ? 'border-primary bg-primary/10' : 'border-border bg-background'}`}
+                      className={`flex flex-col items-start rounded-lg border p-4 text-left transition-colors ${
+                        focus === f.id 
+                          ? 'border-primary bg-primary/10 ring-2 ring-primary ring-offset-0' 
+                          : 'border-border bg-background hover:bg-muted'
+                      }`}
                     >
-                      <span className="text-base font-bold">{f.name}</span>
-                      <span className="text-xs text-muted-foreground">{f.desc}</span>
+                      <span className={`text-base font-bold ${focus === f.id ? 'text-primary' : 'text-foreground'}`}>
+                        {f.name}
+                      </span>
+                      <span className="mt-1 text-sm text-muted-foreground leading-snug">{f.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
+
+              {/* 3. BOUTON DE VALIDATION (Grisé ou Bleu) */}
               <button
                 type="submit"
                 disabled={savingOnboarding || !isFormComplete}
-                className={`mt-4 flex h-12 w-full items-center justify-center rounded-lg text-base font-bold transition-all ${isFormComplete ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'}`}
+                className={`mt-6 flex h-12 w-full items-center justify-center rounded-lg text-base font-bold shadow-sm transition-all duration-200 ${
+                  isFormComplete 
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
+                }`}
               >
-                Démarrer mon espace
+                {savingOnboarding ? 'Configuration en cours...' : 'Démarrer mon espace Omnishop'}
               </button>
             </form>
           </div>
         </div>
       )}
 
-      <div className={`flex flex-1 overflow-hidden transition-all duration-500 ${showOnboarding ? 'blur-xl opacity-30' : ''}`}>
-        <aside className="hidden w-[280px] shrink-0 lg:flex flex-col border-r border-border/50 bg-card overflow-hidden">
+      {/* LE DASHBOARD CLASSIQUE - J'AI AJOUTÉ LE STYLE ZOOM ICI */}
+      <div 
+        style={{ zoom: "1.25" }} 
+        className={`flex h-dvh overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
+      >
+        <div className="hidden w-[260px] shrink-0 lg:block">
           <SidebarNav />
-        </aside>
+        </div>
 
         <div className="flex flex-1 flex-col overflow-hidden">
           <TopBar userName={userName} />
-          <main className="flex-1 p-6 overflow-hidden flex flex-col gap-6" style={{ zoom: "1.1" }}>
-            <div className="shrink-0"><StatsCards /></div>
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-5 flex-1 min-h-0">
-              <div className="xl:col-span-3 bg-card rounded-xl border border-border/50 overflow-hidden flex flex-col">
-                <div className="flex-1 overflow-y-auto"><RecentOrders /></div>
-              </div>
-              <div className="xl:col-span-2 bg-card rounded-xl border border-border/50 overflow-hidden flex flex-col">
-                <div className="flex-1 overflow-y-auto"><InventoryOverview /></div>
+
+          <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-6">
+            <div className="mx-auto max-w-6xl">
+              <StatsCards />
+
+              <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5">
+                <div className="xl:col-span-3">
+                  <RecentOrders />
+                </div>
+                <div className="xl:col-span-2">
+                  <InventoryOverview />
+                </div>
               </div>
             </div>
           </main>
         </div>
       </div>
-    </div>
+    </>
   )
 }
