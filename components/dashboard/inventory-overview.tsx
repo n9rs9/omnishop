@@ -35,7 +35,7 @@ function getStockLabelColor(percent: number) {
 }
 
 export function InventoryOverview() {
-  // On ne garde que les 4 premiers pour l'alignement
+  // On affiche 4 éléments pour laisser de l'espace à l'alignement
   const displayItems = inventoryItems.slice(0, 4)
   const hasMore = inventoryItems.length > 4
 
@@ -87,16 +87,15 @@ export function InventoryOverview() {
                   aria-valuenow={item.stock}
                   aria-valuemin={0}
                   aria-valuemax={item.maxStock}
-                  aria-label={`${item.name}: ${item.stock} of ${item.maxStock} in stock`}
                 />
               </div>
             </div>
           )
         })}
         
-        {/* Ligne finale avec les 3 points si plus de 4 items */}
+        {/* Ajustement du padding (py-6.5) pour tomber pile en face du bas de Recent Orders */}
         {hasMore && (
-          <div className="flex justify-center py-2">
+          <div className="flex justify-center py-[26px]">
             <span className="text-muted-foreground/50 font-bold tracking-[0.5em] text-sm">
               ...
             </span>
