@@ -38,8 +38,8 @@ function getStockLabelColor(percent: number) {
 }
 
 export function InventoryOverview() {
-  const displayItems = inventoryItems.slice(0, 4)
-  const hasMore = inventoryItems.length > 4
+  // On définit 4 slots fixes
+  const slots = [0, 1, 2, 3]
 
   return (
     <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-sm">
@@ -50,10 +50,29 @@ export function InventoryOverview() {
         </div>
       </div>
       <div className="divide-y divide-border/50">
-        {displayItems.map((item) => {
+        {slots.map((index) => {
+          const item = inventoryItems[index]
+          const isLastSlot = index === 3
+
+          // Si pas d'item dans la data, on rend une case vide pour garder la hauteur
+          if (!item) {
+            return (
+              <div key={`empty-${index}`} className="px-5 py-[26.5px] opacity-10">
+                <div className="h-4 w-1/3 bg-muted rounded animate-pulse" />
+              </div>
+            )
+          }
+
           const percent = Math.round((item.stock / item.maxStock) * 100)
+
           return (
-            <div key={item.name} className="px-5 py-3.5">
+            <div 
+              key={item.name} 
+              className={cn(
+                "px-5 py-3.5 transition-all",
+                isLastSlot && "blur-[1.5px] opacity-40 pointer-events-none select-none"
+              )}
+            >
               <div className="flex items-center justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -72,14 +91,13 @@ export function InventoryOverview() {
             </div>
           )
         })}
-        {hasMore && (
-          <div className="flex justify-center py-[32px]">
-            <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95 cursor-pointer border-none">
-              <Boxes className="size-3.5" />
-              View All Stock
-            </button>
-          </div>
-        )}
+        
+        <div className="flex justify-center py-[32px]">
+          <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95 cursor-pointer border-none">
+            <Boxes className="size-3.5" />
+            View All Stock
+          </button>
+        </div>
       </div>
     </div>
   )

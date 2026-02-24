@@ -35,6 +35,7 @@ const orders: Order[] = [
   { id: "ORD-7289", customer: "Olivia Ramirez", product: "USB-C Hub Adapter", status: "Processing", trackingUrl: "https://track.omnishop.io/ORD-7289" },
   { id: "ORD-7288", customer: "Liam O'Brien", product: "Smart Desk Lamp", status: "Delivered", trackingUrl: "https://track.omnishop.io/ORD-7288" },
   { id: "ORD-7287", customer: "Emily Nakamura", product: "Noise Cancelling Earbuds", status: "Cancelled", trackingUrl: "https://track.omnishop.io/ORD-7287" },
+  { id: "ORD-7286", customer: "Daniel Park", product: "Portable Charger 20K", status: "In Transit", trackingUrl: "https://track.omnishop.io/ORD-7286" },
 ]
 
 const statusStyles: Record<OrderStatus, string> = {
@@ -46,6 +47,8 @@ const statusStyles: Record<OrderStatus, string> = {
 
 export function RecentOrders() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  // On définit 5 slots fixes
+  const slots = [0, 1, 2, 3, 4]
 
   function handleCopy(order: Order) {
     navigator.clipboard.writeText(order.trackingUrl)
@@ -75,38 +78,59 @@ export function RecentOrders() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id} className="border-border/50 hover:bg-secondary/5 transition-colors">
-              <TableCell className="px-5 py-3.5">
-                <div>
-                  <p className="text-sm font-medium text-card-foreground">{order.customer}</p>
-                  <p className="text-[10px] font-mono text-muted-foreground">{order.id}</p>
-                </div>
-              </TableCell>
-              <TableCell className="px-5 py-3.5 text-sm text-muted-foreground">{order.product}</TableCell>
-              <TableCell className="px-5 py-3.5">
-                <Badge variant="outline" className={cn("px-2 py-0.5 text-[10px] font-medium", statusStyles[order.status])}>{order.status}</Badge>
-              </TableCell>
-              <TableCell className="px-5 py-3.5 text-right">
-                <div className="flex items-center justify-end gap-1">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground cursor-pointer" onClick={() => handleCopy(order)}>
-                        {copiedId === order.id ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>{copiedId === order.id ? "Copied!" : "Copy link"}</TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground cursor-pointer"><Share className="size-3.5" /></Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Share order</TooltipContent>
-                  </Tooltip>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+          {slots.map((index) => {
+            const order = orders[index]
+            const isLastSlot = index === 4
+
+            if (!order) {
+              return (
+                <TableRow key={`empty-order-${index}`} className="border-border/50">
+                  <TableCell colSpan={4} className="py-[27px] opacity-0" />
+                </TableRow>
+              )
+            }
+
+            return (
+              <TableRow 
+                key={order.id} 
+                className={cn(
+                  "border-border/50 transition-all",
+                  isLastSlot ? "blur-[1.5px] opacity-40 pointer-events-none select-none" : "hover:bg-secondary/5"
+                )}
+              >
+                <TableCell className="px-5 py-3.5">
+                  <div>
+                    <p className="text-sm font-medium text-card-foreground">{order.customer}</p>
+                    <p className="text-[10px] font-mono text-muted-foreground">{order.id}</p>
+                  </div>
+                </TableCell>
+                <TableCell className="px-5 py-3.5 text-sm text-muted-foreground">{order.product}</TableCell>
+                <TableCell className="px-5 py-3.5">
+                  <Badge variant="outline" className={cn("px-2 py-0.5 text-[10px] font-medium", statusStyles[order.status])}>
+                    {order.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-5 py-3.5 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground cursor-pointer" onClick={() => handleCopy(order)}>
+                          {copiedId === order.id ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>{copiedId === order.id ? "Copied!" : "Copy link"}</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground cursor-pointer"><Share className="size-3.5" /></Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Share order</TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </div>
