@@ -65,13 +65,7 @@ const orders: Order[] = [
     status: "Cancelled",
     trackingUrl: "https://track.omnishop.io/ORD-7287",
   },
-  {
-    id: "ORD-7286",
-    customer: "Daniel Park",
-    product: "Portable Charger 20K",
-    status: "In Transit",
-    trackingUrl: "https://track.omnishop.io/ORD-7286",
-  },
+  
 ]
 
 const statusStyles: Record<OrderStatus, string> = {
