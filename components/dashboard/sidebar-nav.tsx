@@ -20,7 +20,8 @@ const navItems = [
 
 export function SidebarNav() {
   return (
-    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6 pb-6">
+    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6">
+      {/* LOGO */}
       <div className="mb-6 flex items-center gap-2.5 px-3">
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
@@ -28,7 +29,8 @@ export function SidebarNav() {
         </span>
       </div>
 
-      <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">
+      {/* MENU PRINCIPAL */}
+      <nav className="flex flex-col gap-1" role="navigation">
         {navItems.map((item) => (
           <button
             key={item.label}
@@ -44,19 +46,26 @@ export function SidebarNav() {
           </button>
         ))}
       </nav>
-      {/* CARTE PRO PLAN : p-4 et shrink-0 pour rester fixe */}
-      <div style={{ marginTop: '315px' }} className="rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
-        <p className="text-xs font-medium text-foreground">Pro Plan</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">
+
+      {/* LE VIDE QUI POUSSE TOUT VERS LE BAS */}
+      <div className="flex-1" />
+
+      {/* ZONE PRO PLAN SANS CARD */}
+      <div className="px-3 pb-4 shrink-0">
+        <p className="text-xs font-bold text-foreground">Pro Plan</p>
+        <p className="mt-0.5 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
           3 of 5 stores used
         </p>
-        <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-primary"
             style={{ width: "60%" }}
           />
         </div>
       </div>
+
+      {/* LIGNE DE SÉPARATEUR FINALE */}
+      <div className="mx-3 h-[1px] bg-border/50" />
     </aside>
   )
 }
