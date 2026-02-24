@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react" // On ajoute le state pour le chargement
-import { supabase } from "@/lib/supabase" // On importe ton cerveau
+import { useState } from "react" 
+import { supabase } from "@/lib/supabase" 
 import { Button } from "@/components/ui/button"
-import { Plus, Bell, Search, Menu, Loader2 } from "lucide-react" // On ajoute Loader2 pour le fun
+import { Plus, Bell, Search, Menu, Loader2 } from "lucide-react" 
 import {
   Sheet,
   SheetContent,
@@ -13,7 +13,13 @@ import {
 } from "@/components/ui/sheet"
 import { SidebarNav } from "./sidebar-nav"
 
-export function TopBar() {
+// 1. ON DÉFINIT L'INTERFACE (Ce que le composant a le droit de recevoir)
+interface TopBarProps {
+  userName?: string;
+}
+
+// 2. ON RÉCUPÈRE "userName" DANS LES PARAMÈTRES DE LA FONCTION
+export function TopBar({ userName }: TopBarProps) {
   const [isInserting, setIsInserting] = useState(false)
 
   // LA FONCTION MAGIQUE
@@ -61,7 +67,10 @@ export function TopBar() {
 
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-foreground">Dashboard</h1>
-          <p className="text-xs text-muted-foreground">Welcome back, Omnishop is ready.</p>
+          {/* 3. ON AFFICHE LE NOM DU MEC S'IL EXISTE ! */}
+          <p className="text-xs text-muted-foreground">
+            {userName ? `Welcome back, ${userName}` : "Welcome back, Omnishop is ready."}
+          </p>
         </div>
       </div>
 

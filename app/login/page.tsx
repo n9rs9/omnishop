@@ -6,8 +6,11 @@ import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [isLogin, setIsLogin] = useState(true) // True = Mode Connexion, False = Mode Inscription
+  const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
+  
+  // Nouveaux champs
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState({ text: '', type: '' })
@@ -28,13 +31,20 @@ export default function LoginPage() {
         setMessage({ text: "Erreur de connexion : " + error.message, type: 'error' })
         setLoading(false)
       } else {
-        router.push('/') // Redirection propre vers le dashboard
+        router.push('/') 
       }
     } else {
       // --- MODE INSCRIPTION ---
       const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          // C'est ici qu'on sauvegarde le pseudo et l'état de l'onboarding !
+          data: {
+            full_name: name,
+            onboarding_completed: false, 
+          }
+        }
       })
 
       if (error) {
@@ -42,7 +52,7 @@ export default function LoginPage() {
         setLoading(false)
       } else {
         setMessage({ text: 'Compte créé avec succès ! Redirection...', type: 'success' })
-        router.push('/') // L'utilisateur est connecté auto vu qu'on a désactivé l'email
+        router.push('/') 
       }
     }
   }
@@ -51,7 +61,6 @@ export default function LoginPage() {
     <div className="flex min-h-dvh items-center justify-center bg-background p-4 lg:p-8">
       <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
         
-        {/* En-tête dynamique */}
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             {isLogin ? 'Bon retour !' : 'Créer ton espace vendeur'}
@@ -63,8 +72,28 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Le formulaire unique qui gère les deux actions */}
         <form onSubmit={handleAuth} className="space-y-4">
+          
+          {/* LE CHAMP NOM (Affiché uniquement à l'inscription) */}
+          {!isLogin && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground" htmlFor="name">
+                Nom ou Pseudo
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Ex: Casquette75 🛍️"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required={!isLogin}
+                minLength={1}
+                maxLength={15} // Limite de 15 caractères incluse !
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              />
+            </div>
+          )}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground" htmlFor="email">
               Email
@@ -111,15 +140,14 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* Le bouton pour basculer entre Inscription et Connexion */}
         <div className="mt-6 text-center text-sm">
           <span className="text-muted-foreground">
             {isLogin ? "Vous n'avez pas de compte ? " : "Vous êtes déjà inscrit ? "}
           </span>
           <button
             onClick={() => {
-              setIsLogin(!isLogin) // On inverse le mode
-              setMessage({ text: '', type: '' }) // On efface les erreurs précédentes
+              setIsLogin(!isLogin)
+              setMessage({ text: '', type: '' })
             }}
             className="font-medium text-primary hover:underline focus:outline-none"
           >
