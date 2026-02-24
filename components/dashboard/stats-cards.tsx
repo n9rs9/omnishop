@@ -21,7 +21,7 @@ const stats = [
   },
   { 
     title: "Omni IA", 
-    value: "Assistant", 
+    value: "Assistant IA", 
     change: "Gratuit & Illimité", 
     trend: "ia" as const, 
     icon: Sparkles, 
@@ -50,7 +50,6 @@ export function StatsCards() {
               <>
                 <Zap className="size-3.5 text-purple-500" />
                 <span className="text-xs font-medium text-purple-500">{stat.change}</span>
-                <span className="text-xs text-muted-foreground ml-auto opacity-70 italic">Propulsé par Omni IA</span>
               </>
             ) : (
               <>
