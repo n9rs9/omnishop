@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { Boxes } from "lucide-react" // Import de l'icône de stockage
+import { Boxes } from "lucide-react"
 
 interface InventoryItem {
   name: string
@@ -91,9 +91,9 @@ export function InventoryOverview() {
           )
         })}
         
-        {/* BOUTON VIEW STOCK : Remplace les "..." tout en gardant l'alignement py-[39px] */}
+        {/* LE BOUTON AVEC LE PADDING DE 32PX VALIDÉ */}
         {hasMore && (
-          <div className="flex justify-center py-[28px]"> {/* Ajusté légèrement pour le bouton */}
+          <div className="flex justify-center py-[32px]">
             <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95">
               <Boxes className="size-3.5" />
               View Stock
