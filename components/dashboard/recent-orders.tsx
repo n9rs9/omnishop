@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "@/lib/utils"
 import { supabase } from "@/lib/supabase"
 import { useState } from "react"
 import {
@@ -16,7 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Copy, Check } from "lucide-react"
+import { Copy, Check, Eye, Share } from "lucide-react"
 
 type OrderStatus = "Delivered" | "In Transit" | "Processing" | "Cancelled"
 
@@ -90,7 +91,7 @@ export function RecentOrders() {
   }
 
   return (
-    <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm">
+    <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-sm">
       <div className="flex items-center justify-between border-b border-border/50 px-5 py-4">
         <div>
           <h2 className="text-sm font-semibold text-card-foreground">
@@ -100,23 +101,26 @@ export function RecentOrders() {
             {orders.length} orders this session
           </p>
         </div>
-        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+        {/* BOUTON VIEW ALL STYLE BLANC APPLE */}
+        <button className="flex items-center gap-2 bg-white text-black px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-white/90 transition-all shadow-sm active:scale-95">
+          <Eye className="size-3.5" />
           View all
-        </Button>
+        </button>
       </div>
       <Table>
         <TableHeader>
           <TableRow className="border-border/50 hover:bg-transparent">
-            <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            {/* Alignement px-5 pour coller au titre du header */}
+            <TableHead className="px-5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Customer
             </TableHead>
-            <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <TableHead className="px-5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Product
             </TableHead>
-            <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <TableHead className="px-5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Status
             </TableHead>
-            <TableHead className="text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <TableHead className="px-5 text-right text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Quick Action
             </TableHead>
           </TableRow>
@@ -125,48 +129,63 @@ export function RecentOrders() {
           {orders.map((order) => (
             <TableRow
               key={order.id}
-              className="border-border/50 hover:bg-secondary/50"
+              className="border-border/50 hover:bg-secondary/5 transition-colors"
             >
-              <TableCell>
+              <TableCell className="px-5 py-3.5">
                 <div>
                   <p className="text-sm font-medium text-card-foreground">
                     {order.customer}
                   </p>
-                  <p className="text-xs text-muted-foreground">{order.id}</p>
+                  <p className="text-[10px] font-mono text-muted-foreground">{order.id}</p>
                 </div>
               </TableCell>
-              <TableCell className="text-sm text-muted-foreground">
+              <TableCell className="px-5 py-3.5 text-sm text-muted-foreground">
                 {order.product}
               </TableCell>
-              <TableCell>
+              <TableCell className="px-5 py-3.5">
                 <Badge
                   variant="outline"
-                  className={statusStyles[order.status]}
+                  className={cn("px-2 py-0.5 text-[10px] font-medium", statusStyles[order.status])}
                 >
                   {order.status}
                 </Badge>
               </TableCell>
-              <TableCell className="text-right">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className="text-muted-foreground hover:text-foreground"
-                      onClick={() => handleCopy(order)}
-                      aria-label={`Copy tracking link for order ${order.id}`}
-                    >
-                      {copiedId === order.id ? (
-                        <Check className="size-4 text-success" />
-                      ) : (
-                        <Copy className="size-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {copiedId === order.id ? "Copied!" : "Copy tracking link"}
-                  </TooltipContent>
-                </Tooltip>
+              <TableCell className="px-5 py-3.5 text-right">
+                <div className="flex items-center justify-end gap-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-secondary"
+                        onClick={() => handleCopy(order)}
+                      >
+                        {copiedId === order.id ? (
+                          <Check className="size-3.5 text-success" />
+                        ) : (
+                          <Copy className="size-3.5" />
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {copiedId === order.id ? "Copied!" : "Copy link"}
+                    </TooltipContent>
+                  </Tooltip>
+
+                  {/* AJOUT DE L'ICÔNE SHARE */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-secondary"
+                      >
+                        <Share className="size-3.5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Share order</TooltipContent>
+                  </Tooltip>
+                </div>
               </TableCell>
             </TableRow>
           ))}
