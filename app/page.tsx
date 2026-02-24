@@ -152,7 +152,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* DASHBOARD BLOQUÉ SANS SCROLL - ZOOM APPLIQUÉ SUR LE CONTENEUR FIXE */}
+      {/* DASHBOARD SANS SCROLL - ÉCARTS ÉGALISÉS */}
       <div 
         style={{ zoom: "1.25" }} 
         className={`fixed inset-0 flex overflow-hidden bg-background transition-all duration-300 ${showOnboarding ? 'blur-sm pointer-events-none opacity-50' : ''}`}
@@ -164,12 +164,11 @@ export default function DashboardPage() {
         <div className="flex flex-1 flex-col h-full overflow-hidden">
           <TopBar userName={userName} />
 
-          {/* On remplace flex-1 par une hauteur calculée ou fixe sans overflow-y-auto global */}
-          <main className="h-full overflow-hidden px-4 py-6 lg:px-6">
-            <div className="mx-auto max-w-6xl h-full flex flex-col">
+          {/* Suppression de mx-auto et max-w-6xl pour coller aux paddings et égaliser les marges */}
+          <main className="h-full overflow-hidden px-6 py-6">
+            <div className="h-full flex flex-col">
               <StatsCards />
 
-              {/* Conteneur des grilles avec alignement strict en haut */}
               <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-5 items-start">
                 <div className="xl:col-span-3">
                   <RecentOrders />
