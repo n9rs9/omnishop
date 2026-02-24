@@ -20,25 +20,25 @@ const navItems = [
 
 export function SidebarNav() {
   return (
-    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6">
-      <div className="mb-10 flex items-center gap-2.5 px-3">
+    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6 overflow-hidden">
+      {/* Réduction de la marge ici pour remonter le reste */}
+      <div className="mb-6 flex items-center gap-2.5 px-3">
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
           Omnishop
         </span>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1" role="navigation" aria-label="Main navigation">
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto" role="navigation">
         {navItems.map((item) => (
           <button
             key={item.label}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               item.active
                 ? "bg-primary/15 text-primary"
                 : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
             )}
-            aria-current={item.active ? "page" : undefined}
           >
             <item.icon className="size-[18px]" />
             {item.label}
@@ -46,16 +46,12 @@ export function SidebarNav() {
         ))}
       </nav>
 
-      <div className="mt-auto rounded-lg border border-border/50 bg-secondary/50 p-4">
+      {/* La carte remonte naturellement grâce au flex-1 du nav */}
+      <div className="mt-4 rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
         <p className="text-xs font-medium text-foreground">Pro Plan</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">
-          3 of 5 stores used
-        </p>
+        <p className="mt-0.5 text-xs text-muted-foreground">3 of 5 stores used</p>
         <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-primary"
-            style={{ width: "60%" }}
-          />
+          <div className="h-full rounded-full bg-primary" style={{ width: "60%" }} />
         </div>
       </div>
     </aside>
