@@ -21,19 +21,21 @@ const navItems = [
 export function SidebarNav() {
   return (
     <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6">
-      <div className="mb-10 flex items-center gap-2.5 px-3">
+      {/* Réduction de la marge du haut pour gagner de la place */}
+      <div className="mb-6 flex items-center gap-2.5 px-3">
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
           Omnishop
         </span>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1" role="navigation" aria-label="Main navigation">
+      {/* Suppression de flex-1 pour éviter que le menu ne s'étire à l'infini */}
+      <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">
         {navItems.map((item) => (
           <button
             key={item.label}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               item.active
                 ? "bg-primary/15 text-primary"
                 : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
@@ -46,7 +48,8 @@ export function SidebarNav() {
         ))}
       </nav>
 
-      <div className="mt-auto rounded-lg border border-border/50 bg-secondary/50 p-4">
+      {/* mt-6 au lieu de mt-auto pour que la carte soit juste sous "Settings" */}
+      <div className="mt-6 rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
         <p className="text-xs font-medium text-foreground">Pro Plan</p>
         <p className="mt-0.5 text-xs text-muted-foreground">
           3 of 5 stores used
