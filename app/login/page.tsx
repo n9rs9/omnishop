@@ -1,64 +1,70 @@
 "use client"
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase' // Vérifie bien ce chemin selon la structure de ton projet
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const [isLogin, setIsLogin] = useState(true) // True = Mode Connexion, False = Mode Inscription
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState({ text: '', type: '' }) // type: 'error' | 'success'
+  const [message, setMessage] = useState({ text: '', type: '' })
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setMessage({ text: '', type: '' })
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-
-    if (error) {
-      setMessage({ text: error.message, type: 'error' })
-    } else {
-      setMessage({ text: 'Vérifie tes emails pour confirmer ton compte !', type: 'success' })
-    }
-    setLoading(false)
-  }
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setMessage({ text: '', type: '' })
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    if (isLogin) {
+      // --- MODE CONNEXION ---
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
-    if (error) {
-      setMessage({ text: error.message, type: 'error' })
+      if (error) {
+        setMessage({ text: "Erreur de connexion : " + error.message, type: 'error' })
+        setLoading(false)
+      } else {
+        router.push('/') // Redirection propre vers le dashboard
+      }
     } else {
-      setMessage({ text: 'Connecté avec succès ! Redirection...', type: 'success' })
-      // Redirection brute pour l'instant, on améliorera ça après
-      window.location.href = '/' 
+      // --- MODE INSCRIPTION ---
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+
+      if (error) {
+        setMessage({ text: "Erreur d'inscription : " + error.message, type: 'error' })
+        setLoading(false)
+      } else {
+        setMessage({ text: 'Compte créé avec succès ! Redirection...', type: 'success' })
+        router.push('/') // L'utilisateur est connecté auto vu qu'on a désactivé l'email
+      }
     }
-    setLoading(false)
   }
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background p-4 lg:p-8">
-      {/* Conteneur principal (Card) */}
       <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
+        
+        {/* En-tête dynamique */}
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Omnishop</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            {isLogin ? 'Bon retour !' : 'Créer ton espace vendeur'}
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Connecte-toi ou crée ton espace vendeur
+            {isLogin 
+              ? 'Connecte-toi pour gérer tes commandes Omnishop' 
+              : 'Rejoins Omnishop et gère tes stocks comme un pro'}
           </p>
         </div>
 
-        <form className="space-y-4">
+        {/* Le formulaire unique qui gère les deux actions */}
+        <form onSubmit={handleAuth} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground" htmlFor="email">
               Email
@@ -85,26 +91,18 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             />
           </div>
 
-          <div className="flex flex-col gap-3 pt-4 sm:flex-row">
-            <button
-              onClick={handleLogin}
-              disabled={loading}
-              className="inline-flex h-10 flex-1 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-            >
-              {loading ? 'Chargement...' : 'Se connecter'}
-            </button>
-            <button
-              onClick={handleSignUp}
-              disabled={loading}
-              className="inline-flex h-10 flex-1 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-            >
-              {loading ? 'Chargement...' : 'Créer un compte'}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          >
+            {loading ? 'Chargement...' : (isLogin ? 'Se connecter' : 'Créer mon compte')}
+          </button>
         </form>
 
         {message.text && (
@@ -112,6 +110,23 @@ export default function LoginPage() {
             {message.text}
           </div>
         )}
+
+        {/* Le bouton pour basculer entre Inscription et Connexion */}
+        <div className="mt-6 text-center text-sm">
+          <span className="text-muted-foreground">
+            {isLogin ? "Vous n'avez pas de compte ? " : "Vous êtes déjà inscrit ? "}
+          </span>
+          <button
+            onClick={() => {
+              setIsLogin(!isLogin) // On inverse le mode
+              setMessage({ text: '', type: '' }) // On efface les erreurs précédentes
+            }}
+            className="font-medium text-primary hover:underline focus:outline-none"
+          >
+            {isLogin ? 'Créer un compte' : 'Se connecter'}
+          </button>
+        </div>
+
       </div>
     </div>
   )
