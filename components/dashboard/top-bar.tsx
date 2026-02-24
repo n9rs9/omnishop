@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation" 
 import { supabase } from "@/lib/supabase" 
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { Plus, Bell, Search, Menu, Loader2, LogOut } from "lucide-react" 
 import {
   Sheet,
@@ -22,6 +23,9 @@ export function TopBar({ userName }: TopBarProps) {
   const router = useRouter()
   const [isInserting, setIsInserting] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  
+  // État pour l'animation de la barre de recherche
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
@@ -83,16 +87,37 @@ export function TopBar({ userName }: TopBarProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="hidden text-muted-foreground sm:flex">
-          <Search className="size-[18px]" />
-        </Button>
-        <Button variant="ghost" size="icon" className="relative text-muted-foreground">
+      <div className="flex items-center gap-3">
+        {/* LOUPE + BARRE DE RECHERCHE ANIMÉE */}
+        <div className="relative flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="z-10 text-muted-foreground hover:bg-transparent"
+          >
+            <Search className="size-[18px]" />
+          </Button>
+          
+          <input
+            type="text"
+            placeholder="Search anything..."
+            className={cn(
+              "h-9 rounded-md bg-secondary/50 px-3 text-sm transition-all duration-300 ease-in-out focus:outline-none focus:ring-1 focus:ring-primary",
+              isSearchOpen 
+                ? "ml-2 w-48 opacity-100" 
+                : "w-0 opacity-0 overflow-hidden px-0"
+            )}
+          />
+        </div>
+
+        {/* CLOCHE : La bulle devient noire au survol (group-hover) */}
+        <Button variant="ghost" size="icon" className="group relative text-muted-foreground">
           <Bell className="size-[18px]" />
-          <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
+          <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary transition-colors group-hover:bg-black" />
         </Button>
 
-        {/* --- BOUTON DÉCONNEXION (Noir/Contour, Hauteur 10) --- */}
+        {/* DÉCONNEXION */}
         <Button 
           variant="outline" 
           onClick={handleLogout}
@@ -107,11 +132,11 @@ export function TopBar({ userName }: TopBarProps) {
           <span className="hidden sm:inline">Déconnexion</span>
         </Button>
 
-        {/* --- BOUTON CRÉER UNE COMMANDE (Couleur primaire, Hauteur 10) --- */}
+        {/* CRÉER UNE COMMANDE */}
         <Button 
           onClick={handleCreateOrder} 
           disabled={isInserting}
-          className="h-10 bg-primary text-primary-foreground hover:bg-primary/90"
+          className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
         >
           {isInserting ? (
             <Loader2 className="mr-2 size-4 animate-spin" />
