@@ -20,8 +20,7 @@ const navItems = [
 
 export function SidebarNav() {
   return (
-    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6">
-      {/* Réduction de la marge du haut pour gagner de la place */}
+    <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar px-3 py-6 pb-6">
       <div className="mb-6 flex items-center gap-2.5 px-3">
         <Hexagon className="size-7 text-primary" />
         <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">
@@ -29,7 +28,6 @@ export function SidebarNav() {
         </span>
       </div>
 
-      {/* Suppression de flex-1 pour éviter que le menu ne s'étire à l'infini */}
       <nav className="flex flex-col gap-1" role="navigation" aria-label="Main navigation">
         {navItems.map((item) => (
           <button
@@ -40,7 +38,6 @@ export function SidebarNav() {
                 ? "bg-primary/15 text-primary"
                 : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
             )}
-            aria-current={item.active ? "page" : undefined}
           >
             <item.icon className="size-[18px]" />
             {item.label}
@@ -48,8 +45,11 @@ export function SidebarNav() {
         ))}
       </nav>
 
-      {/* mt-6 au lieu de mt-auto pour que la carte soit juste sous "Settings" */}
-      <div className="mt-6 rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
+      {/* LE SPACER MAGIQUE : Il prend toute la place pour pousser le Pro Plan */}
+      <div className="flex-1" />
+
+      {/* CARTE PRO PLAN : p-4 et shrink-0 pour rester fixe */}
+      <div style={{ marginTop: '28px' }} className="rounded-lg border border-border/50 bg-secondary/50 p-4 shrink-0">
         <p className="text-xs font-medium text-foreground">Pro Plan</p>
         <p className="mt-0.5 text-xs text-muted-foreground">
           3 of 5 stores used
