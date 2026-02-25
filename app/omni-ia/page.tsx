@@ -103,8 +103,8 @@ export default function OmniIAPage() {
         <TopBar userName={userName} />
 
         <main className="h-full overflow-hidden px-6 py-6">
-          <div className="h-full overflow-auto">
-            <div className="text-center mb-8">
+          <div className="h-full flex flex-col">
+            <div className="text-center mb-4 shrink-0">
               <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
                 <Sparkles className="size-8 text-purple-500" />
                 Omni IA
@@ -114,43 +114,38 @@ export default function OmniIAPage() {
               </p>
             </div>
 
-            <div className="relative max-w-4xl mx-auto mb-12">
+            <div className="relative max-w-4xl mx-auto mb-6 shrink-0">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="size-32 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-purple-500/30">
-                  <Brain className="size-16 text-white" />
+                <div className="size-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-purple-500/30">
+                  <Brain className="size-12 text-white" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-8 py-16">
+              <div className="grid grid-cols-3 gap-4 py-12">
                 {modules.map((module) => (
-                  <div key={module.id} className="relative">
-                    <Card className={cn(
-                      "border-2 transition-all cursor-pointer hover:scale-105 hover:shadow-xl",
-                      module.bg,
-                      module.border
-                    )}>
-                      <CardContent className="p-6 text-center">
-                        <div className={cn(
-                          "size-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br",
-                          module.color
-                        )}>
-                          <module.icon className="size-8 text-white" />
-                        </div>
-                        <h3 className="text-lg font-bold text-foreground">{module.title}</h3>
-                        <p className="text-xs text-muted-foreground mt-2">{module.description}</p>
-                        <Button className="mt-4 w-full cursor-pointer" variant="outline" size="sm">
-                          Explorer
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <Card className={cn(
+                    "border-2 transition-all cursor-pointer hover:shadow-lg",
+                    module.bg,
+                    module.border
+                  )}>
+                    <CardContent className="p-4 text-center">
+                      <div className={cn(
+                        "size-12 rounded-xl mx-auto mb-3 flex items-center justify-center bg-gradient-to-br",
+                        module.color
+                      )}>
+                        <module.icon className="size-6 text-white" />
+                      </div>
+                      <h3 className="text-sm font-bold text-foreground">{module.title}</h3>
+                      <p className="text-xs text-muted-foreground mt-1">{module.description}</p>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
 
-            <div className="max-w-3xl mx-auto">
-              <Card className="border-2 border-purple-500/20 bg-gradient-to-b from-purple-500/5 to-transparent">
-                <div className="text-center pb-2 border-b border-border">
+            <div className="flex-1 flex items-center justify-center">
+              <Card className="border-2 border-purple-500/20 bg-gradient-to-b from-purple-500/5 to-transparent w-full max-w-2xl">
+                <div className="text-center pb-3 border-b border-border">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <MessageSquare className="size-5 text-purple-500" />
                     <h2 className="text-xl font-bold text-foreground">OmniChat</h2>
@@ -161,12 +156,12 @@ export default function OmniIAPage() {
                   </p>
                 </div>
                 <div className="p-4">
-                  <div className="h-80 overflow-y-auto rounded-lg border border-border bg-muted/30 p-4 mb-4 space-y-3">
+                  <div className="h-48 overflow-y-auto rounded-lg border border-border bg-muted/30 p-4 mb-4 space-y-3">
                     {chatHistory.length === 0 ? (
                       <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
-                        <Lightbulb className="size-12 mb-3 opacity-50" />
-                        <p className="text-sm">Posez-moi une question sur :</p>
-                        <div className="flex gap-2 mt-2 flex-wrap justify-center">
+                        <Lightbulb className="size-10 mb-2 opacity-50" />
+                        <p className="text-xs">Posez-moi une question sur :</p>
+                        <div className="flex gap-1.5 mt-2 flex-wrap justify-center">
                           <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Ventes</span>
                           <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Stocks</span>
                           <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Clients</span>
