@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react" 
-import { useRouter } from "next/navigation" 
-import { supabase } from "@/lib/supabase" 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Plus, Bell, Search, Menu, Loader2, LogOut } from "lucide-react" 
+import { Plus, Bell, Search, Menu, Loader2, LogOut, Store } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -14,6 +14,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { SidebarNav } from "./sidebar-nav"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 interface TopBarProps {
   userName?: string;
@@ -21,9 +30,11 @@ interface TopBarProps {
 
 export function TopBar({ userName }: TopBarProps) {
   const router = useRouter()
-  const [isInserting, setIsInserting] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isStoreModalOpen, setIsStoreModalOpen] = useState(false)
+  const [isAddingStore, setIsAddingStore] = useState(false)
+  const [storeName, setStoreName] = useState("")
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
@@ -36,18 +47,16 @@ export function TopBar({ userName }: TopBarProps) {
     }
   }
 
-  const handleCreateOrder = async () => {
-    setIsInserting(true)
-    const { error } = await supabase
-      .from('orders')
-      .insert([{ status: 'En attente', total_price: 99.99 }])
-
-    if (error) {
-      alert("Erreur : " + error.message)
-    } else {
-      window.location.reload()
-    }
-    setIsInserting(false)
+  const handleAddStore = async () => {
+    if (!storeName.trim()) return
+    setIsAddingStore(true)
+    // TODO: Implémenter l'ajout de store dans Supabase
+    // Pour l'instant, on simule
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setIsAddingStore(false)
+    setIsStoreModalOpen(false)
+    setStoreName("")
+    alert("Store ajouté ! (Feature Pro - à implémenter)")
   }
 
   return (
@@ -105,8 +114,8 @@ export function TopBar({ userName }: TopBarProps) {
         </Button>
 
         {/* DÉCONNEXION */}
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={handleLogout}
           disabled={isLoggingOut}
           className="h-10 border-border bg-transparent text-foreground hover:bg-accent cursor-pointer"
@@ -115,16 +124,44 @@ export function TopBar({ userName }: TopBarProps) {
           <span className="hidden sm:inline">Déconnexion</span>
         </Button>
 
-        {/* CREATE ORDER */}
-        <Button 
-          onClick={handleCreateOrder} 
-          disabled={isInserting}
+        {/* ADD A NEW STORE */}
+        <Button
+          onClick={() => setIsStoreModalOpen(true)}
           className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg cursor-pointer"
         >
-          {isInserting ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Plus className="mr-2 size-4" />}
-          <span className="hidden sm:inline">Create New Order</span>
+          <Store className="mr-2 size-4" />
+          <span className="hidden sm:inline">Add a new store</span>
         </Button>
       </div>
+
+      {/* MODAL ADD STORE */}
+      <Dialog open={isStoreModalOpen} onOpenChange={setIsStoreModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter une nouvelle boutique</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="store-name">Nom de la boutique</Label>
+              <Input
+                id="store-name"
+                placeholder="Ex: Ma Boutique Paris"
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsStoreModalOpen(false)} className="cursor-pointer">
+              Annuler
+            </Button>
+            <Button onClick={handleAddStore} disabled={isAddingStore || !storeName.trim()} className="cursor-pointer">
+              {isAddingStore ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Plus className="mr-2 size-4" />}
+              Ajouter
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </header>
   )
 }

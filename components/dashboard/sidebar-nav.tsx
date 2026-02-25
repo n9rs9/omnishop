@@ -70,13 +70,8 @@ export function SidebarNav() {
       {/* ZONE FREE PLAN + LIGNE */}
       <div className="mb-[27px] shrink-0">
         <div className="px-6 pb-6">
-          <div className="flex items-center gap-2">
-            <p className="text-xs font-bold text-foreground">Free Plan</p>
-            <span className="text-[9px] bg-secondary px-1.5 py-0.5 rounded text-muted-foreground font-medium uppercase tracking-tight">
-              Basic
-            </span>
-          </div>
-          <p className="mt-0.5 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+          <p className="text-xs font-bold text-foreground">Free Plan</p>
+          <p className="mt-1 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
             1 of 1 store used
           </p>
           <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted">

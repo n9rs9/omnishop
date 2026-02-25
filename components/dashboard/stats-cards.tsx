@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { DollarSign, Truck, Sparkles, TrendingUp, Zap, Calendar } from "lucide-react"
+import { format } from "date-fns"
+import { fr } from "date-fns/locale"
 
 interface StatsCardProps {
   title: string
@@ -70,6 +72,8 @@ export function StatsCards() {
     fetchAppointments()
   }, [])
 
+  const todayDate = format(new Date(), 'EEEE d MMMM', { locale: fr })
+
   const stats: StatsCardProps[] = [
     {
       title: "Daily Sales",
@@ -91,8 +95,8 @@ export function StatsCards() {
     },
     {
       title: "Rendez-vous",
-      value: appointmentCount > 0 ? `${appointmentCount}` : "Aucun",
-      change: potentialRevenue > 0 ? `${potentialRevenue.toFixed(0)}€ potentiel` : "Aucun RDV",
+      value: appointmentCount > 0 ? `${appointmentCount}` : todayDate,
+      change: potentialRevenue > 0 ? `${potentialRevenue.toFixed(0)}€ potentiel` : "Aujourd'hui",
       trend: "calendar",
       icon: Calendar,
       iconBg: "bg-pink-500/15",
