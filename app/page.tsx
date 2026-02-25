@@ -59,7 +59,11 @@ export default function DashboardPage() {
   }
 
   if (!isAuthorized) {
-    return null
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    )
   }
 
   const isFormComplete = platform !== "" && focus !== ""

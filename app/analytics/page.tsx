@@ -74,7 +74,7 @@ export default function AnalyticsPage() {
   const maxOrders = Math.max(...ordersData.map(d => d.count))
 
   return (
-    <div style={{ zoom: "1.15" }} className="fixed inset-0 flex overflow-hidden bg-background">
+    <div style={{ zoom: "1.25" }} className="fixed inset-0 flex overflow-hidden bg-background">
       <div className="hidden w-[260px] shrink-0 lg:block h-full">
         <SidebarNav />
       </div>

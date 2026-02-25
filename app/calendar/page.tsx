@@ -219,6 +219,8 @@ export default function CalendarPage() {
   const weekEnd = endOfWeek(currentWeekStart, { weekStartsOn: 1 })
   const weekRange = format(currentWeekStart, 'd MMM', { locale: fr }) + ' - ' + format(weekEnd, 'd MMM yyyy', { locale: fr })
 
+  const weeklyRevenue = appointments.reduce((sum, apt) => sum + (apt.potential_revenue || 0), 0)
+
   return (
     <>
       {/* MODAL */}
@@ -383,20 +385,27 @@ export default function CalendarPage() {
           <main className="h-full overflow-hidden px-6 py-6">
             <div className="h-full flex flex-col">
               {/* EN-TÊTE */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-2">
                 <div>
                   <h1 className="text-2xl font-bold text-foreground">Calendrier des Rendez-vous</h1>
                   <p className="text-sm text-muted-foreground mt-1">
                     Gérez vos rencontres clients et suivez le CA potentiel
                   </p>
                 </div>
-                <Button
-                  onClick={() => handleDayClick(new Date())}
-                  className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg cursor-pointer"
-                >
-                  <Plus className="mr-2 size-4" />
-                  Nouveau RDV
-                </Button>
+                <div className="flex items-center gap-3">
+                  {/* COMPTEUR GAIN SEMAINE */}
+                  <div className="hidden lg:flex flex-col items-end mr-2">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Gain potentiel semaine</p>
+                    <p className="text-xl font-bold text-green-600">${weeklyRevenue.toFixed(2)}</p>
+                  </div>
+                  <Button
+                    onClick={() => handleDayClick(new Date())}
+                    className="h-10 bg-white text-foreground hover:bg-gray-100 shadow-lg cursor-pointer border border-border"
+                  >
+                    <Plus className="mr-2 size-4" />
+                    Nouveau RDV
+                  </Button>
+                </div>
               </div>
 
               {/* NAVIGATION SEMAINE */}
@@ -417,7 +426,7 @@ export default function CalendarPage() {
               </div>
 
               {/* GRILLE HEBDO - 7 JOURS */}
-              <div className="flex-1 overflow-auto">
+              <div className="flex-1">
                 <div className="grid grid-cols-7 gap-4 h-full">
                   {days.map((day) => {
                     const dayAppts = getDayAppointments(day)
@@ -430,7 +439,7 @@ export default function CalendarPage() {
                         onClick={() => handleDayClick(day)}
                         className={`
                           flex flex-col rounded-xl border border-border/50 bg-card/60 backdrop-blur-sm p-3
-                          cursor-pointer transition-all hover:bg-card/80 hover:shadow-md hover:scale-[1.02]
+                          cursor-pointer transition-colors hover:bg-card/80
                           ${today ? 'ring-2 ring-primary ring-inset' : ''}
                         `}
                       >
@@ -462,7 +471,7 @@ export default function CalendarPage() {
                         </div>
 
                         {/* LISTE DES RDV */}
-                        <div className="flex-1 space-y-2 overflow-y-auto">
+                        <div className="flex-1 space-y-2">
                           {dayAppts.length === 0 ? (
                             <div className="text-center py-4 text-xs text-muted-foreground">
                               Aucun RDV
@@ -473,7 +482,7 @@ export default function CalendarPage() {
                                 key={apt.id}
                                 onClick={(e) => handleEditAppointment(apt, e)}
                                 className={`
-                                  p-2.5 rounded-lg border text-xs cursor-pointer transition-all hover:scale-[1.02]
+                                  p-2.5 rounded-lg border text-xs cursor-pointer
                                   ${getStatusColor(apt.status)}
                                 `}
                               >
