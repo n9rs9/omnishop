@@ -5,30 +5,23 @@ import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { SidebarNav } from "@/components/dashboard/sidebar-nav"
 import { TopBar } from "@/components/dashboard/top-bar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { AnalyseModule } from "@/components/omni-ia/analyse-module"
+import { MarketingModule } from "@/components/omni-ia/marketing-module"
+import { RelationClientModule } from "@/components/omni-ia/relation-client-module"
+import { PredictionModule } from "@/components/omni-ia/prediction-module"
 import {
-  Brain,
-  TrendingUp,
-  Users,
-  MessageSquare,
-  Send,
-  Sparkles,
-  Zap,
-  Target,
-  Lightbulb,
   BarChart3,
+  Target,
+  Users,
+  Zap,
+  Sparkles,
 } from "lucide-react"
 
 export default function OmniIAPage() {
   const router = useRouter()
   const [userName, setUserName] = useState("")
-  const [message, setMessage] = useState("")
-  const [chatHistory, setChatHistory] = useState<{ role: "user" | "ai"; content: string }[]>([])
-  const [isTyping, setIsTyping] = useState(false)
+  const [activeTab, setActiveTab] = useState("analyse")
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,53 +36,34 @@ export default function OmniIAPage() {
     checkAuth()
   }, [router])
 
-  const handleSendMessage = async () => {
-    if (!message.trim()) return
-    
-    setChatHistory(prev => [...prev, { role: "user", content: message }])
-    setMessage("")
-    setIsTyping(true)
-
-    setTimeout(() => {
-      const responses = [
-        "Je peux vous aider à analyser vos ventes de la semaine. Voulez-vous voir les tendances ?",
-        "Je remarque que vos rendez-vous du jeudi ont un potentiel de 450€. Souhaitez-vous des conseils pour optimiser ?",
-        "Vos stocks de 'Wireless Headphones Pro' sont critiques (12 unités). Je peux générer un email de relance pour vos clients.",
-        "Basé sur vos données, je vous recommande de contacter 3 clients cette semaine. Voulez-vous que je prépare les messages ?",
-      ]
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-      setChatHistory(prev => [...prev, { role: "ai", content: randomResponse }])
-      setIsTyping(false)
-    }, 1500)
-  }
-
   const modules = [
     {
       id: "analyse",
+      label: "Analyse",
       title: "Analyse",
       description: "Analysez vos ventes, stocks et performances",
       icon: BarChart3,
-      color: "from-blue-500 to-cyan-500",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
     },
     {
       id: "marketing",
+      label: "Marketing",
       title: "Marketing",
       description: "Générez du contenu et campagnes automatiques",
       icon: Target,
-      color: "from-purple-500 to-pink-500",
-      bg: "bg-purple-500/10",
-      border: "border-purple-500/20",
     },
     {
       id: "relation",
+      label: "Relation Client",
       title: "Relation Client",
       description: "Automatisez vos communications clients",
       icon: Users,
-      color: "from-green-500 to-emerald-500",
-      bg: "bg-green-500/10",
-      border: "border-green-500/20",
+    },
+    {
+      id: "prediction",
+      label: "Prédictions",
+      title: "Prédictions",
+      description: "Prédictions IA sur vos tendances business",
+      icon: Zap,
     },
   ]
 
@@ -104,124 +78,47 @@ export default function OmniIAPage() {
 
         <main className="h-full overflow-hidden px-6 py-6">
           <div className="h-full flex flex-col">
-            <div className="text-center mb-4 shrink-0">
-              <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
+            {/* Header */}
+            <div className="mb-6 shrink-0">
+              <div className="flex items-center gap-3 mb-2">
                 <Sparkles className="size-8 text-purple-500" />
-                Omni IA
-              </h1>
-              <p className="text-sm text-muted-foreground mt-2">
+                <h1 className="text-3xl font-bold text-foreground">Omni IA</h1>
+              </div>
+              <p className="text-sm text-muted-foreground">
                 Votre assistant intelligent pour booster votre business
               </p>
             </div>
 
-            <div className="relative max-w-4xl mx-auto mb-6 shrink-0">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="size-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-purple-500/30">
-                  <Brain className="size-12 text-white" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 py-12">
+            {/* Tabs Navigation */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
+              <TabsList className="grid w-full max-w-xl grid-cols-4 mb-6">
                 {modules.map((module) => (
-                  <Card className={cn(
-                    "border-2 transition-all cursor-pointer hover:shadow-lg",
-                    module.bg,
-                    module.border
-                  )}>
-                    <CardContent className="p-4 text-center">
-                      <div className={cn(
-                        "size-12 rounded-xl mx-auto mb-3 flex items-center justify-center bg-gradient-to-br",
-                        module.color
-                      )}>
-                        <module.icon className="size-6 text-white" />
-                      </div>
-                      <h3 className="text-sm font-bold text-foreground">{module.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-1">{module.description}</p>
-                    </CardContent>
-                  </Card>
+                  <TabsTrigger key={module.id} value={module.id} className="flex items-center gap-2">
+                    <module.icon className="size-4" />
+                    <span className="hidden sm:inline">{module.label}</span>
+                  </TabsTrigger>
                 ))}
+              </TabsList>
+
+              {/* Tab Content */}
+              <div className="flex-1 overflow-hidden">
+                <TabsContent value="analyse" className="h-full overflow-auto">
+                  <AnalyseModule userName={userName} />
+                </TabsContent>
+
+                <TabsContent value="marketing" className="h-full overflow-auto">
+                  <MarketingModule userName={userName} />
+                </TabsContent>
+
+                <TabsContent value="relation" className="h-full overflow-auto">
+                  <RelationClientModule userName={userName} />
+                </TabsContent>
+
+                <TabsContent value="prediction" className="h-full overflow-auto">
+                  <PredictionModule userName={userName} />
+                </TabsContent>
               </div>
-            </div>
-
-            <div className="flex-1 flex items-center justify-center">
-              <Card className="border-2 border-purple-500/20 bg-gradient-to-b from-purple-500/5 to-transparent w-full max-w-2xl">
-                <div className="text-center pb-3 border-b border-border">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <MessageSquare className="size-5 text-purple-500" />
-                    <h2 className="text-xl font-bold text-foreground">OmniChat</h2>
-                    <Zap className="size-4 text-yellow-500" />
-                  </div>
-                  <p className="text-sm text-muted-foreground pb-3">
-                    Posez-moi n'importe quelle question sur votre business
-                  </p>
-                </div>
-                <div className="p-4">
-                  <div className="h-48 overflow-y-auto rounded-lg border border-border bg-muted/30 p-4 mb-4 space-y-3">
-                    {chatHistory.length === 0 ? (
-                      <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
-                        <Lightbulb className="size-10 mb-2 opacity-50" />
-                        <p className="text-xs">Posez-moi une question sur :</p>
-                        <div className="flex gap-1.5 mt-2 flex-wrap justify-center">
-                          <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Ventes</span>
-                          <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Stocks</span>
-                          <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">Clients</span>
-                          <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded-full">RDV</span>
-                        </div>
-                      </div>
-                    ) : (
-                      chatHistory.map((msg, i) => (
-                        <div
-                          key={i}
-                          className={cn(
-                            "flex",
-                            msg.role === "user" ? "justify-end" : "justify-start"
-                          )}
-                        >
-                          <div
-                            className={cn(
-                              "max-w-[80%] rounded-2xl px-4 py-2 text-sm",
-                              msg.role === "user"
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-purple-500/10 text-purple-500 border border-purple-500/20"
-                            )}
-                          >
-                            {msg.content}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    {isTyping && (
-                      <div className="flex justify-start">
-                        <div className="bg-purple-500/10 text-purple-500 border border-purple-500/20 rounded-2xl px-4 py-2 text-sm">
-                          <div className="flex gap-1">
-                            <span className="size-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                            <span className="size-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                            <span className="size-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Comment puis-je vous aider aujourd'hui ?"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-                      className="flex-1"
-                    />
-                    <Button
-                      onClick={handleSendMessage}
-                      disabled={!message.trim() || isTyping}
-                      className="bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
-                    >
-                      <Send className="size-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </div>
+            </Tabs>
           </div>
         </main>
       </div>
