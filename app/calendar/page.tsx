@@ -14,7 +14,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 
 import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, DollarSign, Trash2, User, Package } from "lucide-react"
@@ -50,7 +49,6 @@ export default function CalendarPage() {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
 
   const [formData, setFormData] = useState({
     customer_id: "",
@@ -78,7 +76,6 @@ export default function CalendarPage() {
   }, [router])
 
   const fetchData = async (weekStart: Date) => {
-    setIsLoading(true)
     const start = startOfWeek(weekStart, { weekStartsOn: 1 })
     const end = endOfWeek(weekStart, { weekStartsOn: 1 })
 
@@ -107,8 +104,6 @@ export default function CalendarPage() {
 
     const { data: productsData } = await supabase.from('products').select('id, name, price').gt('stock_quantity', 0).order('name')
     if (productsData) setProducts(productsData)
-
-    setIsLoading(false)
   }
 
   const handlePrevWeek = () => {
@@ -224,28 +219,55 @@ export default function CalendarPage() {
   const weekEnd = endOfWeek(currentWeekStart, { weekStartsOn: 1 })
   const weekRange = format(currentWeekStart, 'd MMM', { locale: fr }) + ' - ' + format(weekEnd, 'd MMM yyyy', { locale: fr })
 
+  const statusOptions = [
+    { id: 'Schedulé', color: 'bg-blue-500/15 text-blue-500 border-blue-500/20 hover:bg-blue-500/25' },
+    { id: 'Confirmé', color: 'bg-green-500/15 text-green-500 border-green-500/20 hover:bg-green-500/25' },
+    { id: 'En cours', color: 'bg-orange-500/15 text-orange-500 border-orange-500/20 hover:bg-orange-500/25' },
+    { id: 'Terminé', color: 'bg-purple-500/15 text-purple-500 border-purple-500/20 hover:bg-purple-500/25' },
+    { id: 'Annulé', color: 'bg-red-500/15 text-red-500 border-red-500/20 hover:bg-red-500/25' },
+    { id: 'No-show', color: 'bg-gray-500/15 text-gray-500 border-gray-500/20 hover:bg-gray-500/25' },
+  ]
+
+  const handleCopyLocation = async () => {
+    if (formData.location) {
+      await navigator.clipboard.writeText(formData.location)
+    }
+  }
+
+  const handlePasteLocation = async () => {
+    const text = await navigator.clipboard.readText()
+    setFormData(prev => ({ ...prev, location: text }))
+  }
+
   return (
     <>
       {/* MODAL */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingAppointment ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous'}
-              {selectedDay && (
-                <span className="block text-sm font-normal text-muted-foreground mt-1">
-                  {format(selectedDay, 'EEEE d MMMM yyyy', { locale: fr })}
-                </span>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+          {/* HEADER AVEC GROS TITRE */}
+          <div className="text-center pb-4 border-b border-border">
+            {selectedDay && (
+              <>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">
+                  {format(selectedDay, 'EEEE', { locale: fr })}
+                </p>
+                <p className="text-4xl font-black text-foreground mt-1">
+                  {format(selectedDay, 'd')}
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {format(selectedDay, 'MMMM yyyy', { locale: fr })}
+                </p>
+              </>
+            )}
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5 pt-2">
+            {/* CHAMPS CLIENT ET PRODUIT - MÊME LARGEUR */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="customer">Client</Label>
+                <Label htmlFor="customer" className="text-sm font-medium">Client</Label>
                 <Select value={formData.customer_id} onValueChange={(v) => setFormData(prev => ({ ...prev, customer_id: v }))}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -255,11 +277,11 @@ export default function CalendarPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="product">Produit concerné</Label>
+                <Label htmlFor="product" className="text-sm font-medium">Produit concerné</Label>
                 <Select value={formData.product_id} onValueChange={(v) => setFormData(prev => ({ ...prev, product_id: v }))}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Optionnel" />
                   </SelectTrigger>
                   <SelectContent>
@@ -271,22 +293,24 @@ export default function CalendarPage() {
               </div>
             </div>
 
+            {/* HEURE ET DURÉE - MÊME LARGEUR */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="time">Heure</Label>
+                <Label htmlFor="time" className="text-sm font-medium">Heure</Label>
                 <Input
                   id="time"
                   type="time"
                   value={formData.appointment_time}
                   onChange={(e) => setFormData(prev => ({ ...prev, appointment_time: e.target.value }))}
                   required
+                  className="w-full"
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="duration">Durée (min)</Label>
+                <Label htmlFor="duration" className="text-sm font-medium">Durée</Label>
                 <Select value={formData.duration_minutes.toString()} onValueChange={(v) => setFormData(prev => ({ ...prev, duration_minutes: parseInt(v) }))}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -301,8 +325,9 @@ export default function CalendarPage() {
               </div>
             </div>
 
+            {/* CA POTENTIEL */}
             <div className="space-y-2">
-              <Label htmlFor="revenue">CA Potentiel (€)</Label>
+              <Label htmlFor="revenue" className="text-sm font-medium">CA Potentiel (€)</Label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input
@@ -312,13 +337,37 @@ export default function CalendarPage() {
                   placeholder="0.00"
                   value={formData.potential_revenue}
                   onChange={(e) => setFormData(prev => ({ ...prev, potential_revenue: e.target.value }))}
-                  className="pl-9"
+                  className="pl-9 w-full"
                 />
               </div>
             </div>
 
+            {/* LIEU AVEC BOUTONS COPIER/COLLER */}
             <div className="space-y-2">
-              <Label htmlFor="location">Lieu</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="location" className="text-sm font-medium">Lieu</Label>
+                <div className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyLocation}
+                    disabled={!formData.location}
+                    className="h-7 px-2 text-xs cursor-pointer"
+                  >
+                    Copier
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePasteLocation}
+                    className="h-7 px-2 text-xs cursor-pointer"
+                  >
+                    Coller
+                  </Button>
+                </div>
+              </div>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input
@@ -326,30 +375,37 @@ export default function CalendarPage() {
                   placeholder="Boutique, domicile client, café..."
                   value={formData.location}
                   onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                  className="pl-9"
+                  className="pl-9 w-full"
                 />
               </div>
             </div>
 
+            {/* STATUT EN BOUTONS ÉTIQUETTES */}
             <div className="space-y-2">
-              <Label htmlFor="status">Statut</Label>
-              <Select value={formData.status} onValueChange={(v) => setFormData(prev => ({ ...prev, status: v }))}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Schedulé">Schedulé</SelectItem>
-                  <SelectItem value="Confirmé">Confirmé</SelectItem>
-                  <SelectItem value="En cours">En cours</SelectItem>
-                  <SelectItem value="Terminé">Terminé</SelectItem>
-                  <SelectItem value="Annulé">Annulé</SelectItem>
-                  <SelectItem value="No-show">No-show</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="text-sm font-medium">Statut</Label>
+              <div className="flex flex-wrap gap-2">
+                {statusOptions.map((status) => (
+                  <button
+                    key={status.id}
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, status: status.id }))}
+                    className={`
+                      px-3 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer
+                      ${formData.status === status.id
+                        ? status.color + ' ring-2 ring-offset-1 ring-current'
+                        : 'bg-secondary/50 text-muted-foreground border-border hover:bg-secondary'
+                      }
+                    `}
+                  >
+                    {status.id}
+                  </button>
+                ))}
+              </div>
             </div>
 
+            {/* NOTES */}
             <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
+              <Label htmlFor="notes" className="text-sm font-medium">Notes</Label>
               <Textarea
                 id="notes"
                 placeholder="Détails du rendez-vous..."
@@ -424,113 +480,100 @@ export default function CalendarPage() {
 
               {/* GRILLE HEBDO - 7 JOURS */}
               <div className="flex-1 overflow-auto">
-                {isLoading ? (
-                  <div className="grid grid-cols-7 gap-4 h-full">
-                    {[...Array(7)].map((_, i) => (
-                      <div key={i} className="flex flex-col">
-                        <Skeleton className="h-20 w-full mb-3" />
-                        <Skeleton className="h-20 w-full mb-2" />
-                        <Skeleton className="h-20 w-full mb-2" />
-                        <Skeleton className="h-20 w-full" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-7 gap-4" style={{ minHeight: 'calc(100vh - 280px)' }}>
-                    {days.map((day) => {
-                      const dayAppts = getDayAppointments(day)
-                      const totalRevenue = getDayTotalRevenue(day)
-                      const today = isToday(day)
+                <div className="grid grid-cols-7 gap-4" style={{ minHeight: 'calc(100vh - 320px)' }}>
+                  {days.map((day) => {
+                    const dayAppts = getDayAppointments(day)
+                    const totalRevenue = getDayTotalRevenue(day)
+                    const today = isToday(day)
 
-                      return (
-                        <div
-                          key={day.toISOString()}
-                          onClick={() => handleDayClick(day)}
-                          className={`
-                            flex flex-col rounded-xl border border-border/50 bg-card/60 backdrop-blur-sm p-3
-                            cursor-pointer transition-colors hover:bg-card/80
-                            ${today ? 'ring-2 ring-primary ring-inset' : ''}
-                          `}
-                        >
-                          {/* EN-TÊTE DU JOUR - NOM + DATE */}
-                          <div className="text-center mb-3 pb-3 border-b border-border/50">
-                            <p className={`text-xs font-semibold uppercase tracking-wider ${today ? 'text-primary' : 'text-muted-foreground'}`}>
-                              {format(day, 'EEEE', { locale: fr })}
+                    return (
+                      <div
+                        key={day.toISOString()}
+                        onClick={() => handleDayClick(day)}
+                        className={`
+                          flex flex-col rounded-xl border border-border/50 bg-card/60 backdrop-blur-sm p-3
+                          cursor-pointer transition-colors hover:bg-card/80
+                          ${today ? 'ring-2 ring-primary ring-inset' : ''}
+                        `}
+                      >
+                        {/* EN-TÊTE DU JOUR - NOM + DATE */}
+                        <div className="text-center mb-3 pb-3 border-b border-border/50">
+                          <p className={`text-xs font-semibold uppercase tracking-wider ${today ? 'text-primary' : 'text-muted-foreground'}`}>
+                            {format(day, 'EEEE', { locale: fr })}
+                          </p>
+                          <p className={`text-2xl font-bold mt-1 ${today ? 'text-primary' : 'text-foreground'}`}>
+                            {format(day, 'd')}
+                          </p>
+                        </div>
+
+                        {/* GROS COMPTEUR CA POTENTIEL */}
+                        <div className="mb-4 p-3 rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20">
+                          <div className="text-center">
+                            <p className="text-[10px] uppercase tracking-wider text-green-600 font-semibold mb-1">
+                              CA Potentiel
                             </p>
-                            <p className={`text-2xl font-bold mt-1 ${today ? 'text-primary' : 'text-foreground'}`}>
-                              {format(day, 'd')}
+                            <p className="text-2xl font-bold text-green-600">
+                              ${totalRevenue.toFixed(2)}
                             </p>
-                          </div>
-
-                          {/* GROS COMPTEUR CA POTENTIEL */}
-                          <div className="mb-4 p-3 rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20">
-                            <div className="text-center">
-                              <p className="text-[10px] uppercase tracking-wider text-green-600 font-semibold mb-1">
-                                CA Potentiel
+                            {dayAppts.length > 0 && (
+                              <p className="text-[9px] text-green-600/70 mt-1">
+                                {dayAppts.length} RDV
                               </p>
-                              <p className="text-2xl font-bold text-green-600">
-                                ${totalRevenue.toFixed(2)}
-                              </p>
-                              {dayAppts.length > 0 && (
-                                <p className="text-[9px] text-green-600/70 mt-1">
-                                  {dayAppts.length} RDV
-                                </p>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* LISTE DES RDV */}
-                          <div className="flex-1 space-y-2 overflow-y-auto">
-                            {dayAppts.length === 0 ? (
-                              <div className="text-center py-4 text-xs text-muted-foreground">
-                                Aucun RDV
-                              </div>
-                            ) : (
-                              dayAppts.map(apt => (
-                                <div
-                                  key={apt.id}
-                                  onClick={(e) => handleEditAppointment(apt, e)}
-                                  className={`
-                                    p-2.5 rounded-lg border text-xs cursor-pointer transition-all hover:scale-[1.02]
-                                    ${getStatusColor(apt.status)}
-                                  `}
-                                >
-                                  <div className="flex items-center gap-1.5 font-semibold mb-1.5">
-                                    <Clock className="size-3" />
-                                    {format(new Date(`2000-01-01T${apt.appointment_time}`), 'HH:mm')}
-                                  </div>
-                                  {apt.customer && (
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                      <User className="size-3" />
-                                      <span className="truncate">{apt.customer.full_name}</span>
-                                    </div>
-                                  )}
-                                  {apt.product && (
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                      <Package className="size-3" />
-                                      <span className="truncate">{apt.product.name}</span>
-                                    </div>
-                                  )}
-                                  {apt.location && (
-                                    <div className="flex items-center gap-1.5">
-                                      <MapPin className="size-3" />
-                                      <span className="truncate">{apt.location}</span>
-                                    </div>
-                                  )}
-                                  {apt.potential_revenue > 0 && (
-                                    <div className="mt-2 pt-2 border-t border-current/20 text-[10px] font-bold">
-                                      ${apt.potential_revenue.toFixed(2)}
-                                    </div>
-                                  )}
-                                </div>
-                              ))
                             )}
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                )}
+
+                        {/* LISTE DES RDV */}
+                        <div className="flex-1 space-y-2 overflow-y-auto">
+                          {dayAppts.length === 0 ? (
+                            <div className="text-center py-4 text-xs text-muted-foreground">
+                              Aucun RDV
+                            </div>
+                          ) : (
+                            dayAppts.map(apt => (
+                              <div
+                                key={apt.id}
+                                onClick={(e) => handleEditAppointment(apt, e)}
+                                className={`
+                                  p-2.5 rounded-lg border text-xs cursor-pointer
+                                  ${getStatusColor(apt.status)}
+                                `}
+                              >
+                                <div className="flex items-center gap-1.5 font-semibold mb-1.5">
+                                  <Clock className="size-3" />
+                                  {format(new Date(`2000-01-01T${apt.appointment_time}`), 'HH:mm')}
+                                </div>
+                                {apt.customer && (
+                                  <div className="flex items-center gap-1.5 mb-1">
+                                    <User className="size-3" />
+                                    <span className="truncate">{apt.customer.full_name}</span>
+                                  </div>
+                                )}
+                                {apt.product && (
+                                  <div className="flex items-center gap-1.5 mb-1">
+                                    <Package className="size-3" />
+                                    <span className="truncate">{apt.product.name}</span>
+                                  </div>
+                                )}
+                                {apt.location && (
+                                  <div className="flex items-center gap-1.5">
+                                    <MapPin className="size-3" />
+                                    <span className="truncate">{apt.location}</span>
+                                  </div>
+                                )}
+                                {apt.potential_revenue > 0 && (
+                                  <div className="mt-2 pt-2 border-t border-current/20 text-[10px] font-bold">
+                                    ${apt.potential_revenue.toFixed(2)}
+                                  </div>
+                                )}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
 
               {/* LÉGENDE */}

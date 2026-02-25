@@ -63,7 +63,7 @@ export function StatsCards() {
         .from('appointments')
         .select('potential_revenue, appointment_date')
         .gte('appointment_date', today)
-      
+
       if (data) {
         setAppointmentCount(data.length)
         setPotentialRevenue(data.reduce((sum, apt) => sum + (apt.potential_revenue || 0), 0))
@@ -72,7 +72,8 @@ export function StatsCards() {
     fetchAppointments()
   }, [])
 
-  const todayDate = format(new Date(), 'EEEE d MMMM', { locale: fr })
+  const todayDate = format(new Date(), 'd MMMM', { locale: fr })
+  const capitalizedDate = todayDate.charAt(0).toUpperCase() + todayDate.slice(1)
 
   const stats: StatsCardProps[] = [
     {
@@ -95,8 +96,8 @@ export function StatsCards() {
     },
     {
       title: "Rendez-vous",
-      value: todayDate,
-      change: appointmentCount > 0 ? `${appointmentCount} RDV - ${potentialRevenue.toFixed(0)}€ potentiel` : "Aujourd'hui",
+      value: appointmentCount > 0 ? `${appointmentCount}` : "Aucun",
+      change: `${capitalizedDate} ${potentialRevenue > 0 ? `(${potentialRevenue.toFixed(0)}€ potentiel)` : ''}`,
       trend: "calendar",
       icon: Calendar,
       iconBg: "bg-pink-500/15",
