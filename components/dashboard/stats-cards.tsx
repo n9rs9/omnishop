@@ -95,8 +95,8 @@ export function StatsCards() {
     },
     {
       title: "Rendez-vous",
-      value: appointmentCount > 0 ? `${appointmentCount}` : todayDate,
-      change: potentialRevenue > 0 ? `${potentialRevenue.toFixed(0)}€ potentiel` : "Aujourd'hui",
+      value: todayDate,
+      change: appointmentCount > 0 ? `${appointmentCount} RDV - ${potentialRevenue.toFixed(0)}€ potentiel` : "Aujourd'hui",
       trend: "calendar",
       icon: Calendar,
       iconBg: "bg-pink-500/15",

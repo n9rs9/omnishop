@@ -59,11 +59,7 @@ export default function DashboardPage() {
   }
 
   if (!isAuthorized) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-background text-foreground">
-        Chargement du cerveau Omnishop...
-      </div>
-    )
+    return null
   }
 
   const isFormComplete = platform !== "" && focus !== ""

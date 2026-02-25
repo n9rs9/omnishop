@@ -93,7 +93,10 @@ export function InventoryOverview() {
         })}
         
         <div className="flex justify-center py-[32px]">
-          <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95 cursor-pointer border-none">
+          <button
+            onClick={() => window.location.href = '/inventory'}
+            className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all shadow-lg active:scale-95 cursor-pointer border-none"
+          >
             <Boxes className="size-3.5" />
             View All Stock
           </button>

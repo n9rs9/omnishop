@@ -436,7 +436,7 @@ export default function CalendarPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-7 gap-4 h-full">
+                  <div className="grid grid-cols-7 gap-4" style={{ minHeight: 'calc(100vh - 280px)' }}>
                     {days.map((day) => {
                       const dayAppts = getDayAppointments(day)
                       const totalRevenue = getDayTotalRevenue(day)
@@ -447,8 +447,8 @@ export default function CalendarPage() {
                           key={day.toISOString()}
                           onClick={() => handleDayClick(day)}
                           className={`
-                            flex flex-col rounded-xl border border-border/50 bg-card/60 backdrop-blur-sm p-3 
-                            cursor-pointer transition-all hover:bg-card/80 hover:shadow-md hover:scale-[1.02]
+                            flex flex-col rounded-xl border border-border/50 bg-card/60 backdrop-blur-sm p-3
+                            cursor-pointer transition-colors hover:bg-card/80
                             ${today ? 'ring-2 ring-primary ring-inset' : ''}
                           `}
                         >
