@@ -44,7 +44,7 @@ export default function OmniIAPage() {
         <main className="h-full overflow-hidden px-6 py-6">
           <div className="h-full flex flex-col">
             {/* HEADER */}
-            <div className="flex items-center gap-3 mb-6 shrink-0">
+            <div className="flex items-center gap-3 mb-4 shrink-0">
               <div className="size-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                 <Sparkles className="size-6 text-white" />
               </div>
@@ -54,40 +54,40 @@ export default function OmniIAPage() {
               </div>
             </div>
 
-            {/* MODULE CRÉATION FLYER */}
-            <div className="flex-1 flex items-center justify-center">
-              <Card className="w-full max-w-md border-2 border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5">
-                <CardContent className="p-8 text-center">
+            {/* MODULE CRÉATION FLYER - Centré verticalement */}
+            <div className="flex-1 flex items-center justify-center pb-12">
+              <Card className="w-full max-w-sm border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5">
+                <CardContent className="p-5 text-center">
                   {/* ICÔNE */}
-                  <div className="size-20 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 mx-auto mb-6 flex items-center justify-center shadow-xl shadow-purple-500/20">
-                    <Image className="size-10 text-white" />
+                  <div className="size-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 mx-auto mb-4 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                    <Image className="size-7 text-white" />
                   </div>
 
                   {/* TITRE */}
-                  <h2 className="text-xl font-black text-foreground mb-2">
+                  <h2 className="text-lg font-black text-foreground mb-1">
                     Création de Flyer
                   </h2>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    Générez des flyers professionnels pour vos produits en quelques secondes
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Générez des flyers professionnels en quelques secondes
                   </p>
 
                   {/* FEATURES */}
-                  <div className="space-y-3 mb-8 text-left">
+                  <div className="space-y-2 mb-4 text-left">
                     <FeatureItem icon={Wand2} text="Génération automatique par IA" />
-                    <FeatureItem icon={Sparkles} text="Modèles professionnels inclus" />
+                    <FeatureItem icon={Sparkles} text="Modèles professionnels" />
                     <FeatureItem icon={Image} text="Export haute qualité" />
                   </div>
 
                   {/* BOUTON */}
-                  <Button className="w-full h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold cursor-pointer shadow-lg">
-                    <Wand2 className="mr-2 size-5" />
+                  <Button className="w-full h-10 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold cursor-pointer shadow-lg text-sm">
+                    <Wand2 className="mr-2 size-4" />
                     Créer un flyer
                   </Button>
 
                   {/* BADGE */}
-                  <div className="mt-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-purple-500 bg-purple-500/10 border border-purple-500/20">
-                      <Sparkles className="size-3 mr-1.5" />
+                  <div className="mt-3">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold text-purple-500 bg-purple-500/10 border border-purple-500/20">
+                      <Sparkles className="size-2.5 mr-1" />
                       Gratuit & Illimité
                     </span>
                   </div>
@@ -103,11 +103,11 @@ export default function OmniIAPage() {
 
 function FeatureItem({ icon: Icon, text }: { icon: React.ElementType, text: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="size-8 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
-        <Icon className="size-4 text-purple-500" />
+    <div className="flex items-center gap-2">
+      <div className="size-6 rounded-md bg-purple-500/10 flex items-center justify-center shrink-0">
+        <Icon className="size-3.5 text-purple-500" />
       </div>
-      <span className="text-sm text-muted-foreground">{text}</span>
+      <span className="text-xs text-muted-foreground">{text}</span>
     </div>
   )
 }
