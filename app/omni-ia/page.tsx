@@ -56,23 +56,33 @@ export default function OmniIAPage() {
               </div>
             </div>
 
-            {/* MODULE CRÉATION FLYER - Style contour épais avec gradient overlay */}
+            {/* MODULE CRÉATION FLYER */}
             <div className="flex-1 flex items-center justify-center pb-8">
               <div className="w-full max-w-lg">
-                {/* CONTENEUR PRINCIPAL AVEC DOUBLE CONTURE */}
-                <div className="relative rounded-3xl p-[3px] bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500">
-                  {/* COUCHE SOMBRE INTÉRIEURE */}
-                  <div className="relative rounded-[22px] bg-[#0a0a0c] overflow-hidden">
-                    {/* DÉGRADÉ OVERLAY (du haut vers le bas, coloré→transparent) */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-purple-500/20 via-pink-500/10 to-transparent pointer-events-none" />
+                {/* 
+                  STRUCTURE EN 3 COUCHES :
+                  1. Contour extérieur épais dégradé (4px)
+                  2. Couche intermédiaire sombre (intérieur du contour)
+                  3. Gradient overlay coloré→transparent (du haut vers le bas)
+                */}
+                
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS */}
+                <div className="relative rounded-3xl p-[4px] bg-gradient-to-b from-purple-600 via-pink-500 to-purple-600 shadow-2xl shadow-purple-500/30">
+                  
+                  {/* COUCHE 2 : COUCHE INTERMÉDIAIRE SOMBRE */}
+                  <div className="relative rounded-[22px] bg-[#0d0d10]">
                     
-                    {/* CONTENU */}
+                    {/* COUCHE 3 : GRADIENT OVERLAY (coloré → transparent) */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-purple-600/40 via-pink-500/20 to-transparent pointer-events-none rounded-[22px]" />
+                    
+                    {/* CONTENU (au-dessus du gradient) */}
                     <div className="relative z-10">
+                      
                       {/* HEADER DU MODULE */}
                       <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
                         <div className="flex items-center gap-3">
-                          <div className="size-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-                            <Image className="size-5 text-white" />
+                          <div className="size-11 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/40">
+                            <Image className="size-6 text-white" />
                           </div>
                           <div>
                             <h2 className="text-base font-bold text-white">Création de Flyer</h2>
