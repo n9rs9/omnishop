@@ -47,24 +47,21 @@ export default function OmniIAPage() {
           <div className="h-full flex flex-col">
             {/* HEADER */}
             <div className="flex items-center gap-3 mb-3 shrink-0">
-              <div className="size-9 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                <Sparkles className="size-5 text-white" />
-              </div>
               <div>
                 <h1 className="text-lg font-bold text-foreground">Omni IA</h1>
                 <p className="text-[10px] text-muted-foreground">Votre assistant intelligent</p>
               </div>
             </div>
 
-            {/* MODULE CRÉATION FLYER - Compact, ne dépasse pas */}
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-sm">
+            {/* MODULE CRÉATION FLYER - Compact, ne dépasse pas le separator */}
+            <div className="flex items-start justify-center pt-2">
+              <div className="w-full max-w-[280px]">
                 {/* 
                   STRUCTURE EN 4 COUCHES :
-                  1. Contour extérieur épais dégradé bleu (4px)
+                  1. Contour extérieur épais dégradé bleu (3px)
                   2. Contour intérieur #0a0b0e (8px - épaisseur doublée)
                   3. Couche de fond #0a0b0e (intérieur du contour)
-                  4. Gradient overlay bleu→transparent (s'arrête tôt)
+                  4. Gradient overlay bleu→transparent (s'arrête très tôt - 40%)
                 */}
                 
                 {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS BLEU */}
@@ -74,27 +71,36 @@ export default function OmniIAPage() {
                   <div className="relative rounded-[17px] p-[8px] bg-[#0a0b0e]">
                     
                     {/* COUCHE 3 : COUCHE DE FOND #0a0b0e */}
-                    <div className="relative rounded-[9px] bg-[#0a0b0e]">
+                    <div className="relative rounded-[9px] bg-[#0a0b0e] overflow-hidden">
                       
-                      {/* COUCHE 4 : GRADIENT OVERLAY (bleu → transparent, s'arrête tôt) */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-blue-600/50 via-blue-500/25 to-transparent pointer-events-none rounded-[9px]" style={{ background: 'linear-gradient(180deg, rgba(37,99,235,0.5) 0%, rgba(37,99,235,0.25) 35%, transparent 60%)' }} />
+                      {/* BACKGROUND À POINTILLÉS (derrière le contenu) */}
+                      <div className="absolute inset-0 opacity-[0.03]" style={{
+                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                        backgroundSize: '12px 12px',
+                        backgroundPosition: '0 0'
+                      }} />
                       
-                      {/* CONTENU (au-dessus du gradient) */}
+                      {/* COUCHE 4 : GRADIENT OVERLAY (bleu → transparent, s'arrête très tôt - 40%) */}
+                      <div className="absolute inset-0 pointer-events-none rounded-[9px]" style={{ 
+                        background: 'linear-gradient(180deg, rgba(37,99,235,0.6) 0%, rgba(37,99,235,0.3) 25%, transparent 40%)' 
+                      }} />
+                      
+                      {/* CONTENU (au-dessus du gradient et des pointillés) */}
                       <div className="relative z-10">
                         
                         {/* HEADER DU MODULE */}
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-                          <div className="flex items-center gap-2.5">
-                            <div className="size-9 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/40">
-                              <Image className="size-5 text-white" />
+                        <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="size-8 rounded-md bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/40">
+                              <Image className="size-4 text-white" />
                             </div>
                             <div>
-                              <h2 className="text-sm font-bold text-white">Création de Flyer</h2>
-                              <p className="text-[9px] text-muted-foreground">Générez des flyers pros</p>
+                              <h2 className="text-xs font-bold text-white">Création de Flyer</h2>
+                              <p className="text-[8px] text-muted-foreground">Générez des flyers</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold text-blue-300 bg-blue-500/20 border border-blue-500/30">
+                          <div className="flex items-center gap-1">
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-bold text-blue-300 bg-blue-500/20 border border-blue-500/30">
                               <Zap className="size-2.5 mr-1" />
                               IA
                             </span>
@@ -102,41 +108,41 @@ export default function OmniIAPage() {
                         </div>
 
                         {/* CORPS DU MODULE */}
-                        <div className="p-4">
+                        <div className="p-3">
                           {/* ZONE DE PRÉVISUALISATION */}
-                          <div className="relative rounded-xl bg-[#121216] border border-white/5 p-4 mb-4">
-                            <div className="aspect-video rounded-lg bg-[#1a1a1f] border border-white/5 flex items-center justify-center mb-3">
+                          <div className="relative rounded-lg bg-[#121216] border border-white/5 p-3 mb-3">
+                            <div className="aspect-video rounded-md bg-[#1a1a1f] border border-white/5 flex items-center justify-center mb-2">
                               <div className="text-center">
-                                <Image className="size-8 text-muted-foreground/50 mx-auto mb-1" />
-                                <p className="text-[10px] text-muted-foreground">Aperçu du flyer</p>
+                                <Image className="size-6 text-muted-foreground/50 mx-auto mb-0.5" />
+                                <p className="text-[9px] text-muted-foreground">Aperçu</p>
                               </div>
                             </div>
                             
                             {/* TAGS */}
-                            <div className="flex flex-wrap gap-1.5">
+                            <div className="flex flex-wrap gap-1">
                               <Tag icon={Layers} label="Templates" />
-                              <Tag icon={Sparkles} label="IA Auto" />
-                              <Tag icon={Download} label="Export HD" />
+                              <Tag icon={Sparkles} label="IA" />
+                              <Tag icon={Download} label="HD" />
                             </div>
                           </div>
 
                           {/* FEATURES LIST - GRID 2x2 */}
-                          <div className="grid grid-cols-2 gap-2 mb-4">
+                          <div className="grid grid-cols-2 gap-1.5 mb-3">
                             <FeatureCard 
                               icon={Wand2} 
-                              title="Génération IA" 
-                              desc="Création auto" 
+                              title="Génération" 
+                              desc="Auto" 
                               gradient="from-blue-500 to-cyan-500"
                             />
                             <FeatureCard 
                               icon={Layers} 
-                              title="Templates Pro" 
+                              title="Templates" 
                               desc="50+ modèles" 
                               gradient="from-purple-500 to-pink-500"
                             />
                             <FeatureCard 
                               icon={Image} 
-                              title="Export HD" 
+                              title="Export" 
                               desc="PNG, PDF" 
                               gradient="from-green-500 to-emerald-500"
                             />
@@ -149,15 +155,15 @@ export default function OmniIAPage() {
                           </div>
 
                           {/* BOUTON D'ACTION */}
-                          <Button className="w-full h-9 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold cursor-pointer shadow-lg shadow-blue-500/30 text-xs rounded-lg">
-                            <Wand2 className="mr-1.5 size-4" />
+                          <Button className="w-full h-8 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold cursor-pointer shadow-lg shadow-blue-500/30 text-[10px] rounded-md">
+                            <Wand2 className="mr-1 size-3.5" />
                             Créer mon flyer
                           </Button>
 
                           {/* BADGE GRATUITY */}
-                          <div className="mt-3 text-center">
-                            <span className="inline-flex items-center gap-1 text-[9px] font-medium text-muted-foreground">
-                              <Sparkles className="size-2.5 text-blue-500" />
+                          <div className="mt-2 text-center">
+                            <span className="inline-flex items-center gap-1 text-[8px] font-medium text-muted-foreground">
+                              <Sparkles className="size-2 text-blue-500" />
                               Gratuit & Illimité
                             </span>
                           </div>
@@ -177,8 +183,8 @@ export default function OmniIAPage() {
 
 function Tag({ icon: Icon, label }: { icon: React.ElementType, label: string }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[9px] font-medium text-muted-foreground bg-[#1a1a1f] border border-white/5 hover:border-white/10 transition-colors cursor-default">
-      <Icon className="size-3" />
+    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[8px] font-medium text-muted-foreground bg-[#1a1a1f] border border-white/5 hover:border-white/10 transition-colors cursor-default">
+      <Icon className="size-2.5" />
       {label}
     </span>
   )
@@ -196,15 +202,15 @@ function FeatureCard({
   gradient: string
 }) {
   return (
-    <div className="rounded-lg bg-[#121216] border border-white/5 p-2.5 hover:border-white/10 transition-colors">
+    <div className="rounded-md bg-[#121216] border border-white/5 p-2 hover:border-white/10 transition-colors">
       <div className={cn(
-        "size-7 rounded-lg mb-2 flex items-center justify-center bg-gradient-to-br",
+        "size-6 rounded-md mb-1.5 flex items-center justify-center bg-gradient-to-br",
         gradient
       )}>
-        <Icon className="size-3.5 text-white" />
+        <Icon className="size-3 text-white" />
       </div>
-      <p className="text-[10px] font-bold text-white mb-0.5">{title}</p>
-      <p className="text-[9px] text-muted-foreground">{desc}</p>
+      <p className="text-[9px] font-bold text-white mb-0.5">{title}</p>
+      <p className="text-[8px] text-muted-foreground">{desc}</p>
     </div>
   )
 }
