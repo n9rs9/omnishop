@@ -219,54 +219,28 @@ export default function CalendarPage() {
   const weekEnd = endOfWeek(currentWeekStart, { weekStartsOn: 1 })
   const weekRange = format(currentWeekStart, 'd MMM', { locale: fr }) + ' - ' + format(weekEnd, 'd MMM yyyy', { locale: fr })
 
-  const statusOptions = [
-    { id: 'Schedulé', color: 'bg-blue-500/15 text-blue-500 border-blue-500/20 hover:bg-blue-500/25' },
-    { id: 'Confirmé', color: 'bg-green-500/15 text-green-500 border-green-500/20 hover:bg-green-500/25' },
-    { id: 'En cours', color: 'bg-orange-500/15 text-orange-500 border-orange-500/20 hover:bg-orange-500/25' },
-    { id: 'Terminé', color: 'bg-purple-500/15 text-purple-500 border-purple-500/20 hover:bg-purple-500/25' },
-    { id: 'Annulé', color: 'bg-red-500/15 text-red-500 border-red-500/20 hover:bg-red-500/25' },
-  ]
-
-  const handleCopyLocation = async () => {
-    if (formData.location) {
-      await navigator.clipboard.writeText(formData.location)
-    }
-  }
-
-  const handlePasteLocation = async () => {
-    const text = await navigator.clipboard.readText()
-    setFormData(prev => ({ ...prev, location: text }))
-  }
-
   return (
     <>
       {/* MODAL */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-xl">
-          {/* HEADER AVEC GROS TITRE */}
-          <div className="text-center pb-3 border-b border-border">
-            {selectedDay && (
-              <>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                  {format(selectedDay, 'EEEE', { locale: fr })}
-                </p>
-                <p className="text-3xl font-black text-foreground mt-0.5">
-                  {format(selectedDay, 'd')}
-                </p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {format(selectedDay, 'MMMM yyyy', { locale: fr })}
-                </p>
-              </>
-            )}
-          </div>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingAppointment ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous'}
+              {selectedDay && (
+                <span className="block text-sm font-normal text-muted-foreground mt-1">
+                  {format(selectedDay, 'EEEE d MMMM yyyy', { locale: fr })}
+                </span>
+              )}
+            </DialogTitle>
+          </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-3 pt-2 max-h-[60vh] overflow-y-auto">
-            {/* CHAMPS CLIENT ET PRODUIT - MÊME LARGEUR */}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="customer" className="text-sm font-medium">Client</Label>
+                <Label htmlFor="customer">Client</Label>
                 <Select value={formData.customer_id} onValueChange={(v) => setFormData(prev => ({ ...prev, customer_id: v }))}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger>
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -278,9 +252,9 @@ export default function CalendarPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="product" className="text-sm font-medium">Produit concerné</Label>
+                <Label htmlFor="product">Produit concerné</Label>
                 <Select value={formData.product_id} onValueChange={(v) => setFormData(prev => ({ ...prev, product_id: v }))}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger>
                     <SelectValue placeholder="Optionnel" />
                   </SelectTrigger>
                   <SelectContent>
@@ -292,24 +266,22 @@ export default function CalendarPage() {
               </div>
             </div>
 
-            {/* HEURE ET DURÉE - MÊME LARGEUR */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="time" className="text-sm font-medium">Heure</Label>
+                <Label htmlFor="time">Heure</Label>
                 <Input
                   id="time"
                   type="time"
                   value={formData.appointment_time}
                   onChange={(e) => setFormData(prev => ({ ...prev, appointment_time: e.target.value }))}
                   required
-                  className="w-full"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="duration" className="text-sm font-medium">Durée</Label>
+                <Label htmlFor="duration">Durée (min)</Label>
                 <Select value={formData.duration_minutes.toString()} onValueChange={(v) => setFormData(prev => ({ ...prev, duration_minutes: parseInt(v) }))}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -324,9 +296,8 @@ export default function CalendarPage() {
               </div>
             </div>
 
-            {/* CA POTENTIEL */}
             <div className="space-y-2">
-              <Label htmlFor="revenue" className="text-sm font-medium">CA Potentiel (€)</Label>
+              <Label htmlFor="revenue">CA Potentiel (€)</Label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input
@@ -336,37 +307,13 @@ export default function CalendarPage() {
                   placeholder="0.00"
                   value={formData.potential_revenue}
                   onChange={(e) => setFormData(prev => ({ ...prev, potential_revenue: e.target.value }))}
-                  className="pl-9 w-full"
+                  className="pl-9"
                 />
               </div>
             </div>
 
-            {/* LIEU AVEC BOUTONS COPIER/COLLER */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="location" className="text-sm font-medium">Lieu</Label>
-                <div className="flex gap-1">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCopyLocation}
-                    disabled={!formData.location}
-                    className="h-7 px-2 text-xs cursor-pointer"
-                  >
-                    Copier
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handlePasteLocation}
-                    className="h-7 px-2 text-xs cursor-pointer"
-                  >
-                    Coller
-                  </Button>
-                </div>
-              </div>
+              <Label htmlFor="location">Lieu</Label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input
@@ -374,37 +321,29 @@ export default function CalendarPage() {
                   placeholder="Boutique, domicile client, café..."
                   value={formData.location}
                   onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                  className="pl-9 w-full"
+                  className="pl-9"
                 />
               </div>
             </div>
 
-            {/* STATUT EN BOUTONS ÉTIQUETTES */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Statut</Label>
-              <div className="flex flex-wrap gap-2">
-                {statusOptions.map((status) => (
-                  <button
-                    key={status.id}
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, status: status.id }))}
-                    className={`
-                      px-3 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer
-                      ${formData.status === status.id
-                        ? status.color + ' ring-2 ring-offset-1 ring-current'
-                        : 'bg-secondary/50 text-muted-foreground border-border hover:bg-secondary'
-                      }
-                    `}
-                  >
-                    {status.id}
-                  </button>
-                ))}
-              </div>
+              <Label htmlFor="status">Statut</Label>
+              <Select value={formData.status} onValueChange={(v) => setFormData(prev => ({ ...prev, status: v }))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Schedulé">Schedulé</SelectItem>
+                  <SelectItem value="Confirmé">Confirmé</SelectItem>
+                  <SelectItem value="En cours">En cours</SelectItem>
+                  <SelectItem value="Terminé">Terminé</SelectItem>
+                  <SelectItem value="Annulé">Annulé</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* NOTES */}
             <div className="space-y-2">
-              <Label htmlFor="notes" className="text-sm font-medium">Notes</Label>
+              <Label htmlFor="notes">Notes</Label>
               <Textarea
                 id="notes"
                 placeholder="Détails du rendez-vous..."
