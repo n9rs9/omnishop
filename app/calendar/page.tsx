@@ -219,13 +219,14 @@ export default function CalendarPage() {
   const weekEnd = endOfWeek(currentWeekStart, { weekStartsOn: 1 })
   const weekRange = format(currentWeekStart, 'd MMM', { locale: fr }) + ' - ' + format(weekEnd, 'd MMM yyyy', { locale: fr })
 
+  const weeklyRevenue = appointments.reduce((sum, apt) => sum + (apt.potential_revenue || 0), 0)
+
   const statusOptions = [
     { id: 'Schedulé', color: 'bg-blue-500/15 text-blue-500 border-blue-500/20 hover:bg-blue-500/25' },
     { id: 'Confirmé', color: 'bg-green-500/15 text-green-500 border-green-500/20 hover:bg-green-500/25' },
     { id: 'En cours', color: 'bg-orange-500/15 text-orange-500 border-orange-500/20 hover:bg-orange-500/25' },
     { id: 'Terminé', color: 'bg-purple-500/15 text-purple-500 border-purple-500/20 hover:bg-purple-500/25' },
     { id: 'Annulé', color: 'bg-red-500/15 text-red-500 border-red-500/20 hover:bg-red-500/25' },
-    { id: 'No-show', color: 'bg-gray-500/15 text-gray-500 border-gray-500/20 hover:bg-gray-500/25' },
   ]
 
   const handleCopyLocation = async () => {
@@ -243,25 +244,25 @@ export default function CalendarPage() {
     <>
       {/* MODAL */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-xl">
           {/* HEADER AVEC GROS TITRE */}
-          <div className="text-center pb-4 border-b border-border">
+          <div className="text-center pb-3 border-b border-border">
             {selectedDay && (
               <>
-                <p className="text-sm text-muted-foreground uppercase tracking-wider">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
                   {format(selectedDay, 'EEEE', { locale: fr })}
                 </p>
-                <p className="text-4xl font-black text-foreground mt-1">
+                <p className="text-3xl font-black text-foreground mt-0.5">
                   {format(selectedDay, 'd')}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {format(selectedDay, 'MMMM yyyy', { locale: fr })}
                 </p>
               </>
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 pt-2">
+          <form onSubmit={handleSubmit} className="space-y-3 pt-2 max-h-[60vh] overflow-y-auto">
             {/* CHAMPS CLIENT ET PRODUIT - MÊME LARGEUR */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -445,20 +446,27 @@ export default function CalendarPage() {
           <main className="h-full overflow-hidden px-6 py-6">
             <div className="h-full flex flex-col">
               {/* EN-TÊTE */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-2">
                 <div>
                   <h1 className="text-2xl font-bold text-foreground">Calendrier des Rendez-vous</h1>
                   <p className="text-sm text-muted-foreground mt-1">
                     Gérez vos rencontres clients et suivez le CA potentiel
                   </p>
                 </div>
-                <Button
-                  onClick={() => handleDayClick(new Date())}
-                  className="h-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg cursor-pointer"
-                >
-                  <Plus className="mr-2 size-4" />
-                  Nouveau RDV
-                </Button>
+                <div className="flex items-center gap-3">
+                  {/* COMPTEUR GAIN SEMAINE */}
+                  <div className="hidden lg:flex flex-col items-end mr-2">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Gain potentiel semaine</p>
+                    <p className="text-xl font-bold text-green-600">${weeklyRevenue.toFixed(2)}</p>
+                  </div>
+                  <Button
+                    onClick={() => handleDayClick(new Date())}
+                    className="h-10 bg-white text-foreground hover:bg-gray-100 shadow-lg cursor-pointer border border-border"
+                  >
+                    <Plus className="mr-2 size-4" />
+                    Nouveau RDV
+                  </Button>
+                </div>
               </div>
 
               {/* NAVIGATION SEMAINE */}
@@ -480,7 +488,7 @@ export default function CalendarPage() {
 
               {/* GRILLE HEBDO - 7 JOURS */}
               <div className="flex-1 overflow-auto">
-                <div className="grid grid-cols-7 gap-4" style={{ minHeight: 'calc(100vh - 320px)' }}>
+                <div className="grid grid-cols-7 gap-4">
                   {days.map((day) => {
                     const dayAppts = getDayAppointments(day)
                     const totalRevenue = getDayTotalRevenue(day)
@@ -593,6 +601,10 @@ export default function CalendarPage() {
                 <span className="flex items-center gap-1.5">
                   <span className="size-3 rounded bg-purple-500/15 border border-purple-500/20" />
                   Terminé
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="size-3 rounded bg-red-500/15 border border-red-500/20" />
+                  Annulé
                 </span>
               </div>
             </div>

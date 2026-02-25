@@ -14,11 +14,15 @@ interface StatsCardProps {
   icon: React.ElementType
   iconBg: string
   iconColor: string
+  onClick?: () => void
 }
 
-function StatsCard({ title, value, change, trend, icon: Icon, iconBg, iconColor }: StatsCardProps) {
+function StatsCard({ title, value, change, trend, icon: Icon, iconBg, iconColor, onClick }: StatsCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card/80 p-5 backdrop-blur-sm transition-colors hover:bg-card cursor-pointer">
+    <div
+      onClick={onClick}
+      className="group relative overflow-hidden rounded-xl border border-border/50 bg-card/80 p-5 backdrop-blur-sm transition-colors hover:bg-card cursor-pointer"
+    >
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</p>
@@ -75,6 +79,10 @@ export function StatsCards() {
   const todayDate = format(new Date(), 'd MMMM', { locale: fr })
   const capitalizedDate = todayDate.charAt(0).toUpperCase() + todayDate.slice(1)
 
+  const handleOmniIAClick = () => {
+    window.location.href = '/omni-ia'
+  }
+
   const stats: StatsCardProps[] = [
     {
       title: "Daily Sales",
@@ -110,7 +118,8 @@ export function StatsCards() {
       trend: "ia",
       icon: Sparkles,
       iconBg: "bg-purple-500/15",
-      iconColor: "text-purple-500"
+      iconColor: "text-purple-500",
+      onClick: handleOmniIAClick
     },
   ]
 

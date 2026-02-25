@@ -11,6 +11,7 @@ import {
   Hexagon,
   Sparkles,
   Calendar,
+  CreditCard,
 } from "lucide-react"
 
 const navItems = [
@@ -21,6 +22,10 @@ const navItems = [
   { label: "Omni IA", icon: Sparkles, href: "/omni-ia" },
   { label: "Analytics", icon: BarChart3, href: "/analytics" },
   { label: "Settings", icon: Settings, href: "/settings" },
+]
+
+const bottomNavItems = [
+  { label: "Pricing", icon: CreditCard, href: "/pricing" },
 ]
 
 export function SidebarNav() {
@@ -63,6 +68,28 @@ export function SidebarNav() {
           )
         })}
       </nav>
+
+      {/* PRICING LINK */}
+      <div className="mt-auto px-3 pb-4">
+        {bottomNavItems.map((item) => {
+          const isActive = pathname === item.href
+          return (
+            <button
+              key={item.label}
+              onClick={() => window.location.href = item.href}
+              className={cn(
+                "w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer",
+                isActive
+                  ? "bg-primary/15 text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
+              )}
+            >
+              <item.icon className="size-[18px]" />
+              {item.label}
+            </button>
+          )
+        })}
+      </div>
 
       {/* SPACER */}
       <div className="flex-1" />
