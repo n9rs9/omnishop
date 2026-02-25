@@ -7,7 +7,7 @@ import { SidebarNav } from "@/components/dashboard/sidebar-nav"
 import { TopBar } from "@/components/dashboard/top-bar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check, Sparkles, Zap, Crown } from "lucide-react"
+import { Check, Zap, Sparkles, Building2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const plans = [
@@ -16,16 +16,16 @@ const plans = [
     name: "Free",
     price: "0€",
     period: "/mois",
-    description: "Parfait pour commencer",
+    description: "Pour démarrer",
     icon: Zap,
-    gradient: "from-gray-400 to-gray-600",
+    color: "text-gray-500",
+    bgColor: "bg-gray-500",
     features: [
       "1 boutique",
       "Produits illimités",
       "100 commandes/mois",
       "Calendrier RDV",
-      "Omni IA (limité)",
-      "Support email",
+      "Omni IA limité",
     ],
     cta: "Plan actuel",
     popular: false,
@@ -35,41 +35,39 @@ const plans = [
     name: "Pro",
     price: "29€",
     period: "/mois",
-    description: "Pour les vendeurs sérieux",
+    description: "Pour croître",
     icon: Sparkles,
-    gradient: "from-purple-500 to-pink-500",
+    color: "text-purple-500",
+    bgColor: "bg-purple-500",
     features: [
       "3 boutiques",
-      "Tout du Free +",
       "Commandes illimitées",
       "Analytics avancés",
       "Omni IA illimité",
       "Automatisations n8n",
       "Support prioritaire",
-      "Export données",
     ],
     cta: "Passer en Pro",
     popular: true,
   },
   {
     id: "enterprise",
-    name: "Enterprise",
+    name: "Business",
     price: "99€",
     period: "/mois",
-    description: "Pour les gros volumes",
-    icon: Crown,
-    gradient: "from-yellow-400 to-orange-500",
+    description: "Pour les pros",
+    icon: Building2,
+    color: "text-blue-500",
+    bgColor: "bg-blue-500",
     features: [
       "Boutiques illimitées",
       "Tout du Pro +",
       "API dédiée",
       "Webhooks personnalisés",
-      "Formation équipe",
       "Account manager",
       "SLA garanti",
-      "Intégration sur-mesure",
     ],
-    cta: "Contacter l'équipe",
+    cta: "Contacter",
     popular: false,
   },
 ]
@@ -110,15 +108,15 @@ export default function PricingPage() {
           <div className="h-full flex flex-col">
             {/* EN-TÊTE */}
             <div className="text-center mb-8 shrink-0">
-              <h1 className="text-3xl font-bold text-foreground">Choisissez votre plan</h1>
-              <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">
-                Des tarifs simples et transparents. Commencez gratuitement, upgradez quand vous êtes prêt.
+              <h1 className="text-2xl font-bold text-foreground">Nos offres</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Commencez gratuitement, upgradez quand vous êtes prêt
               </p>
             </div>
 
-            {/* CARTES DE PRIX - Centré et sans scroll */}
-            <div className="flex-1 flex items-center justify-center pb-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full px-4">
+            {/* CARTES DE PRIX */}
+            <div className="flex-1 flex items-center justify-center pb-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl px-4">
                 {plans.map((plan) => {
                   const isCurrentPlan = currentPlan === plan.id
                   const Icon = plan.icon
@@ -127,39 +125,43 @@ export default function PricingPage() {
                     <Card
                       key={plan.id}
                       className={cn(
-                        "relative flex flex-col transition-all duration-300 overflow-hidden",
-                        plan.popular
-                          ? "border-2 scale-105 shadow-2xl"
-                          : "border hover:shadow-lg",
-                        plan.popular && "border-purple-500"
+                        "relative flex flex-col",
+                        plan.popular && "border-purple-500 border-2 shadow-lg"
                       )}
                     >
                       {plan.popular && (
-                        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
+                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+                          <span className="bg-purple-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            Populaire
+                          </span>
+                        </div>
                       )}
 
-                      <CardHeader className="text-center pb-4">
-                        <div className={cn(
-                          "size-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br shadow-lg",
-                          plan.gradient
-                        )}>
-                          <Icon className="size-8 text-white" />
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className={cn(
+                            "size-10 rounded-lg flex items-center justify-center",
+                            plan.bgColor
+                          )}>
+                            <Icon className="size-5 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{plan.name}</CardTitle>
+                            <CardDescription className="text-xs">{plan.description}</CardDescription>
+                          </div>
                         </div>
-                        <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                        <CardDescription className="mt-1">{plan.description}</CardDescription>
+                        <div className="mt-2">
+                          <span className="text-3xl font-black text-foreground">{plan.price}</span>
+                          <span className="text-muted-foreground text-sm">{plan.period}</span>
+                        </div>
                       </CardHeader>
 
                       <CardContent className="flex-1">
-                        <div className="text-center mb-6">
-                          <span className="text-5xl font-black text-foreground">{plan.price}</span>
-                          <span className="text-muted-foreground">{plan.period}</span>
-                        </div>
-
-                        <ul className="space-y-3">
+                        <ul className="space-y-2">
                           {plan.features.map((feature, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm">
+                            <li key={i} className="flex items-start gap-2 text-xs">
                               <Check className={cn(
-                                "size-4 shrink-0 mt-0.5",
+                                "size-3.5 shrink-0 mt-0.5",
                                 plan.popular ? "text-purple-500" : "text-green-500"
                               )} />
                               <span className="text-muted-foreground">{feature}</span>
@@ -168,14 +170,14 @@ export default function PricingPage() {
                         </ul>
                       </CardContent>
 
-                      <CardFooter>
+                      <CardFooter className="pt-3">
                         <Button
                           onClick={() => handleUpgrade(plan.id)}
                           disabled={isCurrentPlan}
                           className={cn(
-                            "w-full cursor-pointer font-semibold",
+                            "w-full text-sm cursor-pointer",
                             plan.popular
-                              ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg"
+                              ? "bg-purple-500 hover:bg-purple-600 text-white"
                               : "bg-primary hover:bg-primary/90"
                           )}
                         >
