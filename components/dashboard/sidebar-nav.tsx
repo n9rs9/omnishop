@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 import {
   LayoutDashboard,
   Package,
@@ -9,18 +10,21 @@ import {
   Settings,
   Hexagon,
   Sparkles,
+  Calendar,
 } from "lucide-react"
 
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Inventory", icon: Package, active: false },
-  { label: "Customers", icon: Users, active: false },
-  { label: "Omni IA", icon: Sparkles, active: false },
-  { label: "Analytics", icon: BarChart3, active: false },
-  { label: "Settings", icon: Settings, active: false },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/" },
+  { label: "Inventory", icon: Package, href: "/inventory" },
+  { label: "Customers", icon: Users, href: "/customers" },
+  { label: "Calendar", icon: Calendar, href: "/calendar" },
+  { label: "Omni IA", icon: Sparkles, href: "/omni-ia" },
+  { label: "Analytics", icon: BarChart3, href: "/analytics" },
+  { label: "Settings", icon: Settings, href: "/settings" },
 ]
 
 export function SidebarNav() {
+  const pathname = usePathname()
   const handleLogoClick = () => {
     window.location.reload()
   }
@@ -28,7 +32,7 @@ export function SidebarNav() {
   return (
     <aside className="flex h-full flex-col border-r border-border/50 bg-sidebar py-6">
       {/* LOGO */}
-      <button 
+      <button
         onClick={handleLogoClick}
         className="mb-6 flex items-center gap-2.5 px-6 transition-opacity hover:opacity-80 active:scale-95 cursor-pointer border-none bg-transparent"
       >
@@ -40,20 +44,24 @@ export function SidebarNav() {
 
       {/* MENU PRINCIPAL */}
       <nav className="flex flex-col gap-1 px-3" role="navigation">
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer border-none",
-              item.active
-                ? "bg-primary/15 text-primary"
-                : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
-            )}
-          >
-            <item.icon className="size-[18px]" />
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href
+          return (
+            <button
+              key={item.label}
+              onClick={() => window.location.href = item.href}
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer border-none",
+                isActive
+                  ? "bg-primary/15 text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-sidebar-foreground"
+              )}
+            >
+              <item.icon className="size-[18px]" />
+              {item.label}
+            </button>
+          )
+        })}
       </nav>
 
       {/* SPACER */}
