@@ -103,10 +103,19 @@ export function StatsCards() {
       iconBg: "bg-pink-500/15",
       iconColor: "text-pink-500"
     },
+    {
+      title: "Omni IA",
+      value: "Assistant IA",
+      change: "Gratuit & Illimité",
+      trend: "ia",
+      icon: Sparkles,
+      iconBg: "bg-purple-500/15",
+      iconColor: "text-purple-500"
+    },
   ]
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (
         <StatsCard key={stat.title} {...stat} />
       ))}
