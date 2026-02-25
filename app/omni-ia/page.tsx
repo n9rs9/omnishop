@@ -47,7 +47,7 @@ export default function OmniIAPage() {
           <div className="h-full flex flex-col">
             {/* HEADER */}
             <div className="flex items-center gap-3 mb-4 shrink-0">
-              <div className="size-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="size-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
                 <Sparkles className="size-6 text-white" />
               </div>
               <div>
@@ -61,19 +61,19 @@ export default function OmniIAPage() {
               <div className="w-full max-w-lg">
                 {/* 
                   STRUCTURE EN 3 COUCHES :
-                  1. Contour extérieur épais dégradé (4px)
-                  2. Couche intermédiaire sombre (intérieur du contour)
-                  3. Gradient overlay coloré→transparent (du haut vers le bas)
+                  1. Contour extérieur épais dégradé bleu (4px)
+                  2. Couche intermédiaire #0a0b0e (intérieur du contour)
+                  3. Gradient overlay bleu→transparent (du haut vers le bas)
                 */}
                 
-                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS */}
-                <div className="relative rounded-3xl p-[4px] bg-gradient-to-b from-purple-600 via-pink-500 to-purple-600 shadow-2xl shadow-purple-500/30">
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS BLEU */}
+                <div className="relative rounded-3xl p-[4px] bg-gradient-to-b from-blue-600 via-blue-500 to-blue-600 shadow-2xl shadow-blue-500/30">
                   
-                  {/* COUCHE 2 : COUCHE INTERMÉDIAIRE SOMBRE */}
-                  <div className="relative rounded-[22px] bg-[#0d0d10]">
+                  {/* COUCHE 2 : COUCHE INTERMÉDIAIRE #0a0b0e */}
+                  <div className="relative rounded-[22px] bg-[#0a0b0e]">
                     
-                    {/* COUCHE 3 : GRADIENT OVERLAY (coloré → transparent) */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-purple-600/40 via-pink-500/20 to-transparent pointer-events-none rounded-[22px]" />
+                    {/* COUCHE 3 : GRADIENT OVERLAY (bleu → transparent) */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-blue-600/40 via-blue-500/20 to-transparent pointer-events-none rounded-[22px]" />
                     
                     {/* CONTENU (au-dessus du gradient) */}
                     <div className="relative z-10">
@@ -81,7 +81,7 @@ export default function OmniIAPage() {
                       {/* HEADER DU MODULE */}
                       <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
                         <div className="flex items-center gap-3">
-                          <div className="size-11 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/40">
+                          <div className="size-11 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/40">
                             <Image className="size-6 text-white" />
                           </div>
                           <div>
@@ -90,7 +90,7 @@ export default function OmniIAPage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold text-purple-300 bg-purple-500/20 border border-purple-500/30">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold text-blue-300 bg-blue-500/20 border border-blue-500/30">
                             <Zap className="size-3 mr-1" />
                             IA Power
                           </span>
@@ -122,13 +122,13 @@ export default function OmniIAPage() {
                             icon={Wand2} 
                             title="Génération IA" 
                             desc="Création automatique" 
-                            gradient="from-purple-500 to-pink-500"
+                            gradient="from-blue-500 to-cyan-500"
                           />
                           <FeatureCard 
                             icon={Layers} 
                             title="Templates Pro" 
                             desc="50+ modèles inclus" 
-                            gradient="from-blue-500 to-cyan-500"
+                            gradient="from-purple-500 to-pink-500"
                           />
                           <FeatureCard 
                             icon={Image} 
@@ -145,7 +145,7 @@ export default function OmniIAPage() {
                         </div>
 
                         {/* BOUTON D'ACTION */}
-                        <Button className="w-full h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold cursor-pointer shadow-xl shadow-purple-500/30 text-sm rounded-xl">
+                        <Button className="w-full h-12 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold cursor-pointer shadow-xl shadow-blue-500/30 text-sm rounded-xl">
                           <Wand2 className="mr-2 size-5" />
                           Créer mon flyer
                         </Button>
@@ -153,7 +153,7 @@ export default function OmniIAPage() {
                         {/* BADGE GRATUITY */}
                         <div className="mt-4 text-center">
                           <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-muted-foreground">
-                            <Sparkles className="size-3 text-purple-500" />
+                            <Sparkles className="size-3 text-blue-500" />
                             Gratuit & Illimité avec Omni IA
                           </span>
                         </div>
