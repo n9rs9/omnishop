@@ -72,8 +72,8 @@ export default function OmniIAPage() {
                   4. Gradient overlay bleu→transparent (s'arrête à 40%)
                 */}
                 
-                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS BLEU */}
-                <div className="relative rounded-2xl p-[3px] bg-gradient-to-b from-blue-600 via-blue-500 to-blue-600 shadow-xl shadow-blue-500/30">
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS #1a1a1f */}
+                <div className="relative rounded-2xl p-[3px] bg-[#1a1a1f] shadow-xl shadow-blue-500/30">
                   
                   {/* COUCHE 2 : CONTOUR INTÉRIEUR #0a0b0e (8px) */}
                   <div className="relative rounded-[17px] p-[8px] bg-[#0a0b0e]">
@@ -81,9 +81,9 @@ export default function OmniIAPage() {
                     {/* COUCHE 3 : COUCHE DE FOND #0a0b0e */}
                     <div className="relative rounded-[9px] bg-[#0a0b0e] overflow-hidden">
                       
-                      {/* COUCHE 4 : GRADIENT OVERLAY (bleu → transparent, s'arrête à 40%) */}
-                      <div className="absolute inset-0 pointer-events-none rounded-[9px]" style={{ 
-                        background: 'linear-gradient(180deg, rgba(37,99,235,0.6) 0%, rgba(37,99,235,0.3) 25%, transparent 40%)' 
+                      {/* COUCHE 4 : GRADIENT OVERLAY (#f6339a → transparent, s'arrête à 40%) */}
+                      <div className="absolute inset-0 pointer-events-none rounded-[9px]" style={{
+                        background: 'linear-gradient(180deg, rgba(246,51,154,0.6) 0%, rgba(246,51,154,0.3) 25%, transparent 40%)'
                       }} />
                       
                       {/* CONTENU (au-dessus du gradient) */}
@@ -120,7 +120,7 @@ export default function OmniIAPage() {
                                 placeholder="Décris ton flyer..."
                                 className="flex-1 rounded-lg bg-[#1a1a1f] border border-white/10 px-3 py-2.5 text-sm text-white placeholder:text-muted-foreground/50 focus:outline-none focus:border-blue-500/50"
                               />
-                              <span className="inline-flex items-center px-2 py-1.5 rounded-lg text-xs font-medium text-blue-300 bg-blue-500/20 border border-blue-500/30 whitespace-nowrap">
+                              <span className="inline-flex items-center px-2 py-1.5 rounded-lg text-xs font-medium text-[#f6339a] bg-[#f6339a]/20 border border-[#f6339a]/30 whitespace-nowrap">
                                 <Image className="size-3.5 mr-1.5" />
                                 Image
                               </span>
