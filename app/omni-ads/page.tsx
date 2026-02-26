@@ -38,6 +38,7 @@ export default function OmniAdsPage() {
   const [userName, setUserName] = useState("")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null)
+  const [currentTemplateIndex, setCurrentTemplateIndex] = useState(0)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedImages, setGeneratedImages] = useState<string[]>([])
 
@@ -73,6 +74,20 @@ export default function OmniAdsPage() {
       setIsGenerating(false)
     }, 2000)
   }
+
+  const handlePrevTemplate = () => {
+    setCurrentTemplateIndex((prev) => (prev > 0 ? prev - 1 : templates.length - 1))
+    setSelectedTemplate(templates[currentTemplateIndex > 0 ? currentTemplateIndex - 1 : templates.length - 1].id)
+  }
+
+  const handleNextTemplate = () => {
+    setCurrentTemplateIndex((prev) => (prev < templates.length - 1 ? prev + 1 : 0))
+    setSelectedTemplate(templates[currentTemplateIndex < templates.length - 1 ? currentTemplateIndex + 1 : 0].id)
+  }
+
+  useEffect(() => {
+    setSelectedTemplate(templates[currentTemplateIndex].id)
+  }, [currentTemplateIndex])
 
   return (
     <div style={{ zoom: "1.25" }} className="fixed inset-0 flex overflow-hidden bg-background">
@@ -115,7 +130,7 @@ export default function OmniAdsPage() {
                     }} />
                     <div className="relative h-full p-5 flex flex-col">
                       <div className="flex items-center gap-3 mb-5">
-                        <img src="/sparkles.png" alt="" className="size-5" />
+                        <img src="/sparkles.png" alt="" className="size-10" />
                         <div>
                           <h3 className="text-sm font-bold text-white">Création Publicitaire</h3>
                           <p className="text-[10px] text-gray-400">2 étapes pour générer 6 variations</p>
@@ -146,29 +161,39 @@ export default function OmniAdsPage() {
                         <label className="text-xs font-semibold text-gray-300 mb-2 block">
                           Étape 2 : Select Winning Reference
                         </label>
-                        <div className="relative">
-                          <button className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10">
-                            <ChevronLeft className="size-4 text-gray-400" />
+                        <div className="relative flex items-center justify-center py-4">
+                          <button
+                            onClick={handlePrevTemplate}
+                            className="absolute left-0 p-2 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
+                          >
+                            <ChevronLeft className="size-5 text-gray-400" />
                           </button>
-                          <div className="flex gap-2 overflow-x-auto py-2 px-8 scrollbar-hide">
-                            {templates.map((template) => (
-                              <button
-                                key={template.id}
-                                onClick={() => setSelectedTemplate(template.id)}
-                                className={cn(
-                                  "shrink-0 w-20 p-3 rounded-xl border transition-all cursor-pointer",
-                                  selectedTemplate === template.id ? "border-violet-500 bg-violet-500/20" : "border-white/5 bg-[#121216] hover:border-white/10"
-                                )}
-                              >
-                                <template.icon className={cn("size-5 mx-auto mb-1.5", selectedTemplate === template.id ? "text-violet-400" : "text-gray-500")} />
-                                <p className={cn("text-[9px] font-medium text-center", selectedTemplate === template.id ? "text-violet-400" : "text-gray-400")}>{template.name}</p>
-                              </button>
-                            ))}
+                          
+                          <div className="flex items-center justify-center">
+                            <button
+                              onClick={() => setSelectedTemplate(templates[currentTemplateIndex].id)}
+                              className={cn(
+                                "w-24 p-4 rounded-xl border transition-all cursor-pointer",
+                                selectedTemplate === templates[currentTemplateIndex].id ? "border-violet-500 bg-violet-500/20" : "border-white/5 bg-[#121216] hover:border-white/10"
+                              )}
+                            >
+                              <templates[currentTemplateIndex].icon className={cn("size-8 mx-auto mb-2", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-500")} />
+                              <p className={cn("text-[10px] font-medium text-center", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-400")}>
+                                {templates[currentTemplateIndex].name}
+                              </p>
+                            </button>
                           </div>
-                          <button className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10">
-                            <ChevronRight className="size-4 text-gray-400" />
+
+                          <button
+                            onClick={handleNextTemplate}
+                            className="absolute right-0 p-2 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
+                          >
+                            <ChevronRight className="size-5 text-gray-400" />
                           </button>
                         </div>
+                        <p className="text-center text-[10px] text-gray-500 mt-2">
+                          {templates[currentTemplateIndex].description}
+                        </p>
                       </div>
 
                       <button
@@ -206,7 +231,7 @@ export default function OmniAdsPage() {
                     <div className="relative h-full p-5 flex flex-col">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <img src="/imageicon.png" alt="" className="size-5" />
+                          <img src="/imageicon.png" alt="" className="size-10" />
                           <div>
                             <h3 className="text-sm font-bold text-white">Variations Publicitaires</h3>
                             <p className="text-[10px] text-gray-400">6 propositions générées par IA</p>
@@ -221,11 +246,15 @@ export default function OmniAdsPage() {
 
                       <div className="flex-1 overflow-y-auto">
                         {generatedImages.length === 0 ? (
-                          <div className="flex items-center justify-center h-full">
-                            <div className="text-center">
-                              <Image className="size-16 text-gray-700 mx-auto mb-3" />
-                              <p className="text-sm text-gray-500">Les 6 variations apparaîtront ici après génération</p>
-                            </div>
+                          <div className="grid grid-cols-3 gap-3 h-full">
+                            {[...Array(6)].map((_, idx) => (
+                              <div
+                                key={idx}
+                                className="relative rounded-xl overflow-hidden border border-white/5 bg-[#121216]"
+                              >
+                                <div className="w-full aspect-square bg-gradient-to-r from-[#1a1a1f] via-[#25252e] to-[#1a1a1f] bg-[length:200%_100%] animate-pulse" />
+                              </div>
+                            ))}
                           </div>
                         ) : (
                           <div className="grid grid-cols-3 gap-3">
