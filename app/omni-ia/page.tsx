@@ -12,7 +12,6 @@ import {
   Image,
   Sparkles,
   Wand2,
-  Zap,
   Layers,
   Download,
 } from "lucide-react"
@@ -96,19 +95,13 @@ export default function OmniIAPage() {
                         {/* HEADER DU MODULE */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
                           <div className="flex items-center gap-2">
-                            <div className="size-9 rounded-md bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/40">
-                              <Image className="size-5 text-white" />
+                            <div className="size-9 rounded-md bg-[#0a0b0e] flex items-center justify-center">
+                              <img src="/iconfile.png" alt="" className="size-5" />
                             </div>
                             <div>
                               <h2 className="text-xs font-bold text-white">Création de Flyer</h2>
                               <p className="text-[9px] text-muted-foreground">Générez des flyers pros</p>
                             </div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold text-blue-300 bg-blue-500/20 border border-blue-500/30">
-                              <Zap className="size-2.5 mr-1" />
-                              IA
-                            </span>
                           </div>
                         </div>
 
@@ -132,18 +125,10 @@ export default function OmniIAPage() {
                           </div>
 
                           {/* BOUTON D'ACTION */}
-                          <Button className="w-full h-10 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold cursor-pointer shadow-lg shadow-blue-500/30 text-sm rounded-lg">
+                          <Button className="w-full h-10 bg-white hover:bg-gray-100 text-black font-bold cursor-pointer text-sm rounded-lg">
                             <Wand2 className="mr-2 size-4" />
                             Créer mon flyer
                           </Button>
-
-                          {/* BADGE GRATUITY */}
-                          <div className="mt-3 text-center">
-                            <span className="inline-flex items-center gap-1 text-[9px] font-medium text-muted-foreground">
-                              <Sparkles className="size-2.5 text-blue-500" />
-                              Gratuit & Illimité
-                            </span>
-                          </div>
                         </div>
                       </div>
                     </div>
