@@ -19,7 +19,7 @@ const navItems = [
   { label: "Inventory", icon: Package, href: "/inventory" },
   { label: "Customers", icon: Users, href: "/customers" },
   { label: "Calendar", icon: Calendar, href: "/calendar" },
-  { label: "Omni IA", icon: Sparkles, href: "/omni-ia" },
+  { label: "OmniAds", icon: Sparkles, href: "/omni-ads" },
   { label: "Analytics", icon: BarChart3, href: "/analytics" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ]
