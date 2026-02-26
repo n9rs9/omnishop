@@ -235,7 +235,7 @@ export default function OmniAdsPage() {
               </div>
 
               {/* ZONE DROITE - RÉSULTATS */}
-              <div className="flex-1 max-w-[600px] relative z-10">
+              <div className="flex-1 max-w-[720px] relative z-10">
                 <div className="relative rounded-2xl p-[3px] h-full bg-[#a78bfa]">
                   <div className="relative rounded-[11px] bg-[#0a0b0e] h-full overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none rounded-[11px]" style={{
