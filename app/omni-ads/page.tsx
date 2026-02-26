@@ -235,7 +235,7 @@ export default function OmniAdsPage() {
               </div>
 
               {/* ZONE DROITE - RÉSULTATS */}
-              <div className="flex-1 max-w-[500px] relative z-10 ml-auto">
+              <div className="flex-1 max-w-[600px] relative z-10">
                 <div className="relative rounded-2xl p-[3px] h-full bg-[#a78bfa]">
                   <div className="relative rounded-[11px] bg-[#0a0b0e] h-full overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none rounded-[11px]" style={{
@@ -263,16 +263,10 @@ export default function OmniAdsPage() {
                             {[...Array(6)].map((_, idx) => (
                               <div
                                 key={idx}
-                                className="relative rounded-xl overflow-hidden border border-white/5 bg-[#121216]"
+                                className="relative rounded-xl overflow-hidden border border-white/5 bg-[#121216] skeleton-loading"
+                                style={{ animationDelay: `${getAnimationDelay(idx)}ms` }}
                               >
-                                <div
-                                  className="w-full aspect-square"
-                                  style={{
-                                    background: 'linear-gradient(180deg, #1a1a1f 0%, #25252e 50%, #1a1a1f 100%)',
-                                    backgroundSize: '100% 200%',
-                                    animation: `shimmer 1.5s infinite ${getAnimationDelay(idx)}ms`
-                                  }}
-                                />
+                                <div className="w-full aspect-square bg-[#1a1a1f]" />
                               </div>
                             ))}
                           </div>
@@ -302,13 +296,19 @@ export default function OmniAdsPage() {
       </div>
 
       <style jsx global>{`
-        @keyframes shimmer {
+        @keyframes skeleton-shimmer {
           0% {
-            background-position: 0% 0%;
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.7;
           }
           100% {
-            background-position: 0% 100%;
+            opacity: 0.4;
           }
+        }
+        .skeleton-loading {
+          animation: skeleton-shimmer 2s ease-in-out infinite;
         }
       `}</style>
     </div>
