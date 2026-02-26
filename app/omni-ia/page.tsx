@@ -72,8 +72,8 @@ export default function OmniIAPage() {
                   4. Gradient overlay blanc→transparent (smooth)
                 */}
                 
-                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS MULTI-COLOR */}
-                <div className="relative rounded-2xl p-[3px] shadow-xl" style={{ background: 'linear-gradient(180deg, #f5e3d0 0%, #f7c9c7 25%, #f6d9ea 50%, #d8d9ee 75%, #d6eff7 100%)' }}>
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS MULTI-COLOR (moitié supérieure uniquement) */}
+                <div className="relative rounded-2xl p-[3px] shadow-xl" style={{ background: 'linear-gradient(180deg, #f5e3d0 0%, #f7c9c7 12.5%, #f6d9ea 25%, #d8d9ee 37.5%, #d6eff7 50%, #1a1a1f 50%, #1a1a1f 100%)' }}>
                   
                   {/* COUCHE 2 : CONTOUR INTÉRIEUR #0a0b0e (8px) */}
                   <div className="relative rounded-[17px] p-[8px] bg-[#0a0b0e]">
