@@ -116,11 +116,19 @@ export default function OmniAdsPage() {
 
               {/* MODULE GAUCHE - INPUTS */}
               <div className="w-[400px] shrink-0 relative z-10">
-                <div className="relative rounded-2xl h-full" style={{
-                  background: 'linear-gradient(180deg, #fd296e 0%, transparent 25%, transparent 100%)'
-                }}>
-                  <div className="absolute inset-[5px] rounded-2xl bg-[#0a0b0e]" />
-                  <div className="relative h-full p-5 flex flex-col">
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS GRIS CLAIR */}
+                <div className="relative rounded-2xl p-[6px] bg-[#d1d5db] h-full">
+                  {/* COUCHE 2 : CONTOUR INTÉRIEUR ÉPAIS #0a0b0e */}
+                  <div className="relative rounded-[13px] p-[6px] bg-[#0a0b0e] h-full">
+                    {/* COUCHE 3 : FOND #0a0b0e + GRADIENT */}
+                    <div className="relative rounded-[7px] bg-[#0a0b0e] h-full overflow-hidden">
+                      {/* GRADIENT OVERLAY (haut → transparent, smooth) */}
+                      <div className="absolute inset-0 pointer-events-none rounded-[7px]" style={{
+                        background: 'linear-gradient(180deg, #fd296e 0%, rgba(253,41,110,0.4) 15%, transparent 30%)'
+                      }} />
+                      
+                      {/* CONTENU */}
+                      <div className="relative h-full p-5 flex flex-col">
                     
                     {/* HEADER */}
                     <div className="flex items-center gap-3 mb-5">
@@ -230,14 +238,24 @@ export default function OmniAdsPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
               {/* ZONE DROITE - RÉSULTATS */}
               <div className="flex-1 relative z-10">
-                <div className="relative rounded-2xl h-full" style={{
-                  background: 'linear-gradient(180deg, #fd296e 0%, transparent 25%, transparent 100%)'
-                }}>
-                  <div className="absolute inset-[5px] rounded-2xl bg-[#0a0b0e]" />
-                  <div className="relative h-full p-5 flex flex-col">
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS GRIS CLAIR */}
+                <div className="relative rounded-2xl p-[6px] bg-[#d1d5db] h-full">
+                  {/* COUCHE 2 : CONTOUR INTÉRIEUR ÉPAIS #0a0b0e */}
+                  <div className="relative rounded-[13px] p-[6px] bg-[#0a0b0e] h-full">
+                    {/* COUCHE 3 : FOND #0a0b0e + GRADIENT */}
+                    <div className="relative rounded-[7px] bg-[#0a0b0e] h-full overflow-hidden">
+                      {/* GRADIENT OVERLAY (haut → transparent, smooth) */}
+                      <div className="absolute inset-0 pointer-events-none rounded-[7px]" style={{
+                        background: 'linear-gradient(180deg, #fd296e 0%, rgba(253,41,110,0.4) 15%, transparent 30%)'
+                      }} />
+                      
+                      {/* CONTENU */}
+                      <div className="relative h-full p-5 flex flex-col">
                     
                     {/* HEADER */}
                     <div className="flex items-center justify-between mb-4">
@@ -291,6 +309,7 @@ export default function OmniAdsPage() {
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
