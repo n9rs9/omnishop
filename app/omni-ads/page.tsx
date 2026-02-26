@@ -89,6 +89,13 @@ export default function OmniAdsPage() {
     setSelectedTemplate(templates[currentTemplateIndex].id)
   }, [currentTemplateIndex])
 
+  const getAnimationDelay = (idx: number) => {
+    if (idx === 0 || idx === 3) return 0
+    if (idx === 1 || idx === 4) return 166
+    if (idx === 2 || idx === 5) return 333
+    return 0
+  }
+
   return (
     <div style={{ zoom: "1.25" }} className="fixed inset-0 flex overflow-hidden bg-background">
       <div className="hidden w-[260px] shrink-0 lg:block h-full">
@@ -158,70 +165,77 @@ export default function OmniAdsPage() {
                       </div>
 
                       {/* SELECT WINNING REFERENCE */}
-                      <div className="relative flex-1">
+                      <div className="flex-1">
                         <label className="text-xs font-semibold text-gray-300 mb-2 block">
                           Étape 2 : Select Winning Reference
                         </label>
-                        
-                        {/* CARD TEMPLATE 2:3 */}
-                        <div className="relative h-full flex items-end pb-[88px]">
-                          <div className="w-full aspect-[2/3] rounded-xl overflow-hidden border border-white/5 bg-[#121216]">
+                        <div className="relative flex items-center justify-center py-4">
+                          <button
+                            onClick={handlePrevTemplate}
+                            className="absolute left-0 p-2 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
+                          >
+                            <ChevronLeft className="size-5 text-gray-400" />
+                          </button>
+                          
+                          <div className="flex items-center justify-center">
                             {(() => {
                               const CurrentIcon = templates[currentTemplateIndex].icon
                               return (
-                                <div className="w-full h-full flex flex-col items-center justify-center p-4">
-                                  <CurrentIcon className="size-12 text-violet-400 mb-3" />
-                                  <p className="text-sm font-bold text-white mb-1">{templates[currentTemplateIndex].name}</p>
-                                  <p className="text-[10px] text-gray-400 text-center">{templates[currentTemplateIndex].description}</p>
-                                </div>
+                                <button
+                                  onClick={() => setSelectedTemplate(templates[currentTemplateIndex].id)}
+                                  className={cn(
+                                    "w-24 p-4 rounded-xl border transition-all cursor-pointer",
+                                    selectedTemplate === templates[currentTemplateIndex].id ? "border-violet-500 bg-violet-500/20" : "border-white/5 bg-[#121216] hover:border-white/10"
+                                  )}
+                                >
+                                  <CurrentIcon className={cn("size-8 mx-auto mb-2", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-500")} />
+                                  <p className={cn("text-[10px] font-medium text-center", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-400")}>
+                                    {templates[currentTemplateIndex].name}
+                                  </p>
+                                </button>
                               )
                             })()}
                           </div>
 
-                          {/* FLECHES NAVIGATION */}
-                          <button
-                            onClick={handlePrevTemplate}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-[#121216]/90 hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
-                          >
-                            <ChevronLeft className="size-5 text-gray-400" />
-                          </button>
                           <button
                             onClick={handleNextTemplate}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-[#121216]/90 hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
+                            className="absolute right-0 p-2 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10"
                           >
                             <ChevronRight className="size-5 text-gray-400" />
                           </button>
                         </div>
-
-                        {/* BOUTON GÉNÉRER (par dessus) */}
-                        <button
-                          onClick={handleGenerate}
-                          disabled={!selectedImage || !selectedTemplate || isGenerating}
-                          className={cn(
-                            "absolute bottom-0 left-0 right-0 w-full py-3 rounded-xl text-white text-sm font-bold cursor-pointer transition-all",
-                            !selectedImage || !selectedTemplate || isGenerating ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-violet-500 to-purple-500 hover:opacity-90"
-                          )}
-                        >
-                          {isGenerating ? (
-                            <span className="flex items-center justify-center gap-2">
-                              <Sparkles className="size-4 animate-spin" />
-                              Génération en cours...
-                            </span>
-                          ) : (
-                            <span className="flex items-center justify-center gap-2">
-                              <Sparkles className="size-4" />
-                              Générer 6 variations
-                            </span>
-                          )}
-                        </button>
+                        <p className="text-center text-[10px] text-gray-500 mt-2">
+                          {templates[currentTemplateIndex].description}
+                        </p>
                       </div>
+
+                      <button
+                        onClick={handleGenerate}
+                        disabled={!selectedImage || !selectedTemplate || isGenerating}
+                        className={cn(
+                          "w-full py-3 rounded-xl text-white text-sm font-bold cursor-pointer transition-all mt-5",
+                          !selectedImage || !selectedTemplate || isGenerating ? "bg-gray-700 cursor-not-allowed" : "bg-gradient-to-r from-violet-500 to-purple-500 hover:opacity-90"
+                        )}
+                      >
+                        {isGenerating ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <Sparkles className="size-4 animate-spin" />
+                            Génération en cours...
+                          </span>
+                        ) : (
+                          <span className="flex items-center justify-center gap-2">
+                            <Sparkles className="size-4" />
+                            Générer 6 variations
+                          </span>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* ZONE DROITE - RÉSULTATS */}
-              <div className="flex-1 relative z-10">
+              <div className="flex-1 max-w-[500px] relative z-10 ml-auto">
                 <div className="relative rounded-2xl p-[3px] h-full bg-[#a78bfa]">
                   <div className="relative rounded-[11px] bg-[#0a0b0e] h-full overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none rounded-[11px]" style={{
@@ -252,12 +266,11 @@ export default function OmniAdsPage() {
                                 className="relative rounded-xl overflow-hidden border border-white/5 bg-[#121216]"
                               >
                                 <div
-                                  className="w-full aspect-square bg-gradient-to-b from-[#1a1a1f] via-[#25252e] to-[#1a1a1f] bg-[length:100%_200%] animate-pulse"
+                                  className="w-full aspect-square"
                                   style={{
-                                    animation: `shimmer 1.5s infinite ${idx * 166}ms`,
-                                    background: `linear-gradient(180deg, #1a1a1f 0%, #25252e 50%, #1a1a1f 100%)`,
+                                    background: 'linear-gradient(180deg, #1a1a1f 0%, #25252e 50%, #1a1a1f 100%)',
                                     backgroundSize: '100% 200%',
-                                    animation: `shimmer 1.5s infinite ${idx * 166}ms`
+                                    animation: `shimmer 1.5s infinite ${getAnimationDelay(idx)}ms`
                                   }}
                                 />
                               </div>
