@@ -8,9 +8,7 @@ import { TopBar } from "@/components/dashboard/top-bar"
 import { cn } from "@/lib/utils"
 
 import {
-  Image,
   Upload,
-  Sparkles,
   X,
   ChevronLeft,
   ChevronRight,
@@ -20,6 +18,8 @@ import {
   TrendingUp,
   Heart,
   Star,
+  Image,
+  Sparkles,
 } from "lucide-react"
 
 const templates = [
@@ -102,22 +102,20 @@ export default function OmniAdsPage() {
             </div>
 
             <div className="flex-1 flex gap-6 overflow-hidden relative">
-              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-violet-500/50 to-transparent z-0" />
-              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-violet-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(15deg)' }} />
-              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-violet-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(-15deg)' }} />
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-violet-500/50 to-transparent z-0" />
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-violet-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(15deg)' }} />
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-violet-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(-15deg)' }} />
 
               {/* MODULE GAUCHE - INPUTS */}
               <div className="w-[400px] shrink-0 relative z-10">
-                <div className="relative rounded-2xl p-[3px] h-full" style={{ background: 'linear-gradient(180deg, #a78bfa 0%, #c4b5fd 40%, transparent 100%)' }}>
+                <div className="relative rounded-2xl p-[3px] h-full bg-[#a78bfa]">
                   <div className="relative rounded-[11px] bg-[#0a0b0e] h-full overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none rounded-[11px]" style={{
                       background: 'linear-gradient(180deg, rgba(167,139,250,0.15) 0%, rgba(167,139,250,0.05) 20%, transparent 35%)'
                     }} />
                     <div className="relative h-full p-5 flex flex-col">
                       <div className="flex items-center gap-3 mb-5">
-                        <div className="size-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center">
-                          <Sparkles className="size-5 text-white" />
-                        </div>
+                        <img src="/sparkles.png" alt="" className="size-5" />
                         <div>
                           <h3 className="text-sm font-bold text-white">Création Publicitaire</h3>
                           <p className="text-[10px] text-gray-400">2 étapes pour générer 6 variations</p>
@@ -129,7 +127,7 @@ export default function OmniAdsPage() {
                           Étape 1 : Photo du produit
                         </label>
                         {!selectedImage ? (
-                          <label className="block relative rounded-xl border-2 border-dashed border-violet-500/30 bg-[#121216] p-6 text-center cursor-pointer hover:border-violet-500/60 hover:bg-[#1a1a1f] transition-colors">
+                          <label className="block relative rounded-xl border-2 border-dashed border-violet-500/30 bg-[#0a0b0e] p-6 text-center cursor-pointer hover:border-violet-500/60 hover:bg-[#0f0f12] transition-colors">
                             <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                             <Upload className="size-8 text-violet-500/40 mx-auto mb-2" />
                             <p className="text-xs text-gray-400">Déposez une image ou cliquez pour importer</p>
@@ -200,7 +198,7 @@ export default function OmniAdsPage() {
 
               {/* ZONE DROITE - RÉSULTATS */}
               <div className="flex-1 relative z-10">
-                <div className="relative rounded-2xl p-[3px] h-full" style={{ background: 'linear-gradient(180deg, #a78bfa 0%, #c4b5fd 40%, transparent 100%)' }}>
+                <div className="relative rounded-2xl p-[3px] h-full bg-[#a78bfa]">
                   <div className="relative rounded-[11px] bg-[#0a0b0e] h-full overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none rounded-[11px]" style={{
                       background: 'linear-gradient(180deg, rgba(167,139,250,0.15) 0%, rgba(167,139,250,0.05) 20%, transparent 35%)'
@@ -208,9 +206,7 @@ export default function OmniAdsPage() {
                     <div className="relative h-full p-5 flex flex-col">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="size-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center">
-                            <Image className="size-5 text-white" />
-                          </div>
+                          <img src="/imageicon.png" alt="" className="size-5" />
                           <div>
                             <h3 className="text-sm font-bold text-white">Variations Publicitaires</h3>
                             <p className="text-[10px] text-gray-400">6 propositions générées par IA</p>
