@@ -170,18 +170,23 @@ export default function OmniAdsPage() {
                           </button>
                           
                           <div className="flex items-center justify-center">
-                            <button
-                              onClick={() => setSelectedTemplate(templates[currentTemplateIndex].id)}
-                              className={cn(
-                                "w-24 p-4 rounded-xl border transition-all cursor-pointer",
-                                selectedTemplate === templates[currentTemplateIndex].id ? "border-violet-500 bg-violet-500/20" : "border-white/5 bg-[#121216] hover:border-white/10"
-                              )}
-                            >
-                              <templates[currentTemplateIndex].icon className={cn("size-8 mx-auto mb-2", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-500")} />
-                              <p className={cn("text-[10px] font-medium text-center", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-400")}>
-                                {templates[currentTemplateIndex].name}
-                              </p>
-                            </button>
+                            {(() => {
+                              const CurrentIcon = templates[currentTemplateIndex].icon
+                              return (
+                                <button
+                                  onClick={() => setSelectedTemplate(templates[currentTemplateIndex].id)}
+                                  className={cn(
+                                    "w-24 p-4 rounded-xl border transition-all cursor-pointer",
+                                    selectedTemplate === templates[currentTemplateIndex].id ? "border-violet-500 bg-violet-500/20" : "border-white/5 bg-[#121216] hover:border-white/10"
+                                  )}
+                                >
+                                  <CurrentIcon className={cn("size-8 mx-auto mb-2", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-500")} />
+                                  <p className={cn("text-[10px] font-medium text-center", selectedTemplate === templates[currentTemplateIndex].id ? "text-violet-400" : "text-gray-400")}>
+                                    {templates[currentTemplateIndex].name}
+                                  </p>
+                                </button>
+                              )
+                            })()}
                           </div>
 
                           <button
