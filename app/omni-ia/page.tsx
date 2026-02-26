@@ -35,29 +35,27 @@ export default function OmniIAPage() {
   }, [router])
 
   return (
-    // BACKGROUND DE LA PAGE À POINTILLÉS
-    <div 
-      style={{ zoom: "1.25" }} 
-      className="fixed inset-0 flex overflow-hidden bg-background"
-    >
-      {/* FOND POINTILLÉ DE LA PAGE (derrière tout le contenu) */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
-          backgroundSize: '16px 16px',
-          backgroundPosition: '0 0'
-        }}
-      />
-
+    <div style={{ zoom: "1.25" }} className="fixed inset-0 flex overflow-hidden bg-background">
+      {/* SIDEBAR - SANS POINTILLÉS */}
       <div className="hidden w-[260px] shrink-0 lg:block h-full">
         <SidebarNav />
       </div>
 
-      <div className="flex flex-1 flex-col h-full overflow-hidden">
+      {/* ZONE PRINCIPALE - AVEC FOND POINTILLÉ */}
+      <div className="flex flex-1 flex-col h-full overflow-hidden relative">
+        {/* FOND POINTILLÉ (uniquement sur la zone principale, pas la sidebar) */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
+            backgroundSize: '16px 16px',
+            backgroundPosition: '0 0'
+          }}
+        />
+
         <TopBar userName={userName} />
 
-        <main className="h-full overflow-hidden px-6 py-6">
+        <main className="h-full overflow-hidden px-6 py-6 relative z-10">
           <div className="h-full flex flex-col">
             {/* HEADER */}
             <div className="flex items-center gap-3 mb-3 shrink-0">
