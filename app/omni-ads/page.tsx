@@ -12,13 +12,32 @@ import {
   Upload,
   Sparkles,
   X,
+  ChevronLeft,
+  ChevronRight,
+  Palette,
+  Zap,
+  Target,
+  TrendingUp,
+  Heart,
+  Star,
 } from "lucide-react"
+
+const templates = [
+  { id: 1, name: "Minimaliste", icon: Palette, description: "Épuré & moderne" },
+  { id: 2, name: "Dynamique", icon: Zap, description: "Énergique & vif" },
+  { id: 3, name: "Premium", icon: Star, description: "Luxe & élégance" },
+  { id: 4, name: "Urgence", icon: Target, description: "Promotion & CTA" },
+  { id: 5, name: "Tendance", icon: TrendingUp, description: "Style viral" },
+  { id: 6, name: "Émotion", icon: Heart, description: "Storytelling" },
+  { id: 7, name: "Minimaliste", icon: Palette, description: "Épuré & moderne" },
+  { id: 8, name: "Dynamique", icon: Zap, description: "Énergique & vif" },
+]
 
 export default function OmniAdsPage() {
   const router = useRouter()
   const [userName, setUserName] = useState("")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [prompt, setPrompt] = useState("")
+  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedImages, setGeneratedImages] = useState<string[]>([])
 
@@ -47,7 +66,7 @@ export default function OmniAdsPage() {
   }
 
   const handleGenerate = () => {
-    if (!selectedImage || !prompt) return
+    if (!selectedImage || !selectedTemplate) return
     setIsGenerating(true)
     // Simulation de génération
     setTimeout(() => {
@@ -88,12 +107,20 @@ export default function OmniAdsPage() {
             </div>
 
             {/* CONTAINER PRINCIPAL */}
-            <div className="flex-1 flex gap-6 overflow-hidden">
+            <div className="flex-1 flex gap-6 overflow-hidden relative">
               
+              {/* LIGNE DE CONNEXION ENTRE LES MODULES */}
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-pink-500/50 to-transparent z-0" />
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-pink-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(15deg)' }} />
+              <div className="absolute left-[420px] top-1/2 -translate-y-1/2 w-12 h-[2px] bg-gradient-to-r from-pink-500/50 to-transparent z-0" style={{ transform: 'translate(-50%, -50%) rotate(-15deg)' }} />
+
               {/* MODULE GAUCHE - INPUTS */}
-              <div className="w-[400px] shrink-0">
-                <div className="relative rounded-2xl p-[2px] bg-gradient-to-br from-pink-100 via-rose-100 to-pink-200 h-full">
-                  <div className="bg-white rounded-[18px] p-5 h-full flex flex-col">
+              <div className="w-[400px] shrink-0 relative z-10">
+                <div className="relative rounded-2xl h-full" style={{
+                  background: 'linear-gradient(180deg, #fd296e 0%, transparent 25%, transparent 100%)'
+                }}>
+                  <div className="absolute inset-[5px] rounded-2xl bg-[#0a0b0e]" />
+                  <div className="relative h-full p-5 flex flex-col">
                     
                     {/* HEADER */}
                     <div className="flex items-center gap-3 mb-5">
@@ -101,63 +128,90 @@ export default function OmniAdsPage() {
                         <Sparkles className="size-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-gray-800">Création Publicitaire</h3>
-                        <p className="text-[10px] text-gray-500">2 étapes pour générer 6 variations</p>
+                        <h3 className="text-sm font-bold text-white">Création Publicitaire</h3>
+                        <p className="text-[10px] text-gray-400">2 étapes pour générer 6 variations</p>
                       </div>
                     </div>
 
                     {/* ÉTAPE 1 : UPLOAD IMAGE */}
                     <div className="mb-4">
-                      <label className="text-xs font-semibold text-gray-700 mb-2 block">
+                      <label className="text-xs font-semibold text-gray-300 mb-2 block">
                         Étape 1 : Photo du produit
                       </label>
                       {!selectedImage ? (
-                        <label className="block relative rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-6 text-center cursor-pointer hover:border-pink-300 hover:bg-pink-50 transition-colors">
+                        <label className="block relative rounded-xl border-2 border-dashed border-pink-500/50 bg-[#121216] p-6 text-center cursor-pointer hover:border-pink-500 hover:bg-[#1a1a1f] transition-colors">
                           <input
                             type="file"
                             accept="image/*"
                             onChange={handleImageUpload}
                             className="hidden"
                           />
-                          <Upload className="size-8 text-gray-300 mx-auto mb-2" />
-                          <p className="text-xs text-gray-500">
+                          <Upload className="size-8 text-pink-500/50 mx-auto mb-2" />
+                          <p className="text-xs text-gray-400">
                             Déposez une image ou cliquez pour importer
                           </p>
                         </label>
                       ) : (
-                        <div className="relative rounded-xl overflow-hidden border border-gray-200">
+                        <div className="relative rounded-xl overflow-hidden border border-pink-500/30">
                           <img src={selectedImage} alt="Produit" className="w-full h-40 object-cover" />
                           <button
                             onClick={() => setSelectedImage(null)}
-                            className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-white cursor-pointer transition-colors"
+                            className="absolute top-2 right-2 p-1.5 rounded-full bg-[#0a0b0e]/90 hover:bg-[#0a0b0e] cursor-pointer transition-colors"
                           >
-                            <X className="size-4 text-gray-600" />
+                            <X className="size-4 text-gray-400" />
                           </button>
                         </div>
                       )}
                     </div>
 
-                    {/* ÉTAPE 2 : PROMPT */}
+                    {/* ÉTAPE 2 : SÉLECTION TEMPLATE */}
                     <div className="flex-1">
-                      <label className="text-xs font-semibold text-gray-700 mb-2 block">
-                        Étape 2 : Description du visuel
+                      <label className="text-xs font-semibold text-gray-300 mb-2 block">
+                        Étape 2 : Select Winning Reference
                       </label>
-                      <textarea
-                        value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
-                        placeholder="Décris le style publicitaire souhaité (ambiance, couleurs, éléments graphiques, texte à inclure...)"
-                        className="w-full h-32 resize-none rounded-xl bg-gray-50 border border-gray-200 px-3 py-2.5 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-pink-300"
-                      />
+                      <div className="relative">
+                        <button className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10">
+                          <ChevronLeft className="size-4 text-gray-400" />
+                        </button>
+                        <div className="flex gap-2 overflow-x-auto py-2 px-8 scrollbar-hide">
+                          {templates.map((template) => (
+                            <button
+                              key={template.id}
+                              onClick={() => setSelectedTemplate(template.id)}
+                              className={cn(
+                                "shrink-0 w-20 p-3 rounded-xl border transition-all cursor-pointer",
+                                selectedTemplate === template.id
+                                  ? "border-pink-500 bg-pink-500/20"
+                                  : "border-white/5 bg-[#121216] hover:border-white/10"
+                              )}
+                            >
+                              <template.icon className={cn(
+                                "size-5 mx-auto mb-1.5",
+                                selectedTemplate === template.id ? "text-pink-500" : "text-gray-500"
+                              )} />
+                              <p className={cn(
+                                "text-[9px] font-medium text-center",
+                                selectedTemplate === template.id ? "text-pink-500" : "text-gray-400"
+                              )}>
+                                {template.name}
+                              </p>
+                            </button>
+                          ))}
+                        </div>
+                        <button className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg bg-[#121216] hover:bg-[#1a1a1f] cursor-pointer transition-colors z-10">
+                          <ChevronRight className="size-4 text-gray-400" />
+                        </button>
+                      </div>
                     </div>
 
                     {/* BOUTON GÉNÉRER */}
                     <button
                       onClick={handleGenerate}
-                      disabled={!selectedImage || !prompt || isGenerating}
+                      disabled={!selectedImage || !selectedTemplate || isGenerating}
                       className={cn(
                         "w-full py-3 rounded-xl text-white text-sm font-bold cursor-pointer transition-all mt-5",
-                        !selectedImage || !prompt || isGenerating
-                          ? "bg-gray-300 cursor-not-allowed"
+                        !selectedImage || !selectedTemplate || isGenerating
+                          ? "bg-gray-700 cursor-not-allowed"
                           : "bg-gradient-to-r from-pink-500 to-rose-500 hover:opacity-90"
                       )}
                     >
@@ -178,9 +232,12 @@ export default function OmniAdsPage() {
               </div>
 
               {/* ZONE DROITE - RÉSULTATS */}
-              <div className="flex-1">
-                <div className="relative rounded-2xl p-[2px] bg-gradient-to-br from-pink-100 via-rose-100 to-pink-200 h-full">
-                  <div className="bg-white rounded-[18px] p-5 h-full flex flex-col">
+              <div className="flex-1 relative z-10">
+                <div className="relative rounded-2xl h-full" style={{
+                  background: 'linear-gradient(180deg, #fd296e 0%, transparent 25%, transparent 100%)'
+                }}>
+                  <div className="absolute inset-[5px] rounded-2xl bg-[#0a0b0e]" />
+                  <div className="relative h-full p-5 flex flex-col">
                     
                     {/* HEADER */}
                     <div className="flex items-center justify-between mb-4">
@@ -189,12 +246,12 @@ export default function OmniAdsPage() {
                           <Image className="size-5 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-sm font-bold text-gray-800">Variations Publicitaires</h3>
-                          <p className="text-[10px] text-gray-500">6 propositions générées par IA</p>
+                          <h3 className="text-sm font-bold text-white">Variations Publicitaires</h3>
+                          <p className="text-[10px] text-gray-400">6 propositions générées par IA</p>
                         </div>
                       </div>
                       {generatedImages.length > 0 && (
-                        <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-600 text-xs font-semibold">
+                        <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs font-semibold border border-pink-500/30">
                           {generatedImages.length} variations
                         </span>
                       )}
@@ -205,8 +262,8 @@ export default function OmniAdsPage() {
                       {generatedImages.length === 0 ? (
                         <div className="flex items-center justify-center h-full">
                           <div className="text-center">
-                            <Image className="size-16 text-gray-200 mx-auto mb-3" />
-                            <p className="text-sm text-gray-400">
+                            <Image className="size-16 text-gray-700 mx-auto mb-3" />
+                            <p className="text-sm text-gray-500">
                               Les 6 variations apparaîtront ici après génération
                             </p>
                           </div>
@@ -216,10 +273,10 @@ export default function OmniAdsPage() {
                           {generatedImages.map((img, idx) => (
                             <div
                               key={idx}
-                              className="relative group rounded-xl overflow-hidden border border-gray-200 bg-gray-50"
+                              className="relative group rounded-xl overflow-hidden border border-white/5 bg-[#121216]"
                             >
                               <img src={img} alt={`Variation ${idx + 1}`} className="w-full aspect-square object-cover" />
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                                 <button className="opacity-0 group-hover:opacity-100 px-3 py-1.5 rounded-lg bg-white text-gray-700 text-xs font-medium cursor-pointer transition-opacity hover:bg-gray-100">
                                   Télécharger
                                 </button>
