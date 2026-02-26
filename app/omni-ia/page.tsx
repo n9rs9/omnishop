@@ -35,7 +35,21 @@ export default function OmniIAPage() {
   }, [router])
 
   return (
-    <div style={{ zoom: "1.25" }} className="fixed inset-0 flex overflow-hidden bg-background">
+    // BACKGROUND DE LA PAGE À POINTILLÉS
+    <div 
+      style={{ zoom: "1.25" }} 
+      className="fixed inset-0 flex overflow-hidden bg-background"
+    >
+      {/* FOND POINTILLÉ DE LA PAGE (derrière tout le contenu) */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
+          backgroundSize: '16px 16px',
+          backgroundPosition: '0 0'
+        }}
+      />
+
       <div className="hidden w-[260px] shrink-0 lg:block h-full">
         <SidebarNav />
       </div>
@@ -60,7 +74,7 @@ export default function OmniIAPage() {
                   STRUCTURE :
                   1. Contour extérieur épais dégradé bleu (3px)
                   2. Contour intérieur #0a0b0e (8px)
-                  3. Couche de fond #0a0b0e avec bordure en pointillés
+                  3. Couche de fond #0a0b0e
                   4. Gradient overlay bleu→transparent (s'arrête à 40%)
                 */}
                 
@@ -70,18 +84,15 @@ export default function OmniIAPage() {
                   {/* COUCHE 2 : CONTOUR INTÉRIEUR #0a0b0e (8px) */}
                   <div className="relative rounded-[17px] p-[8px] bg-[#0a0b0e]">
                     
-                    {/* COUCHE 3 : COUCHE DE FOND #0a0b0e AVEC BORDURE POINTILLÉS */}
+                    {/* COUCHE 3 : COUCHE DE FOND #0a0b0e */}
                     <div className="relative rounded-[9px] bg-[#0a0b0e] overflow-hidden">
-                      
-                      {/* BORDURE EN POINTILLÉS (dashed border) */}
-                      <div className="absolute inset-0 rounded-[9px] border border-dashed border-blue-500/20 pointer-events-none" />
                       
                       {/* COUCHE 4 : GRADIENT OVERLAY (bleu → transparent, s'arrête à 40%) */}
                       <div className="absolute inset-0 pointer-events-none rounded-[9px]" style={{ 
                         background: 'linear-gradient(180deg, rgba(37,99,235,0.6) 0%, rgba(37,99,235,0.3) 25%, transparent 40%)' 
                       }} />
                       
-                      {/* CONTENU (au-dessus du gradient et des pointillés) */}
+                      {/* CONTENU (au-dessus du gradient) */}
                       <div className="relative z-10">
                         
                         {/* HEADER DU MODULE */}
