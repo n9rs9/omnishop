@@ -10,10 +10,7 @@ import { cn } from "@/lib/utils"
 
 import {
   Image,
-  Sparkles,
   Wand2,
-  Layers,
-  Download,
 } from "lucide-react"
 
 export default function OmniIAPage() {
@@ -66,7 +63,7 @@ export default function OmniIAPage() {
 
             {/* MODULE CRÉATION FLYER */}
             <div className="flex items-start justify-center pt-2">
-              <div className="w-full max-w-[320px]">
+              <div className="w-full max-w-[480px]">
                 {/* 
                   STRUCTURE :
                   1. Contour extérieur épais dégradé bleu (3px)
@@ -115,12 +112,18 @@ export default function OmniIAPage() {
                                 <p className="text-[10px] text-muted-foreground">Aperçu du flyer</p>
                               </div>
                             </div>
-                            
-                            {/* TAGS */}
-                            <div className="flex flex-wrap gap-1.5">
-                              <Tag icon={Layers} label="Templates" />
-                              <Tag icon={Sparkles} label="IA Auto" />
-                              <Tag icon={Download} label="Export HD" />
+
+                            {/* CHAMP DE DISCUSSION */}
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                placeholder="Décris ton flyer..."
+                                className="flex-1 rounded-lg bg-[#1a1a1f] border border-white/10 px-3 py-2.5 text-sm text-white placeholder:text-muted-foreground/50 focus:outline-none focus:border-blue-500/50"
+                              />
+                              <span className="inline-flex items-center px-2 py-1.5 rounded-lg text-xs font-medium text-blue-300 bg-blue-500/20 border border-blue-500/30 whitespace-nowrap">
+                                <Image className="size-3.5 mr-1.5" />
+                                Image
+                              </span>
                             </div>
                           </div>
 
@@ -140,14 +143,5 @@ export default function OmniIAPage() {
         </main>
       </div>
     </div>
-  )
-}
-
-function Tag({ icon: Icon, label }: { icon: React.ElementType, label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[9px] font-medium text-muted-foreground bg-[#1a1a1f] border border-white/5 hover:border-white/10 transition-colors cursor-default">
-      <Icon className="size-3" />
-      {label}
-    </span>
   )
 }
