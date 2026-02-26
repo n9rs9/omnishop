@@ -64,16 +64,16 @@ export default function OmniIAPage() {
             {/* MODULE CRÉATION FLYER */}
             <div className="flex items-start justify-center pt-2">
               <div className="w-full max-w-[480px]">
-                {/* 
+                {/*
                   STRUCTURE :
-                  1. Contour extérieur épais dégradé bleu (3px)
+                  1. Contour extérieur épais multi-color (3px)
                   2. Contour intérieur #0a0b0e (8px)
                   3. Couche de fond #0a0b0e
-                  4. Gradient overlay bleu→transparent (s'arrête à 40%)
+                  4. Gradient overlay blanc→transparent (smooth)
                 */}
                 
-                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS #1a1a1f */}
-                <div className="relative rounded-2xl p-[3px] bg-[#1a1a1f] shadow-xl shadow-blue-500/30">
+                {/* COUCHE 1 : CONTOUR EXTÉRIEUR ÉPAIS MULTI-COLOR */}
+                <div className="relative rounded-2xl p-[3px] shadow-xl" style={{ background: 'linear-gradient(180deg, #f5e3d0 0%, #f7c9c7 25%, #f6d9ea 50%, #d8d9ee 75%, #d6eff7 100%)' }}>
                   
                   {/* COUCHE 2 : CONTOUR INTÉRIEUR #0a0b0e (8px) */}
                   <div className="relative rounded-[17px] p-[8px] bg-[#0a0b0e]">
@@ -81,9 +81,9 @@ export default function OmniIAPage() {
                     {/* COUCHE 3 : COUCHE DE FOND #0a0b0e */}
                     <div className="relative rounded-[9px] bg-[#0a0b0e] overflow-hidden">
                       
-                      {/* COUCHE 4 : GRADIENT OVERLAY (#f6339a → transparent, s'arrête à 40%) */}
+                      {/* COUCHE 4 : GRADIENT OVERLAY (blanc → transparent, smooth) */}
                       <div className="absolute inset-0 pointer-events-none rounded-[9px]" style={{
-                        background: 'linear-gradient(180deg, rgba(246,51,154,0.6) 0%, rgba(246,51,154,0.3) 25%, transparent 40%)'
+                        background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 35%, transparent 65%)'
                       }} />
                       
                       {/* CONTENU (au-dessus du gradient) */}
